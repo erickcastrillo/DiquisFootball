@@ -1,6 +1,6 @@
 # Diquis - ASP.NET Core API
 
-> A comprehensive ASP.NET Core 8.0+ API for managing football academies, players, teams, and training sessions with a multi-tenant architecture.
+> A comprehensive ASP.NET Core 10.0 API for managing football academies, players, teams, and training sessions with a multi-tenant architecture.
 
 [![.NET Build](https://github.com/erickcastrillo/Diquis/actions/workflows/dotnet-build.yml/badge.svg)](https://github.com/erickcastrillo/Diquis/actions/workflows/dotnet-build.yml)
 [![C# Version](https://img.shields.io/badge/C%23-12-blue.svg)](https://docs.microsoft.com/en-us/dotnet/csharp/)
