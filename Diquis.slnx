@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="Diquis.Application/Diquis.Application.csproj" />
+    <Project Path="Diquis.Domain/Diquis.Domain.csproj" />
+    <Project Path="Diquis.Infrastructure/Diquis.Infrastructure.csproj" />
+    <Project Path="Diquis.WebApi/Diquis.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="Diquis.Application.Tests/Diquis.Application.Tests.csproj" Id="adf1db17-e916-4427-8ede-7651b5783959" />
+    <Project Path="Diquis.Domain.Tests/Diquis.Domain.Tests.csproj" Id="a3a88398-eb15-4de5-aba3-059217065a9b" />
+    <Project Path="Diquis.Infrastructure.Tests/Diquis.Infrastructure.Tests.csproj" Id="f2ead310-da31-4d5d-81f8-587a4611b4ac" />
+    <Project Path="Diquis.WebApi.Tests/Diquis.WebApi.Tests.csproj" Id="421556fb-dea3-4fe4-92ed-4b18228575f2" />
+  </Folder>
+</Solution>

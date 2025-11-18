@@ -1,0 +1,77 @@
+﻿# Top-level EditorConfig for the Diquis solution
+root = true
+
+[*.{cs}]
+charset = utf-8
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# C# var preferences: prefer explicit types to avoid IDE0008
+csharp_style_var_for_built_in_types = false:warning
+csharp_style_var_when_type_is_apparent = false:warning
+csharp_style_var_elsewhere = false:warning
+
+# Collection/object initializer preferences (IDE0017, IDE0028)
+dotnet_style_object_initializer = true:warning
+dotnet_style_collection_initializer = true:warning
+
+# Prefer auto-properties when possible (IDE0032)
+dotnet_style_prefer_auto_properties = true:warning
+
+# Prefer readonly fields when possible (IDE0044)
+dotnet_style_readonly_field = true:warning
+
+# Using declaration preference (IDE0063)
+csharp_prefer_simple_using_statement = true:suggestion
+
+# Naming rules (IDE1006)
+dotnet_naming_rule.public_members_should_be_pascal_case.severity = warning
+dotnet_naming_rule.public_members_should_be_pascal_case.symbols = public_symbols
+dotnet_naming_rule.public_members_should_be_pascal_case.style = pascal_case_style
+
+dotnet_naming_symbols.public_symbols.applicable_kinds = property,method,field,event
+dotnet_naming_symbols.public_symbols.applicable_accessibilities = public,internal
+dotnet_naming_symbols.public_symbols.required_modifiers = 
+
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+
+# Diagnostics severity overrides for common IDE analyzers
+dotnet_diagnostic.IDE0008.severity = warning
+dotnet_diagnostic.IDE0058.severity = warning
+dotnet_diagnostic.IDE0059.severity = warning
+dotnet_diagnostic.IDE0017.severity = warning
+dotnet_diagnostic.IDE0028.severity = warning
+dotnet_diagnostic.IDE0032.severity = warning
+dotnet_diagnostic.IDE0044.severity = warning
+dotnet_diagnostic.IDE0060.severity = warning
+dotnet_diagnostic.IDE0051.severity = warning
+dotnet_diagnostic.IDE0063.severity = suggestion
+dotnet_diagnostic.IDE1006.severity = warning
+
+# C# file headers (optional, for company/project standards)
+file_header_template = unset
+
+# Expression-bodied members
+csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+csharp_style_expression_bodied_properties = when_on_single_line:suggestion
+
+# Pattern matching preferences
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+
+# Null-checking
+csharp_style_conditional_delegate_call = true:suggestion
+
+# Namespace declarations (file-scoped for .NET 6+)
+csharp_style_namespace_declarations = file_scoped:suggestion
+
+# Prefer 'is not null' over '!= null'
+csharp_style_prefer_is_not_expression = true:suggestion
+
+# Prefer interpolated strings
+csharp_style_prefer_interpolated_string = true:suggestion
+
+# Remove unused usings and format on save
+dotnet_separate_import_directive_groups = true
