@@ -76,7 +76,7 @@ Diquis is built using **Clean Architecture** principles, promoting separation of
 ## 🚀 Quick Start
 
 ### Prerequisites
-- .NET 8 SDK
+- .NET 10 SDK
 - PostgreSQL 15+ or SQL Server
 - A C# IDE (Visual Studio, VS Code, Rider)
 
