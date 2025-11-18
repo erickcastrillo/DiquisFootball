@@ -10,13 +10,14 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureApplicationServices(builder.Configuration); // Register Services / CORS / Configure Identity Requirements / JWT Settings / Register DB Contexts / Image Handling, Mailer, Fluent Validation, Automapper
 
 // Add Hangfire Services
-//builder.Services.AddHangfire(config => config
-//    .UseSimpleAssemblyNameTypeSerializer()
-//    .UseRecommendedSerializerSettings()
-//    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"))); // Or .UsePostgreSqlStorage(...)
+builder.Services.AddHangfire(config => config
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"))
+    .UseConsole()); // Add Hangfire.Console
 
-//builder.Services.AddHangfireServer();
-//builder.Services.AddScoped<IBackgroundJobService, HangfireJobService>();
+builder.Services.AddHangfireServer();
+builder.Services.AddScoped<IBackgroundJobService, HangfireJobService>();
 
 // Setup OpenTelemetry Tracing
 builder.Services.AddOpenTelemetry().WithTracing(builder =>
@@ -39,10 +40,10 @@ app.UseDefaultFiles();  // enables serving static files from wwwroot folder (rea
 app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
-//app.UseHangfireDashboard("/hangfire", new DashboardOptions
-//{
-//    Authorization = [new HangfireAuthorizationFilter("Admin")]
-//});
+app.UseHangfireDashboard("/hangfire", new DashboardOptions
+{
+    Authorization = [new HangfireAuthorizationFilter("Admin")]
+});
 app.UseMiddleware<TenantResolver>();
 app.MapControllers();
 app.MapFallbackToController("Index", "Fallback"); // directs all traffic to index.html

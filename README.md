@@ -129,7 +129,7 @@ Comprehensive documentation is available in the `/docs` directory.
 - **ORM:** Entity Framework Core 10
 - **Authentication:** ASP.NET Core Identity + JWT
 - **Authorization:** Policy-Based Authorization
-- **Background Jobs:** Hangfire or Quartz.NET
+- **Background Jobs:** Hangfire
 - **API Documentation:** Swashbuckle (Swagger)
 - **Observability:** OpenTelemetry
 
