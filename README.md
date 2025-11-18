@@ -1,10 +1,10 @@
 # Diquis - ASP.NET Core API
 
-> A comprehensive ASP.NET Core 8.0+ API for managing football academies, players, teams, and training sessions with a multi-tenant architecture.
+> A comprehensive ASP.NET Core 10.0+ API for managing football academies, players, teams, and training sessions with a multi-tenant architecture.
 
 [![.NET Build](https://github.com/erickcastrillo/Diquis/actions/workflows/dotnet-build.yml/badge.svg)](https://github.com/erickcastrillo/Diquis/actions/workflows/dotnet-build.yml)
 [![C# Version](https://img.shields.io/badge/C%23-12-blue.svg)](https://docs.microsoft.com/en-us/dotnet/csharp/)
-[![.NET Version](https://img.shields.io/badge/.NET-8.0-purple.svg)](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+[![.NET Version](https://img.shields.io/badge/.NET-10.0-purple.svg)](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-blue.svg)](https://www.postgresql.org/)
 
 ## 📋 Table of Contents
@@ -19,7 +19,7 @@
 
 ## 🎯 Overview
 
-Diquis is a modern football academy management system built with an ASP.NET Core 8.0+ API-only architecture. It implements a **Clean Architecture** approach with complete multi-tenant isolation, allowing multiple academies to operate independently within a single application.
+Diquis is a modern football academy management system built with an ASP.NET Core 10.0+ API-only architecture. It implements a **Clean Architecture** approach with complete multi-tenant isolation, allowing multiple academies to operate independently within a single application.
 
 The system manages:
 
@@ -123,10 +123,10 @@ Comprehensive documentation is available in the `/docs` directory.
 ## 🛠️ Technology Stack
 
 ### Backend
-- **Framework:** ASP.NET Core 8.0
+- **Framework:** ASP.NET Core 10.0
 - **Language:** C# 12
 - **Database:** PostgreSQL 15+ / SQL Server
-- **ORM:** Entity Framework Core 8
+- **ORM:** Entity Framework Core 10
 - **Authentication:** ASP.NET Core Identity + JWT
 - **Authorization:** Policy-Based Authorization
 - **Background Jobs:** Hangfire or Quartz.NET

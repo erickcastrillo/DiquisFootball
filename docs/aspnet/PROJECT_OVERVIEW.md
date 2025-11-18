@@ -2,7 +2,7 @@
 
 **Project Name:** Diquis Football Management System
 **Template:** ASPNano (ASP.NET Nano Boilerplate)
-**Framework:** ASP.NET Core 8.0+
+**Framework:** ASP.NET Core 10.0+
 **Architecture:** Clean Architecture
 
 ## Project Philosophy
@@ -41,10 +41,10 @@ The application follows Clean Architecture principles to create a strong separat
 ## Technology Stack
 
 ### Backend
-- **Framework:** ASP.NET Core 8.0+
+- **Framework:** ASP.NET Core 10.0+
 - **Language:** C# 12
 - **Database:** PostgreSQL 15+ or SQL Server
-- **ORM:** Entity Framework Core 8.0+
+- **ORM:** Entity Framework Core 10.0+
 - **Authentication:** ASP.NET Core Identity + JWT
 - **API Documentation:** Swashbuckle (Swagger)
 

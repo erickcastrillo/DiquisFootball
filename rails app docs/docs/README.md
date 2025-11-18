@@ -58,7 +58,7 @@ docs/
 
 **Key Technologies:**
 
-- ASP.NET Core 8.0+
+- ASP.NET Core 10.0+
 - ASP.NET Core Identity + JWT Bearer
 - Authorization Policies
 - Custom multi-tenancy middleware

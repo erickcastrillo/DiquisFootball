@@ -1,7 +1,7 @@
 # Diquis - ASP.NET Core Project Overview
 
 **Project Name:** Diquis Football Management System  
-**Framework:** ASP.NET Core 8.0+  
+**Framework:** ASP.NET Core 10.0+  
 **Architecture:** Clean Architecture with Vertical Slices  
 **Database:** PostgreSQL or SQL Server with GUID primary keys  
 **Created:** October 13, 2025
@@ -14,10 +14,10 @@ Diquis is a comprehensive football (soccer) academy management system designed t
 
 ### Backend
 
-- **Framework:** ASP.NET Core 8.0+ (Web API)
+- **Framework:** ASP.NET Core 10.0+ (Web API)
 - **Language:** C# 12
 - **Database:** PostgreSQL 15+ or SQL Server 2022+
-- **ORM:** Entity Framework Core 8.0+
+- **ORM:** Entity Framework Core 10.0+
 - **API Endpoints:** FastEndpoints (REPR pattern - Request-Endpoint-Response)
 - **Multi-Tenancy:** Custom middleware with query filters
 - **Authentication:** ASP.NET Core Identity + JWT Bearer tokens
