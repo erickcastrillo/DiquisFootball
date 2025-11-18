@@ -24,8 +24,8 @@ Diquis is a modern football academy management system built with an ASP.NET Core
 The system manages:
 
 - 🏫 **Academy Operations** - Complete academy administration
-- ⚽ **Player Management** - Player registration, profiles, and skill tracking
-- 👥 **Team Organization** - Team rosters and memberships
+- ⚽ **Player Management** - Player registration, detailed profiles (PlayerProfile), and skill tracking
+- 👥 **Team Organization** - Team rosters, memberships, and division assignments (Team, Division)
 - 📅 **Training Sessions** - Scheduling and attendance tracking
 - 📊 **Analytics & Reporting** - Performance metrics and business intelligence
 - 🎽 **Asset Management** - Equipment, uniforms, and inventory tracking
@@ -95,7 +95,11 @@ dotnet user-secrets set "JwtSettings:Secret" "your_super_secret_jwt_key_that_is_
 # 3. Install dependencies
 dotnet restore
 
-# 4. Apply database migrations
+# 4. Generate and apply database migrations
+# Generate a new migration (replace 'InitialMigration' with a descriptive name)
+dotnet ef migrations add InitialMigration --project Diquis.Infrastructure --startup-project Diquis.WebApi --context ApplicationDbContext -o Persistence/Migrations/AppDb
+
+# Apply pending migrations to the database
 dotnet ef database update --project Diquis.Infrastructure
 
 # 5. Run the application
@@ -127,6 +131,7 @@ Comprehensive documentation is available in the `/docs` directory.
 - **Authorization:** Policy-Based Authorization
 - **Background Jobs:** Hangfire or Quartz.NET
 - **API Documentation:** Swashbuckle (Swagger)
+- **Observability:** OpenTelemetry
 
 ### Development Tools
 - **Testing:** xUnit, Moq, FluentAssertions
@@ -157,8 +162,8 @@ dotnet test --collect:"XPlat Code Coverage"
 ✅ CI/CD pipeline for builds
 
 ### Planned
-📋 Player management features
-📋 Team management features
+📋 Player management features (including PlayerProfile)
+📋 Team management features (including Team and Division)
 📋 Training management features
 📋 Frontend React application
 📋 Real-time features with SignalR

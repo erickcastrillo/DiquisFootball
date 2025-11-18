@@ -18,16 +18,60 @@ This document outlines a systematic, phase-by-phase approach to implementing the
 **Goal:** Complete academy CRUD operations and user management.
 
 ### Phase 3: Player Management (Week 3-4)
-**Goal:** Implement player registration, profiles, and search.
+**Goal:** Implement player registration, detailed profiles using `PlayerProfile`, and search.
+
+### Objectives
+- Create the `PlayerProfile` entity to store player-specific details.
+- Establish the relationship between `ApplicationUser` and `PlayerProfile`.
+- Implement CRUD operations for `PlayerProfile`.
+- Implement services for managing player profiles.
+- Create API endpoints for player management.
+
+### Tasks
+1.  **Create Entities**: Define `PlayerProfile` in `Diquis.Domain` with properties like `DateOfBirth`, `Position`, `JerseyNumber`, `Height`, `Weight`, `PreferredFoot`, `EmergencyContactName`, `EmergencyContactPhone`, `MedicalNotes`, `RegistrationDate`.
+2.  **Establish Relationships**: Configure the one-to-one relationship between `ApplicationUser` and `PlayerProfile` in EF Core.
+3.  **Create Migrations**: Use `dotnet ef migrations add` to create the `PlayerProfile` table.
+4.  **Implement Services**: Create `PlayerProfileService` in `Diquis.Application`.
+5.  **Create Controllers/Endpoints**: Expose the functionality in `Diquis.WebApi`.
+6.  **Add Authorization Policies**: Secure the endpoints.
+7.  **Write Tests**: Add unit and integration tests.
 
 ### Phase 4: Team Management (Week 4-5)
-**Goal:** Implement team organization and player assignments.
+**Goal:** Implement team organization, division assignments, and player assignments.
+
+### Objectives
+- Create `Team` and `Division` entities.
+- Establish relationships between `Team`, `Division`, and `PlayerProfile`.
+- Implement CRUD operations for `Team` and `Division`.
+- Implement services for managing teams and divisions.
+- Create API endpoints for team and division management.
+
+### Tasks
+1.  **Create Entities**: Define `Team` (with properties like `Name`, `Description`, `CoachId`) and `Division` (with properties like `Name`, `Description`, `MinAge`, `MaxAge`) in `Diquis.Domain`.
+2.  **Establish Relationships**: Configure relationships between `Team` and `Division` (one-to-many), and `Team` and `PlayerProfile` (many-to-many or one-to-many depending on design).
+3.  **Create Migrations**: Use `dotnet ef migrations add` to create the `Team` and `Division` tables.
+4.  **Implement Services**: Create `TeamService` and `DivisionService` in `Diquis.Application`.
+5.  **Create Controllers/Endpoints**: Expose the functionality in `Diquis.WebApi`.
+6.  **Add Authorization Policies**: Secure the endpoints.
+7.  **Write Tests**: Add unit and integration tests.
 
 ### Phase 5: Training Management (Week 5-6)
 **Goal:** Implement training scheduling and attendance tracking.
 
 ### Phase 6: Shared Resources (Week 6)
 **Goal:** Create models for positions, skills, and categories.
+
+### Objectives
+- Utilize the existing `Category` model for various classifications.
+- Define and implement other shared resource models as needed (e.g., `Position`, `Skill`).
+
+### Tasks
+1.  **Utilize `Category` Model**: Ensure the `Category` model (`Diquis.Domain\Entities\Football\Common\Category.cs`) is integrated and used for classification where appropriate (e.g., player skill categories, team age categories).
+2.  **Create Other Shared Entities**: Define `Position` and `Skill` entities in `Diquis.Domain` if they are distinct domain concepts.
+3.  **Create Migrations**: Use `dotnet ef migrations add` for any new shared entities.
+4.  **Implement Services**: Create services for managing these shared resources.
+5.  **Create Controllers/Endpoints**: Expose the functionality in `Diquis.WebApi`.
+6.  **Write Tests**: Add unit and integration tests.
 
 ### Phase 7: Testing & Documentation (Week 7)
 **Goal:** Ensure comprehensive test coverage and generate API documentation.
