@@ -11,7 +11,14 @@ using Diquis.Domain.Entities.Catalog;
 
 namespace Diquis.Application.Services.ProductService
 {
-    // sample application service with CRUD operations -- use as a guide for creating your own services
+    /// <summary>
+    /// Provides service operations for managing <see cref="Product"/> entities, including retrieval, creation, update, and deletion,
+    /// as well as export functionalities.
+    /// </summary>
+    /// <remarks>
+    /// This is a sample application service demonstrating CRUD operations. Use it as a guide for creating your own services.
+    /// It utilizes an asynchronous repository pattern, AutoMapper for entity-to-DTO mapping, and integrates with Excel and PDF export services.
+    /// </remarks>
     public class ProductService : IProductService
     {
         private readonly IRepositoryAsync _repository;
@@ -19,6 +26,13 @@ namespace Diquis.Application.Services.ProductService
         private readonly IExcelExportService _excelExportService;
         private readonly IPdfExportService _pdfExportService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProductService"/> class.
+        /// </summary>
+        /// <param name="repository">The asynchronous repository for data access.</param>
+        /// <param name="mapper">The AutoMapper instance for entity-DTO mapping.</param>
+        /// <param name="excelExportService">The Excel export service for generating Excel files.</param>
+        /// <param name="pdfExportService">The PDF export service for generating PDF files.</param>
         public ProductService(IRepositoryAsync repository, IMapper mapper, IExcelExportService excelExportService, IPdfExportService pdfExportService)
         {
             _repository = repository; // inject repository 
@@ -26,6 +40,11 @@ namespace Diquis.Application.Services.ProductService
             _excelExportService = excelExportService;
             _pdfExportService = pdfExportService;
         }
+        /// <summary>
+        /// Retrieves a list of products, optionally filtered by a keyword.
+        /// </summary>
+        /// <param name="keyword">The keyword to filter products by name. Optional.</param>
+        /// <returns>A <see cref="Response{T}"/> containing an enumerable of <see cref="ProductDTO"/> objects.</returns>
         // get full List
         public async Task<Response<IEnumerable<ProductDTO>>> GetProductsAsync(string keyword = "")
         {
@@ -33,6 +52,11 @@ namespace Diquis.Application.Services.ProductService
             IEnumerable<ProductDTO> list = await _repository.GetListAsync<Product, ProductDTO, Guid>(specification); // full list, entity mapped to dto
             return Response<IEnumerable<ProductDTO>>.Success(list);
         }
+        /// <summary>
+        /// Retrieves a paginated list of products based on the provided filter, suitable for Tanstack Table.
+        /// </summary>
+        /// <param name="filter">The filter criteria for pagination and searching.</param>
+        /// <returns>A <see cref="PaginatedResponse{T}"/> containing <see cref="ProductDTO"/> items.</returns>
         // get Tanstack Table paginated list (as seen in the React and Vue project tables)
         public async Task<PaginatedResponse<ProductDTO>> GetProductsPaginatedAsync(ProductTableFilter filter)
         {
@@ -46,6 +70,11 @@ namespace Diquis.Application.Services.ProductService
             PaginatedResponse<ProductDTO> pagedResponse = await _repository.GetPaginatedResultsAsync<Product, ProductDTO, Guid>(filter.PageNumber, filter.PageSize, specification); // paginated response, entity mapped to dto
             return pagedResponse;
         }
+        /// <summary>
+        /// Retrieves a specific product by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the product.</param>
+        /// <returns>A <see cref="Response{T}"/> containing the <see cref="ProductDTO"/>.</returns>
         // get single product by Id 
         public async Task<Response<ProductDTO>> GetProductAsync(Guid id)
         {
@@ -60,6 +89,11 @@ namespace Diquis.Application.Services.ProductService
             }
         }
 
+        /// <summary>
+        /// Creates a new product.
+        /// </summary>
+        /// <param name="request">The request object containing the product details.</param>
+        /// <returns>A <see cref="Response{T}"/> with the unique identifier of the created product.</returns>
         // create new product
         public async Task<Response<Guid>> CreateProductAsync(CreateProductRequest request)
         {
@@ -84,6 +118,12 @@ namespace Diquis.Application.Services.ProductService
             }
         }
 
+        /// <summary>
+        /// Updates an existing product.
+        /// </summary>
+        /// <param name="request">The request object containing the updated product details.</param>
+        /// <param name="id">The unique identifier of the product to update.</param>
+        /// <returns>A <see cref="Response{T}"/> with the unique identifier of the updated product.</returns>
         // update product
         public async Task<Response<Guid>> UpdateProductAsync(UpdateProductRequest request, Guid id)
         {
@@ -107,6 +147,11 @@ namespace Diquis.Application.Services.ProductService
             }
         }
 
+        /// <summary>
+        /// Deletes a product by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the product to delete.</param>
+        /// <returns>A <see cref="Response{T}"/> with the unique identifier of the deleted product.</returns>
         // delete product
         public async Task<Response<Guid>> DeleteProductAsync(Guid id)
         {
@@ -122,6 +167,10 @@ namespace Diquis.Application.Services.ProductService
                 return Response<Guid>.Fail(ex.Message);
             }
         }
+        /// <summary>
+        /// Gets an export of all products as a byte array.
+        /// </summary>
+        /// <returns>A <see cref="Response{T}"/> containing the exported data as a byte array.</returns>
         // export products
         public async Task<Response<byte[]>> GetProductsExportAsync()
         {
@@ -148,6 +197,11 @@ namespace Diquis.Application.Services.ProductService
             }
         }
 
+        /// <summary>
+        /// Gets a PDF export of a specific product by its identifier.
+        /// </summary>
+        /// <param name="id">The product identifier.</param>
+        /// <returns>A <see cref="Response{T}"/> containing the PDF data as a byte array.</returns>
         public async Task<Response<byte[]>> GetProductPdfAsync(Guid id)
         {
             try

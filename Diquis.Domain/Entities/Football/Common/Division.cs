@@ -1,4 +1,4 @@
-﻿using Diquis.Domain.Entities.Common;
+using Diquis.Domain.Entities.Common;
 using Diquis.Domain.Entities.Football.PlayerManagement;
 
 namespace Diquis.Domain.Entities.Football.Common
@@ -20,6 +20,16 @@ namespace Diquis.Domain.Entities.Football.Common
         /// Gets or sets the <see cref="Locale"/> associated with this division.
         /// </summary>
         public Locale Locale { get; set; }
+
+        /// <summary>
+        /// Gets or sets the minimum age required for eligibility.
+        /// </summary>
+        public int MinAge { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum age, in seconds, that a cached item is considered valid.
+        /// </summary>
+        public int MaxAge { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of <see cref="Player"/> entities assigned to this division.

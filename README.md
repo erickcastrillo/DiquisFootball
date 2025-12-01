@@ -1,180 +1,93 @@
-# Diquis - ASP.NET Core API
+# Diquis SaaS Platform
 
-> A comprehensive ASP.NET Core 10.0+ API for managing football academies, players, teams, and training sessions with a multi-tenant architecture.
+![Build Status](https://img.shields.io/azure-devops/build/diquis/diquis/1?style=for-the-badge)
+![.NET](https://img.shields.io/badge/.NET-10-512BD4?style=for-the-badge)
+![C#](https://img.shields.io/badge/C%23-12-239120?style=for-the-badge)
+![License](https://img.shields.io/badge/License-Proprietary-red?style=for-the-badge)
 
-[![.NET Build](https://github.com/erickcastrillo/Diquis/actions/workflows/dotnet-build.yml/badge.svg)](https://github.com/erickcastrillo/Diquis/actions/workflows/dotnet-build.yml)
-[![C# Version](https://img.shields.io/badge/C%23-12-blue.svg)](https://docs.microsoft.com/en-us/dotnet/csharp/)
-[![.NET Version](https://img.shields.io/badge/.NET-10.0-purple.svg)](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-blue.svg)](https://www.postgresql.org/)
+## Executive Summary
 
-## 📋 Table of Contents
+Diquis is a next-generation, AI-enhanced, multi-tenant SaaS platform engineered for elite football academies. Built on a robust and scalable **Hybrid Tenancy Architecture**, it offers tailored infrastructure solutions from shared databases for grassroots academies to fully isolated enterprise stacks. Our integrated AI suite provides unprecedented data-driven insights and operational efficiency, governed by a strict ethical framework.
 
-- [Overview](#overview)
-- [Features](#features)
-- [Architecture](#architecture)
-- [Quick Start](#quick-start)
-- [API Documentation](#api-documentation)
-- [Technology Stack](#technology-stack)
-- [Project Status](#project-status)
+## Commercial Architecture
 
-## 🎯 Overview
+Diquis employs a flexible, three-tier infrastructure model to meet the diverse security, performance, and budgetary needs of our clients.
 
-Diquis is a modern football academy management system built with an ASP.NET Core 10.0+ API-only architecture. It implements a **Clean Architecture** approach with complete multi-tenant isolation, allowing multiple academies to operate independently within a single application.
+| Tier         | Infrastructure Model         | Ideal For                                  |
+|--------------|------------------------------|--------------------------------------------|
+| **Grassroots** | Shared Database, Shared App  | Small academies, startups, and trials.     |
+| **Professional** | Dedicated Database, Shared App | Growing academies requiring data isolation. |
+| **Enterprise** | Fully Isolated Stack         | Large organizations with maximum security needs. |
 
-The system manages:
+## The Module Ecosystem
 
-- 🏫 **Academy Operations** - Complete academy administration
-- ⚽ **Player Management** - Player registration, detailed profiles (PlayerProfile), and skill tracking
-- 👥 **Team Organization** - Team rosters, memberships, and division assignments (Team, Division)
-- 📅 **Training Sessions** - Scheduling and attendance tracking
-- 📊 **Analytics & Reporting** - Performance metrics and business intelligence
-- 🎽 **Asset Management** - Equipment, uniforms, and inventory tracking
+The Diquis platform is a comprehensive ecosystem of interconnected modules designed to manage every facet of a modern football academy.
 
-## ✨ Features
+### Cluster A: Core Operations
+-   **Module 1:** Academy Operations (Finance, Inventory, Staffing)
+-   **Module 2:** Player Management (Profiles, Registration, Documentation)
+-   **Module 3:** Team Organization (Squads, Rosters, Formations)
+-   **Module 4:** Training Sessions (Planning, Attendance, Performance Tracking)
 
-### Multi-Tenant Architecture
-- **Complete Data Isolation** - Each academy's data is fully isolated using tenant-aware repositories.
-- **Hybrid Context Management** - Tenant context resolved from URL, headers, or user claims.
-- **Cross-Academy Administration** - System admin access across all academies.
+### Cluster B: Professional Suite
+-   **Module 5:** Analytics & Reporting (Advanced Dashboards, Player Progression)
+-   **Module 6:** Asset Management (Kit & Equipment Tracking)
+-   **Module 7:** Sports Medicine (Bio-Passport, Injury Tracking - HIPAA/GDPR Compliant)
+-   **Module 8:** Scouting & Recruitment (Talent Identification, Network Management)
+-   **Module 9:** Facility & Resource Operations (Booking, Maintenance)
 
-### Advanced Player Management
-- Player registration with detailed profiles.
-- Age-category validation.
-- Position and skill assignments.
-- Player search and filtering.
-- Image upload support via Azure Blob Storage or local storage.
+### Cluster C: Artificial Intelligence Suite
+-   **Module 16-A:** External AI Sales Agent (Automated Lead Engagement)
+-   **Module 16-B:** Operational AI Assistant Coach (Training Plan Generation)
+-   **Module 16-C:** Predictive AI Revenue Guardian (Financial Forecasting)
+-   **Module 16-D:** AI Governance & Safety Protocols (Ethical Oversight)
 
-### API Features
-- **RESTful Design** - Clean, predictable API endpoints.
-- **JWT Authentication** - Secure, token-based authentication with ASP.NET Core Identity.
-- **Role-Based Authorization** - Policy-based authorization for fine-grained access control.
-- **Pagination** - Efficient data pagination with metadata.
-- **OpenAPI Documentation** - Interactive Swagger UI for all endpoints.
+### Cluster D: Platform & Utility Services
+-   **Module 10:** Commercial Onboarding & Billing (Tenant Provisioning, Subscriptions)
+-   **Module 11:** Internationalization (i18n) & Localization
+-   **Module 12:** Security & Compliance (GDPR, Audit Logs)
+-   **Module 13:** Communication & Notification Engine
+-   **Module 14:** Data Portability & Migration Tools
+-   **Module 15:** Digital Signatures & Legal Documents
 
-### Developer Experience
-- **CI/CD Pipeline** - Automated testing and building with GitHub Actions.
-- **Comprehensive Testing** - xUnit for unit and integration tests.
-- **Code Quality Tools** - .NET format, StyleCop, and Roslyn Analyzers.
-- **Background Jobs** - Hangfire or Quartz.NET for asynchronous tasks.
-- **Development Documentation** - Complete guides and examples in the `/docs` directory.
+## Tech Stack
 
-## 🏗️ Architecture
+-   **Backend:** .NET 10, C# 12, ASP.NET Core
+-   **Architecture:** Clean Architecture, Domain-Driven Design
+-   **Database:** PostgreSQL
+-   **DevOps:** Docker, Kubernetes (K8s)
 
-Diquis is built using **Clean Architecture** principles, promoting separation of concerns and maintainability.
+## Quick Start
 
-- **`Diquis.Domain`**: Contains core business entities, enums, and domain-specific logic. It has no dependencies on other layers.
-- **`Diquis.Application`**: Implements the business logic and use cases. It defines interfaces for repositories and other infrastructure concerns. It depends only on the Domain layer.
-- **`Diquis.Infrastructure`**: Provides data access and external service implementations (e.g., EF Core repositories, JWT services, file storage). It depends on the Application layer.
-- **`Diquis.WebApi`**: The presentation layer, exposing the application's features via a RESTful API. It depends on the Application and Infrastructure layers.
+1.  **Clone the repository:**
+    ```sh
+    git clone https://github.com/diquis/diquis.git
+    cd diquis/Diquis.WebApi
+    ```
 
-### Key Design Patterns
-1. **Repository Pattern** - Decouples business logic from data access.
-2. **CQRS (Command Query Responsibility Segregation)** - Can be implemented for more complex features to separate read and write operations.
-3. **Multi-Tenant Pattern** - Academy-based data isolation.
-4. **Policy-Based Authorization** - For flexible and maintainable access control.
+2.  **Set User Secrets:**
+    *Set up your database connection string and other secrets. This is required for local development.*
+    ```sh
+    dotnet user-secrets set "DatabaseSettings:ConnectionString" "Your_PostgreSQL_Connection_String"
+    dotnet user-secrets set "Security.Key" "Your_Super_Secret_Key_For_JWT"
+    ```
 
-## 🚀 Quick Start
+3.  **Run Migrations:**
+    *Apply the latest database migrations to create the schema.*
+    ```sh
+    dotnet ef database update --project ../Diquis.Infrastructure/Diquis.Infrastructure.csproj
+    ```
 
-### Prerequisites
-- .NET 10 SDK
-- PostgreSQL 15+ or SQL Server
-- A C# IDE (Visual Studio, VS Code, Rider)
+4.  **Start the API:**
+    ```sh
+    dotnet run
+    ```
+    The API will be available at `https://localhost:5001`.
 
-### Installation
-```bash
-# 1. Clone the repository
-git clone https://github.com/erickcastrillo/Diquis.git
-cd Diquis
+## License
 
-# 2. Configure user secrets
-# (In Diquis.WebApi directory)
-dotnet user-secrets init
-dotnet user-secrets set "ConnectionStrings:DefaultConnection" "your_connection_string"
-dotnet user-secrets set "JwtSettings:Secret" "your_super_secret_jwt_key_that_is_long_enough"
+This is a proprietary commercial software product.
 
-# 3. Install dependencies
-dotnet restore
+Copyright (c) 2025 Diquis. All Rights Reserved.
 
-# 4. Generate and apply database migrations
-# Generate a new migration (replace 'InitialMigration' with a descriptive name)
-dotnet ef migrations add InitialMigration --project Diquis.Infrastructure --startup-project Diquis.WebApi --context ApplicationDbContext -o Persistence/Migrations/AppDb
-
-# Apply pending migrations to the database
-dotnet ef database update --project Diquis.Infrastructure
-
-# 5. Run the application
-dotnet run --project Diquis.WebApi
-```
-
-### Access Points
-- **API:** `https://localhost:5001` (or `http://localhost:5000`)
-- **API Documentation:** `https://localhost:5001/swagger`
-
-## 📚 Documentation
-
-Comprehensive documentation is available in the `/docs` directory.
-
-- **[Project Overview](./docs/aspnet/PROJECT_OVERVIEW.md)**
-- **[Architecture Guide](./docs/aspnet/ARCHITECTURE.md)**
-- **[Setup Guide](./docs/aspnet/SETUP_GUIDE.md)**
-- **[API Authentication](./docs/aspnet/API_AUTHENTICATION.md)**
-- **[Development Guide](./docs/aspnet/DEVELOPMENT_GUIDE.md)**
-
-## 🛠️ Technology Stack
-
-### Backend
-- **Framework:** ASP.NET Core 10.0
-- **Language:** C# 12
-- **Database:** PostgreSQL 15+ / SQL Server
-- **ORM:** Entity Framework Core 10
-- **Authentication:** ASP.NET Core Identity + JWT
-- **Authorization:** Policy-Based Authorization
-- **Background Jobs:** Hangfire
-- **API Documentation:** Swashbuckle (Swagger)
-- **Observability:** OpenTelemetry
-
-### Development Tools
-- **Testing:** xUnit, Moq, FluentAssertions
-- **Code Quality:** .NET Analyzers, StyleCop
-- **Containerization:** Docker
-
-## 🧪 Testing
-
-```bash
-# Run all tests
-dotnet test
-
-# Run tests for a specific project
-dotnet test Diquis.Application.Tests/
-
-# Run tests with coverage
-dotnet test --collect:"XPlat Code Coverage"
-```
-
-## 📊 Project Status
-
-### Current Implementation
-✅ Project structure and documentation
-✅ Clean Architecture foundation
-✅ Multi-tenancy configuration
-✅ Authentication setup (Identity + JWT)
-✅ Authorization setup (Policy-based)
-✅ CI/CD pipeline for builds
-
-### Planned
-📋 Player management features (including PlayerProfile)
-📋 Team management features (including Team and Division)
-📋 Training management features
-📋 Frontend React application
-📋 Real-time features with SignalR
-📋 Email notification system
-📋 Report generation
-📋 Analytics dashboard
-
-## 🤝 Contributing
-
-We welcome contributions! Please see `CONTRIBUTING.md` for details on how to get started.
-
-## 📝 License
-
-This project is licensed under the MIT License - see the `LICENSE` file for details.
+See the [LICENSE](LICENSE) file for more details.

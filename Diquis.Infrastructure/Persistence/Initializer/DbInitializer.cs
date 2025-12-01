@@ -58,10 +58,13 @@ namespace Diquis.Infrastructure.Persistence.Initializer
 
             List<IdentityRole> roles = new() // create default roles
             {
-                new IdentityRole() { Id = "1", Name = "root", ConcurrencyStamp = Guid.NewGuid().ToString("D"), NormalizedName = "ROOT" },
-                new IdentityRole() { Id = "2", Name = "admin", ConcurrencyStamp = Guid.NewGuid().ToString("D"), NormalizedName = "ADMIN" },
-                new IdentityRole() { Id = "3", Name = "editor", ConcurrencyStamp = Guid.NewGuid().ToString("D"), NormalizedName = "EDITOR" },
-                new IdentityRole() { Id = "4", Name = "basic", ConcurrencyStamp = Guid.NewGuid().ToString("D"), NormalizedName = "BASIC" }
+                new IdentityRole() { Id = "1", Name = "root", ConcurrencyStamp = Guid.NewGuid().ToString("D"), NormalizedName = "ROOT" }, // super_user
+                new IdentityRole() { Id = "2", Name = "academy_owner", ConcurrencyStamp = Guid.NewGuid().ToString("D"), NormalizedName = "ACADEMY_OWNER" },
+                new IdentityRole() { Id = "3", Name = "academy_admin", ConcurrencyStamp = Guid.NewGuid().ToString("D"), NormalizedName = "ACADEMY_ADMIN" },
+                new IdentityRole() { Id = "4", Name = "director_of_football", ConcurrencyStamp = Guid.NewGuid().ToString("D"), NormalizedName = "DIRECTOR_OF_FOOTBALL" },
+                new IdentityRole() { Id = "5", Name = "coach", ConcurrencyStamp = Guid.NewGuid().ToString("D"), NormalizedName = "COACH" },
+                new IdentityRole() { Id = "6", Name = "parent", ConcurrencyStamp = Guid.NewGuid().ToString("D"), NormalizedName = "PARENT" },
+                new IdentityRole() { Id = "7", Name = "player", ConcurrencyStamp = Guid.NewGuid().ToString("D"), NormalizedName = "PLAYER" }
             };
             context.Roles.AddRange(roles);
 

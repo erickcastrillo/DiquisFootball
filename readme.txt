@@ -1,1 +1,0 @@
-Nano ASP.NET Boilerplate

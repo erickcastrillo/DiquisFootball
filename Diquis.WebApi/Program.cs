@@ -2,8 +2,15 @@ using Diquis.Application.Common;
 using Diquis.Infrastructure.BackgroundJobs;
 using Diquis.WebApi.Extensions;
 using Diquis.WebApi.Middleware;
+
 using Hangfire;
+using Hangfire.Console;
+
+using Microsoft.OpenApi;
+
 using OpenTelemetry.Trace;
+
+using System.Reflection;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +25,7 @@ builder.Services.AddHangfire(config => config
 
 builder.Services.AddHangfireServer();
 builder.Services.AddScoped<IBackgroundJobService, HangfireJobService>();
+builder.Services.AddScoped<IJobClientWrapper, JobClientWrapper>();
 
 // Setup OpenTelemetry Tracing
 builder.Services.AddOpenTelemetry().WithTracing(builder =>
@@ -29,17 +37,52 @@ builder.Services.AddOpenTelemetry().WithTracing(builder =>
         .AddOtlpExporter();
 });
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Diquis API Documentation",
+        Version = "v1",
+        Description = "A comprehensive ASP.NET Core 10.0+ API for managing football academies, players, teams, and training sessions with a multi-tenant architecture."
+    });
+
+    options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Description = "JWT Authorization header using the Bearer scheme."
+    });
+
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("bearer", document)] = []
+    });
+
+    // using System.Reflection;
+    string xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
+
 WebApplication app = builder.Build(); // Create the App
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseCors("defaultPolicy"); // CORS policy (default - allow any orgin)
 app.UseHttpsRedirection();
 
 app.UseRouting();
-app.UseDefaultFiles();  // enables serving static files from wwwroot folder (react client - index.html)
-app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseDefaultFiles();  // enables serving static files from wwwroot folder (react client - index.html)
+app.UseStaticFiles();
+
 app.UseHangfireDashboard("/hangfire", new DashboardOptions
 {
     Authorization = [new HangfireAuthorizationFilter("Admin")]

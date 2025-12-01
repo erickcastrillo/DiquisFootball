@@ -7,9 +7,22 @@ using Diquis.Application.Common.Filter;
 
 namespace Diquis.Application.Utility
 {
+    /// <summary>
+    /// Provides utility helper methods for string manipulation, enum description retrieval, 
+    /// hex code generation, and order by string formatting.
+    /// </summary>
     public static class NanoHelpers // helper utility methods
     {
+        /// <summary>
+        /// Static instance of Random to be used in hex generation.
+        /// </summary>
         static Random random = new Random();
+        
+        /// <summary>
+        /// Generates a random hexadecimal string of the specified number of digits.
+        /// </summary>
+        /// <param name="digits">The number of hexadecimal digits to generate.</param>
+        /// <returns>A random hexadecimal string.</returns>
         public static string GenerateHex(int digits) // hex code generator
         {
             byte[] buffer = new byte[digits / 2];
@@ -23,7 +36,11 @@ namespace Diquis.Application.Utility
             return result + random.Next(16).ToString("X");
         }
 
-
+        /// <summary>
+        /// Retrieves the description attribute of an enum value, if present; otherwise returns the enum's name.
+        /// </summary>
+        /// <param name="value">The enum value.</param>
+        /// <returns>The description of the enum value or its name if no description is found.</returns>
         public static string GetEnumDescription(this Enum value) // retrieve enum descriptions
         {
             FieldInfo fieldInfo = value.GetType().GetField(value.ToString());
@@ -38,15 +55,26 @@ namespace Diquis.Application.Utility
                 return value.ToString();
             }
         }
-
-
+        
         private static readonly Regex _whitespace = new(@"\s+"); // remove whitespace from strings
+        
+        /// <summary>
+        /// Replaces all whitespace in the input string with the specified replacement string.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="replacement">The string to replace whitespace with.</param>
+        /// <returns>The modified string with whitespace replaced.</returns>
         public static string ReplaceWhitespace(this string input, string replacement)
         {
             return _whitespace.Replace(input, replacement);
         }
 
-
+        /// <summary>
+        /// Converts a string to a URL-friendly slug by lowercasing, removing accents, 
+        /// replacing spaces, and removing invalid characters.
+        /// </summary>
+        /// <param name="value">The input string.</param>
+        /// <returns>A URL slug generated from the input string.</returns>
         public static string ToUrlSlug(string value) // generate url slug from string
         {
 
@@ -70,7 +98,12 @@ namespace Diquis.Application.Utility
 
             return value;
         }
-
+        
+        /// <summary>
+        /// Removes accent characters from the input string.
+        /// </summary>
+        /// <param name="text">The input string.</param>
+        /// <returns>The string with accents removed.</returns>
         public static string RemoveAccents(string text) // remove accents from string characters
         {
             string normalizedString = text.Normalize(NormalizationForm.FormD);
@@ -86,9 +119,12 @@ namespace Diquis.Application.Utility
             }
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
         }
-
-
-
+        
+        /// <summary>
+        /// Generates an OrderBy string from the provided PaginationFilter.
+        /// </summary>
+        /// <param name="filter">The PaginationFilter containing sorting information.</param>
+        /// <returns>A string representing the OrderBy clause.</returns>
         public static string GenerateOrderByString(PaginationFilter filter)
         {
 

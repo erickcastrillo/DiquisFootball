@@ -3,14 +3,29 @@ using FluentValidation;
 
 namespace Diquis.Application.Services.ProductService.DTOs
 {
+    /// <summary>
+    /// Represents a request to create a new product.
+    /// </summary>
     public class CreateProductRequest : IDto
     {
+        /// <summary>
+        /// Gets or sets the name of the product.
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// Gets or sets the description of the product.
+        /// </summary>
         public string Description { get; set; }
     }
 
+    /// <summary>
+    /// Validator for <see cref="CreateProductRequest"/>.
+    /// </summary>
     public class CreateProductValidator : AbstractValidator<CreateProductRequest>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateProductValidator"/> class.
+        /// </summary>
         public CreateProductValidator()
         {
             _ = RuleFor(x => x.Name).NotEmpty();

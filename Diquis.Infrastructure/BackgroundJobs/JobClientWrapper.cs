@@ -1,40 +1,28 @@
-using System;
 using System.Linq.Expressions;
 using Hangfire;
 
 namespace Diquis.Infrastructure.BackgroundJobs
 {
     /// <summary>
-    /// Provides an abstraction for enqueuing background jobs.
-    /// </summary>
-    public interface IJobClientWrapper
-    {
-        /// <summary>
-        /// Enqueues a background job for execution.
-        /// </summary>
-        /// <param name="methodCall">The method call expression to enqueue.</param>
-        /// <returns>The job identifier.</returns>
-        string Enqueue(Expression<Action> methodCall);
-    }
-
-    /// <summary>
-    /// Implementation of <see cref="IJobClientWrapper"/> that delegates to Hangfire's <see cref="IBackgroundJobClient"/>.
+    /// A wrapper for the Hangfire IBackgroundJobClient to allow for easier testing and dependency injection.
     /// </summary>
     public class JobClientWrapper : IJobClientWrapper
     {
-        private readonly IBackgroundJobClient _jobClient;
+        private readonly IBackgroundJobClient _backgroundJobClient;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="JobClientWrapper"/> class.
         /// </summary>
-        /// <param name="jobClient">The Hangfire background job client.</param>
-        public JobClientWrapper(IBackgroundJobClient jobClient)
+        /// <param name="backgroundJobClient">The Hangfire background job client.</param>
+        public JobClientWrapper(IBackgroundJobClient backgroundJobClient)
         {
-            _jobClient = jobClient;
+            _backgroundJobClient = backgroundJobClient;
         }
+
         /// <inheritdoc/>
         public string Enqueue(Expression<Action> methodCall)
         {
-            return _jobClient.Enqueue(methodCall);
+            return _backgroundJobClient.Enqueue(methodCall);
         }
     }
 }

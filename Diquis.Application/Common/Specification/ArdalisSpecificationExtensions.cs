@@ -4,12 +4,27 @@ using Ardalis.Specification;
 
 namespace Diquis.Application.Common.Specification
 {
-    // extension to Ardalis.Specification
-    // allows OrderBy method to accept a string list of columns for sort ordering, for example: ('Name,-Supplier,Property.Name,Price') -prefix denotes Descending
-    // JQuery Datatables and Tanstack table are components that send dynamic column ordering
-
+    /// <summary>
+    /// Provides extension methods for Ardalis.Specification to support dynamic ordering.
+    /// </summary>
+    /// <remarks>
+    /// This extension allows the OrderBy method to accept a string list of columns for sort ordering,
+    /// e.g., ('Name,-Supplier,Property.Name,Price') where a prefix '-' denotes Descending order.
+    /// This is particularly useful for components like JQuery Datatables and Tanstack Table which send dynamic column ordering.
+    /// </remarks>
     public static class ArdalisSpecificationExtensions
     {
+        /// <summary>
+        /// Applies dynamic ordering to a specification based on a comma-separated string of fields.
+        /// </summary>
+        /// <typeparam name="T">The type of the entity.</typeparam>
+        /// <param name="specificationBuilder">The <see cref="ISpecificationBuilder{T}"/> instance.</param>
+        /// <param name="orderByFields">
+        /// A comma-separated string of field names to order by.
+        /// Prefix a field with '-' for descending order (e.g., "Name,-CreatedOn").
+        /// </param>
+        /// <returns>The <see cref="ISpecificationBuilder{T}"/> with the order applied.</returns>
+        /// <exception cref="ArgumentException">Thrown if a specified property is not found on the entity type.</exception>
         public static ISpecificationBuilder<T> OrderBy<T>(
        this ISpecificationBuilder<T> specificationBuilder,
        string orderByFields)
@@ -68,6 +83,12 @@ namespace Diquis.Application.Common.Specification
 
             return specificationBuilder;
         }
+        /// <summary>
+        /// Finds a nested property by its name, supporting dot notation (e.g., "Supplier.Name").
+        /// </summary>
+        /// <param name="type">The type to search for the property.</param>
+        /// <param name="propertyName">The name of the property, potentially nested.</param>
+        /// <returns>The <see cref="PropertyInfo"/> of the found property, or null if not found.</returns>
         // helper method for cases where the column property is nested, for example 'Supplier.Name'
         public static PropertyInfo FindNestedProperty(Type type, string propertyName)
         {
@@ -93,6 +114,13 @@ namespace Diquis.Application.Common.Specification
             return property;
         }
 
+        /// <summary>
+        /// Parses a comma-separated string of order-by fields into a dictionary of field names and their order types.
+        /// </summary>
+        /// <param name="orderByFields">
+        /// The input string (e.g., "Name,-Supplier,Property.Name,Price") where '-' denotes descending.
+        /// </param>
+        /// <returns>A dictionary mapping field names to their <see cref="OrderTypeEnum"/>.</returns>
         // helper method to parse the input string and turn it into something that Ardalis.Specification understands - a list of column names with their sort order
         private static IDictionary<string, OrderTypeEnum> ParseOrderBy(string orderByFields)
         {

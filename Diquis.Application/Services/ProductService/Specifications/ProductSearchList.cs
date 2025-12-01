@@ -3,8 +3,18 @@ using Diquis.Domain.Entities.Catalog;
 
 namespace Diquis.Application.Services.ProductService.Specifications
 {
+    /// <summary>
+    /// Specification for searching and listing <see cref="Product"/> entities.
+    /// Applies optional keyword filtering on the product name and sorts results by creation date descending.
+    /// </summary>
     public class ProductSearchList : Specification<Product>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProductSearchList"/> class.
+        /// </summary>
+        /// <param name="keyword">
+        /// Optional keyword to filter products by name. If null or whitespace, no filtering is applied.
+        /// </param>
         public ProductSearchList(string? keyword = "")
         {
 

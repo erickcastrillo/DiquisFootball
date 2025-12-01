@@ -3,23 +3,50 @@ using FluentValidation;
 
 namespace Diquis.Application.Common.Identity.DTOs
 {
+    /// <summary>
+    /// Represents a request to register a new user.
+    /// </summary>
     public class RegisterUserRequest : IDto
     {
+        /// <summary>
+        /// Gets or sets the first name of the user.
+        /// </summary>
         public string FirstName { get; set; }
 
+        /// <summary>
+        /// Gets or sets the last name of the user.
+        /// </summary>
         public string LastName { get; set; }
 
+        /// <summary>
+        /// Gets or sets the email address of the user.
+        /// </summary>
         public string Email { get; set; }
 
+        /// <summary>
+        /// Gets or sets the password for the user.
+        /// </summary>
         public string Password { get; set; }
 
+        /// <summary>
+        /// Gets or sets the phone number of the user.
+        /// </summary>
         public string PhoneNumber { get; set; }
 
+        /// <summary>
+        /// Gets or sets the role ID for the user.
+        /// </summary>
         public string RoleId { get; set; }
     }
 
+    /// <summary>
+    /// Validator for <see cref="RegisterUserRequest"/>.
+    /// </summary>
     public class RegisterUserValidator : AbstractValidator<RegisterUserRequest>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegisterUserValidator"/> class.
+        /// </summary>
         public RegisterUserValidator()
         {
             _ = RuleFor(x => x.Email).NotEmpty().EmailAddress();
