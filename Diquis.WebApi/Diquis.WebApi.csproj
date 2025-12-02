@@ -12,6 +12,101 @@
 
 	<ItemGroup>
 		<_ContentIncludedByDefault Remove="wwwroot\ReadMe.txt" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\accordions-DHaQUrJ4.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\active-badge-DGboKqOr.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\alerts-PfTPhXMn.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\apex-charts-CSNudxfm.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\avatar-10-Ci6ODzqA.jpg" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\avatar-2-Di6CYEmi.jpg" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\avatar-3-BesnTS78.jpg" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\avatar-5-BF48o5FV.jpg" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\avatar-6-B33-HgQJ.jpg" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\avatar-7-BGBnC-3k.jpg" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\avatar-8-qZ8vonRY.jpg" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\avatar-9-BAhvQ70k.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\avatar-9-DNwARwii.jpg" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\avatar-title-group-BK_MrQxr.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\avatar-title-group-DBTVLfCP.css" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\avatars-CfI1Eqil.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\badges-B8fO2TR_.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\buttons-CdtN-QPE.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\cards-D86t6izo.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\change-password-CqYJhshK.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\change-password-D2qLgatA.css" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\data-5dhHuIRP.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\dragula-CiwK_ZnM.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\dropdowns-Dgj1M1kH.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\error-401-El1Nan3_.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\error-404-mpcMCkLA.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\favicon-B5g0PoSc.ico" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\forgot-password-41sYM8sN.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\form-advanced-CCLVJGf5.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\form-basic-DfMkEtJ6.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\guest-layout-BYGedb-G.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\index-BHlrnn86.css" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\index-BO7LP-gy.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\index.esm-DqsvCYYq.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\layout-XCMcHSfz.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\list-group-BvntXpRJ.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\loading-button-BPnIwY7F.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\loading-select-B7Ys8V72.css" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\loading-select-Cfa-dgXS.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\login-DaLkSY8L.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\logo-dark-Dnz2oqzf.png" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\logo-Jz-mcktN.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\logo-lg-CA6s8bx_.png" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\logo-OFkj3baL.png" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\material-design-icon-D7KG_zqb.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\materialdesignicons-webfont-C9N43Jxz.eot" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\materialdesignicons-webfont-D8huMFN2.woff2" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\materialdesignicons-webfont-DSMUHRBL.woff" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\materialdesignicons-webfont-hPx70ptL.ttf" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\menu-options-A1bwnQrU.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\modals-C6yYyHSs.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\offcanvas-DmC_IdwB.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\pagination-Cl24iBN_.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\popovers-7T7PWMhP.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\Poppins-Bold-qTAUjFF7.ttf" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\Poppins-Light-DT6-CsId.ttf" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\Poppins-Medium-Cxde2ZoM.ttf" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\Poppins-Regular-CTKNfV9P.ttf" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\Poppins-SemiBold-B_fPDAUb.ttf" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\preferences-Cnan7nOi.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\products-list-AOoHy6uQ.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\profile-Br0X5meY.css" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\profile-gBFecP2n.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\progress-DhKyDQns.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\range-slider-DpszYte-.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\remix-icon-OcX3O1iU.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\remixicon-3zNqX7lh.svg" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\remixicon-ChM2DbYV.woff" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\remixicon-Crkp6QDu.eot" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\remixicon-D6lcKq3b.woff2" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\remixicon-t1-W4cIE.ttf" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\reset-password-Dr-LyKa9.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\sample-dashboard-0HiL2umx.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\sample-wrapper-BqPY7wQ_.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\small-1-D2jyjBaO.jpg" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\small-2-D_9OULUZ.jpg" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\small-3-aVl3abB4.jpg" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\small-4-DSB3qUFt.jpg" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\spinners-DKeVv0wD.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\tables-C1a-EGld.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\tabs-BuQlz2Ik.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\tenants-list-D4PlA5Hy.css" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\tenants-list-DyHtz4yp.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\tenantsStore-CQuAt7j5.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\tooltips-DMeEawlU.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\typography-I4OpYYYh.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\unicon-icon-BoSH0fsI.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\unicons-BpiNpJfS.ttf" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\unicons-BzapHDjm.eot" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\unicons-CtNLg4S6.woff" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\unicons-Cz3ymATX.svg" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\unicons-oGV3eX_E.woff2" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\users-list-CtMYiUdO.css" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\users-list-DuA2OYvv.js" />
+		<_ContentIncludedByDefault Remove="wwwroot\assets\_plugin-vue_export-helper-DlAUqK2U.js" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -21,6 +116,8 @@
 		<PackageReference Include="Hangfire.Console" Version="1.4.3" />
 		<PackageReference Include="Hangfire.SqlServer" Version="1.8.22" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Build" Version="18.0.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -31,7 +128,8 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="10.0.0" />
-		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+		<!-- Temporarily excluded due to .NET 10 compatibility issues with Roslyn 4.8 -->
+		<!-- <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" /> -->
 		<PackageReference Include="OpenTelemetry" Version="1.14.0" />
 		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.14.0" />
 		<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.14.0" />
@@ -44,4 +142,8 @@
 		<ProjectReference Include="..\Diquis.Infrastructure\Diquis.Infrastructure.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\" />
+	</ItemGroup>
+    
 </Project>

@@ -1,0 +1,1 @@
+import{r as t}from"./index-B9lOP-LQ.js";function e(){t.useEffect(()=>(document.body&&(document.body.classList.add("authentication-bg"),document.body.classList.add("pb-0")),()=>{document.body&&document.body.classList.remove("authentication-bg"),document.body.classList.remove("pb-0")}),[])}export{e as u};

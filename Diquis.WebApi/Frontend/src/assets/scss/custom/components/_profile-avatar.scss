@@ -1,0 +1,109 @@
+.profile-avatar {
+    font-size: 14px;
+    display: grid;
+    grid-template-columns: min-content 1fr;
+    gap: 2rem;
+    align-items: center;
+    position: relative;
+
+    
+    &__cta {
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        left: 70px;
+        width: 35px;
+        height: 35px;
+        background-color: var(--#{$prefix}primary);
+        border-radius: 50%;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid var(--#{$prefix}card-bg);
+        & i {
+            font-size: 20px;
+            color: var(--#{$prefix}black);  
+            transform: translateY(2px);
+        }
+    }
+
+    &--small {
+        gap: 1rem;
+
+        & .profile-avatar__title-group__title { 
+            padding-bottom: 0;
+            line-height: 1.8rem;
+        }
+
+        & .profile-avatar__title-group__sub {
+            font-size: 1.1rem;
+        }
+    }
+    &--large {
+        gap: 2rem;
+
+        & .profile-avatar__image-area {
+            height: 100px;
+            width: 100px;
+        }
+
+        & .profile-avatar__title-group__title {
+            font-size: 22px;
+        }
+
+        & .profile-avatar__title-group__sub {
+            font-size: 14px;
+        }
+    }
+
+    &__image-area {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        height: 8rem;
+        width: 8rem;
+        border-radius: 8rem;
+        overflow: hidden;
+        background-color: var(--#{$prefix}border-color);
+        position: relative;
+        & img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 5;
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        & i {
+            z-index: 1;
+            font-size: 60px;
+            color: var(--#{$prefix}topbar-item-color, inherit);
+        }
+
+        & .spinner-border {
+            z-index: 10;
+        }
+    }
+
+    &__title-group {
+        &__title {
+            color: var(--#{$prefix}heading-color, inherit);
+            font-weight: 700;
+            &:link {
+                text-decoration: none;
+            }
+        }
+        &__sub {
+            color: var(--#{$prefix}topbar-item-color,inherit);
+        }
+    }
+}
+
+
+
+
+

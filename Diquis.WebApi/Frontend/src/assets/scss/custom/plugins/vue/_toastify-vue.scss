@@ -1,0 +1,9 @@
+:root {
+    --toastify-color-light: var(--#{$prefix}light);
+    --toastify-color-dark: var(--#{$prefix}dark);
+    --toastify-color-info: var(--#{$prefix}info);
+    --toastify-color-success: var(--#{$prefix}success);
+    --toastify-color-warning: var(--#{$prefix}warning);
+    --toastify-color-error: var(--#{$prefix}danger);
+    
+  }

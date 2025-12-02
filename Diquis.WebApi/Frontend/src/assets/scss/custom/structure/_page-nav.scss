@@ -1,0 +1,36 @@
+// in page navigation (profile edit views)
+
+.page-nav {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  & a {
+    padding: 0.5rem 1rem !important;
+    border-radius: var(--nano-border-radius);
+    color: $pagenav-item-color;
+
+    &:hover {
+        color: $pagenav-item-hover-color;
+    }
+    &.router-link-active {
+      background-color: $primary;
+      color: $white;
+    }
+  }
+}
+
+.page-nav-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 1.5rem;
+
+  &__content {
+    max-width: 1000px;
+  }
+
+  @include media-breakpoint-down(lg) {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}

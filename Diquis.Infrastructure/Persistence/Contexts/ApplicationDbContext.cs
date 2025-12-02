@@ -1,8 +1,6 @@
 using Diquis.Application.Common;
 using Diquis.Domain.Entities.Catalog;
 using Diquis.Domain.Entities.Common;
-using Diquis.Domain.Entities.Football.Common;
-using Diquis.Domain.Entities.Football.PlayerManagement;
 using Diquis.Domain.Entities.Multitenancy;
 using Diquis.Infrastructure.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -69,41 +67,6 @@ namespace Diquis.Infrastructure.Persistence.Contexts
         /// Gets or sets the <see cref="DbSet{TEntity}"/> for <see cref="Product"/> entities.
         /// </summary>
         public DbSet<Product> Products { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="DbSet{TEntity}"/> for <see cref="Category"/> entities.
-        /// </summary>
-        public DbSet<Category> Categories { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="DbSet{TEntity}"/> for <see cref="Division"/> entities.
-        /// </summary>
-        public DbSet<Division> Divisions { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="DbSet{TEntity}"/> for <see cref="Position"/> entities.
-        /// </summary>
-        public DbSet<Position> Positions { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="DbSet{TEntity}"/> for <see cref="Revision"/> entities.
-        /// </summary>
-        public DbSet<Revision> Revisions { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="DbSet{TEntity}"/> for <see cref="Skill"/> entities.
-        /// </summary>
-        public DbSet<Skill> Skills { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="DbSet{TEntity}"/> for <see cref="Player"/> entities.
-        /// </summary>
-        public DbSet<Player> Players { get; set; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="DbSet{TEntity}"/> for <see cref="PlayerSkill"/> entities.
-        /// </summary>
-        public DbSet<PlayerSkill> PlayerSkills { get; set; }
 
         /// <summary>
         /// Configures the model by applying global query filters, renaming tables, and running seeders.

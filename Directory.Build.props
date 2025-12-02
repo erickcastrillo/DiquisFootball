@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+    <!-- Suppress Roslyn analyzer warnings for .NET 10 compatibility -->
+    <NoWarn>$(NoWarn);CS8032;REFL0001</NoWarn>
+    <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+    
+    <!-- Skip Roslyn analyzers during EF Core design-time operations -->
+    <SkipCompilerExecution>false</SkipCompilerExecution>
+    <ProvideApplicationPartFactoryAttribute>false</ProvideApplicationPartFactoryAttribute>
+  </PropertyGroup>
+</Project>

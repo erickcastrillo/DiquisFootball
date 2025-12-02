@@ -1,0 +1,1 @@
+import{r as p,j as n,c,P as s}from"./index-B9lOP-LQ.js";const i={"aria-label":s.string,onClick:s.func,variant:s.oneOf(["white"])},e=p.forwardRef(({className:t,variant:o,"aria-label":a="Close",...r},l)=>n.jsx("button",{ref:l,type:"button",className:c("btn-close",o&&`btn-close-${o}`,t),"aria-label":a,...r}));e.displayName="CloseButton";e.propTypes=i;export{e as C};

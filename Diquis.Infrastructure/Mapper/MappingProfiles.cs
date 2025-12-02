@@ -1,11 +1,8 @@
 using AutoMapper;
 using Diquis.Application.Common.Identity.DTOs;
-using Diquis.Application.Services.CategoryService.DTOs;
-using Diquis.Application.Services.DivisionService.DTOs;
 using Diquis.Application.Services.ProductService.DTOs;
 using Diquis.Domain.Entities.Catalog;
 using Diquis.Domain.Entities.Common;
-using Diquis.Domain.Entities.Football.Common;
 using Diquis.Domain.Entities.Multitenancy;
 using Diquis.Infrastructure.Multitenancy.DTOs;
 
@@ -39,13 +36,6 @@ namespace Diquis.Infrastructure.Mapper
             _ = CreateMap<UpdateProductRequest, Product>();
 
             // add new entity mappings here...
-            _ = CreateMap<Category, CategoryDTO>();
-            _ = CreateMap<CreateCategoryRequest, Category>();
-            _ = CreateMap<UpdateCategoryRequest, Category>();
-
-            _ = CreateMap<Division, DivisionDTO>();
-            _ = CreateMap<CreateDivisionRequest, Division>();
-            _ = CreateMap<UpdateDivisionRequest, Division>();
 
         }
     }

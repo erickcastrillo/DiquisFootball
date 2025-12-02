@@ -1,0 +1,11 @@
+.toastify-info {
+    background: var(--#{$prefix}primary);
+}
+
+.toastify-success {
+    background: var(--#{$prefix}success);
+}
+
+.toastify-error { 
+    background: var(--#{$prefix}danger);
+}

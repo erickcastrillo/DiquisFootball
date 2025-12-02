@@ -1,0 +1,57 @@
+// heading component with avatar image left and navigation links right
+.edit-header {
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    gap: 1rem;
+    @include media-breakpoint-down(sm) {
+        grid-template-columns: 1fr;
+    }
+    &__presentation {
+        position: relative;
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        gap: 20px;
+        width: 100%;
+
+
+        &__avatar {
+            min-height: 30px;
+            & .avatar { 
+                position: absolute;
+                bottom: 0;
+                left: 0;
+            }
+        }
+
+        &__title-group {
+            width: 100%;
+            &__title {
+                font-size: 18px;
+                font-weight: 700;
+            }
+
+            &__sub {
+
+            }
+        }
+    }
+
+    &__navigation-area {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        @include media-breakpoint-down(sm) {
+            justify-content: start;
+        }
+        
+        & .nav-tabs {
+            border-bottom: none;
+            &.nav-bordered {
+                border-bottom: none;
+            }
+        }
+
+    }
+}

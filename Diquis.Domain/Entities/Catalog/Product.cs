@@ -1,5 +1,4 @@
-﻿using Diquis.Domain.Entities.Common;
-using Diquis.Domain.Entities.Football.Common;
+using Diquis.Domain.Entities.Common;
 
 namespace Diquis.Domain.Entities.Catalog
 {
@@ -17,10 +16,5 @@ namespace Diquis.Domain.Entities.Catalog
         /// Gets or sets the description of the product.
         /// </summary>
         public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets the locale associated with the product.
-        /// </summary>
-        public Locale Locale { get; set; }
     }
 }

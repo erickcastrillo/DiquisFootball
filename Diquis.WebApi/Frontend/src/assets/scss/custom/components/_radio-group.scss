@@ -1,0 +1,70 @@
+// snazzier looking radio group
+.radio-group {
+    display: flex;
+    align-items: center;
+    width: max-content;
+    
+    &__input {
+      display: none;
+    }
+    &__label {
+      
+      border: 2px solid transparent;
+      border-radius: 10px;
+      cursor: pointer;
+      position: relative;
+      padding: 20px 20px;
+      padding-left: 70px;
+  
+      &:hover {
+        border-color: var(--#{$prefix}heading-color);
+      }
+      &__button {
+        height: 30px;
+        width: 30px;
+        border: 3px solid currentColor; 
+        border-radius: 50%;
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 20px;
+  
+        &::after {
+          // the dot
+          content: "";
+          display: block;
+          height: 15px;
+          width: 15px;
+          border-radius: 50%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background-color: var(--#{$prefix}success);
+          opacity: 0;
+          transition: all 0.3s;
+        }
+      }
+      &__text {
+        &__title {
+        }
+        &__sub {
+          margin-top: 5px;
+          color: var(--#{$prefix}topbar-item-color);
+          font-size: 13px;
+        }
+      }
+    }
+  
+    &__input:checked ~ &__label {
+      background-color: var(--#{$prefix}border-color);
+  
+      & .radio-group__label__button {
+        color: var(--#{$prefix}success);
+      }
+      & .radio-group__label__button::after {
+        opacity: 1;
+      }
+    }
+  }

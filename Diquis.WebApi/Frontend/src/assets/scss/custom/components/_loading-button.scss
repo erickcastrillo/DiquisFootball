@@ -1,0 +1,12 @@
+.loading-button {
+    & span {
+        margin-right: 5px;
+        display: none;        
+    }
+
+    &.running {
+        & span {
+            display: inline-block;
+        }
+    }
+}
