@@ -90,4 +90,4 @@ This is a proprietary commercial software product.
 
 Copyright (c) 2025 Diquis. All Rights Reserved.
 
-See the [LICENSE](LICENSE) file for more details.
+See the [LICENSE](LICENSE.md) file for more details.
