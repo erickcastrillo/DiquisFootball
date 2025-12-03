@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
 using System.Reflection;
 using Ardalis.Specification;
 
@@ -29,60 +29,55 @@ namespace Diquis.Application.Common.Specification
        this ISpecificationBuilder<T> specificationBuilder,
        string orderByFields)
         {
-            IDictionary<string, OrderTypeEnum> fields = ParseOrderBy(orderByFields);
-            if (fields != null)
+            if (string.IsNullOrWhiteSpace(orderByFields))
+                return specificationBuilder;
+
+            var fields = orderByFields.Split(',');
+            IOrderedSpecificationBuilder<T> orderedBuilder = null;
+
+            for (var index = 0; index < fields.Length; index++)
             {
-                bool isFirst = true;
-                foreach (KeyValuePair<string, OrderTypeEnum> field in fields)
+                var field = fields[index].Trim();
+                bool isDescending = field.StartsWith('-');
+                if (isDescending)
+                    field = field.Substring(1);
+
+                Type targetType = typeof(T);
+                PropertyInfo matchedProperty = FindNestedProperty(targetType, field.ToLower());
+
+                if (matchedProperty == null)
+                    throw new ArgumentException($"Property '{field}' not found on type '{typeof(T).Name}'", nameof(orderByFields));
+
+                ParameterExpression paramExpr = Expression.Parameter(typeof(T));
+
+                Expression propertyExpr = paramExpr;
+                foreach (string member in field.Split('.'))
                 {
-                    Type targetType = typeof(T);
-                    PropertyInfo matchedProperty = FindNestedProperty(targetType, field.Key.ToLower());
+                    propertyExpr = Expression.PropertyOrField(propertyExpr, member);
+                }
 
-                    if (matchedProperty == null)
-                        throw new ArgumentException($"Property '{field.Key}' not found on type '{typeof(T).Name}'", nameof(orderByFields));
+                Expression<Func<T, object?>> keySelector = Expression.Lambda<Func<T, object?>>(
+                    Expression.Convert(propertyExpr, typeof(object)),
+                    paramExpr);
 
-                    ParameterExpression paramExpr = Expression.Parameter(typeof(T));
-
-                    Expression propertyExpr = paramExpr;
-                    foreach (string member in field.Key.Split('.'))
-                    {
-                        propertyExpr = Expression.PropertyOrField(propertyExpr, member);
-                    }
-
-                    Expression<Func<T, object?>> keySelector = Expression.Lambda<Func<T, object?>>(
-                        Expression.Convert(propertyExpr, typeof(object)),
-                        paramExpr);
-
-                    // Use the standard Ardalis.Specification OrderBy methods
-                    switch (field.Value)
-                    {
-                        case OrderTypeEnum.OrderBy:
-                            specificationBuilder.OrderBy(keySelector);
-                            break;
-                        case OrderTypeEnum.OrderByDescending:
-                            specificationBuilder.OrderByDescending(keySelector);
-                            break;
-                        case OrderTypeEnum.ThenBy:
-                            // For ThenBy, we need to call OrderBy on subsequent fields
-                            // The Ardalis library will handle multiple OrderBy calls appropriately
-                            if (isFirst)
-                                specificationBuilder.OrderBy(keySelector);
-                            else
-                                specificationBuilder.OrderBy(keySelector);
-                            break;
-                        case OrderTypeEnum.ThenByDescending:
-                            if (isFirst)
-                                specificationBuilder.OrderByDescending(keySelector);
-                            else
-                                specificationBuilder.OrderByDescending(keySelector);
-                            break;
-                    }
-                    isFirst = false;
+                // First field uses OrderBy/OrderByDescending, subsequent fields use ThenBy/ThenByDescending
+                if (index == 0)
+                {
+                    orderedBuilder = isDescending
+                        ? specificationBuilder.OrderByDescending(keySelector)
+                        : specificationBuilder.OrderBy(keySelector);
+                }
+                else
+                {
+                    orderedBuilder = isDescending
+                        ? orderedBuilder.ThenByDescending(keySelector)
+                        : orderedBuilder.ThenBy(keySelector);
                 }
             }
 
             return specificationBuilder;
         }
+
         /// <summary>
         /// Finds a nested property by its name, supporting dot notation (e.g., "Supplier.Name").
         /// </summary>
@@ -112,35 +107,6 @@ namespace Diquis.Application.Common.Specification
             }
 
             return property;
-        }
-
-        /// <summary>
-        /// Parses a comma-separated string of order-by fields into a dictionary of field names and their order types.
-        /// </summary>
-        /// <param name="orderByFields">
-        /// The input string (e.g., "Name,-Supplier,Property.Name,Price") where '-' denotes descending.
-        /// </param>
-        /// <returns>A dictionary mapping field names to their <see cref="OrderTypeEnum"/>.</returns>
-        // helper method to parse the input string and turn it into something that Ardalis.Specification understands - a list of column names with their sort order
-        private static IDictionary<string, OrderTypeEnum> ParseOrderBy(string orderByFields)
-        {
-            if (orderByFields is null) return null;
-            var result = new Dictionary<string, OrderTypeEnum>();
-            var fields = orderByFields.Split(',');
-            for (var index = 0; index < fields.Length; index++)
-            {
-                var field = fields[index];
-                var orderBy = OrderTypeEnum.OrderBy;
-                if (field.StartsWith('-')) orderBy = OrderTypeEnum.OrderByDescending;
-                if (index > 0)
-                {
-                    orderBy = OrderTypeEnum.ThenBy;
-                    if (field.StartsWith('-')) orderBy = OrderTypeEnum.ThenByDescending;
-                }
-                if (field.StartsWith('-')) field = field.Substring(1);
-                result.Add(field, orderBy);
-            }
-            return result;
         }
     }
 }

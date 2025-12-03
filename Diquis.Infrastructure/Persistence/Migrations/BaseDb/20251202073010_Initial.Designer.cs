@@ -12,42 +12,20 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Diquis.Infrastructure.Persistence.Migrations.BaseDb
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20240123173203_Base-Initial")]
-    partial class BaseInitial
+    [Migration("20251202073010_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "10.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Diquis.Domain.Entities.Multitenancy.Tenant", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConnectionString")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Tenants");
-                });
-
-            modelBuilder.Entity("Diquis.Infrastructure.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("Diquis.Domain.Entities.Common.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -149,6 +127,28 @@ namespace Diquis.Infrastructure.Persistence.Migrations.BaseDb
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("Users", "Identity");
+                });
+
+            modelBuilder.Entity("Diquis.Domain.Entities.Multitenancy.Tenant", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConnectionString")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tenants");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -295,7 +295,7 @@ namespace Diquis.Infrastructure.Persistence.Migrations.BaseDb
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Diquis.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Diquis.Domain.Entities.Common.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -304,7 +304,7 @@ namespace Diquis.Infrastructure.Persistence.Migrations.BaseDb
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Diquis.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Diquis.Domain.Entities.Common.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -319,7 +319,7 @@ namespace Diquis.Infrastructure.Persistence.Migrations.BaseDb
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Diquis.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Diquis.Domain.Entities.Common.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -328,7 +328,7 @@ namespace Diquis.Infrastructure.Persistence.Migrations.BaseDb
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Diquis.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("Diquis.Domain.Entities.Common.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

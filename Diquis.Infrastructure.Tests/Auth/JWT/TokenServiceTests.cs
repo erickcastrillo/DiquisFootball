@@ -125,7 +125,14 @@ namespace Diquis.Infrastructure.Tests.Auth.JWT
         public async Task RefreshTokenAsync_WithValidToken_ReturnsNewToken()
         {
             // Arrange
-            var user = new ApplicationUser { RefreshToken = "valid-token", RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(1), TenantId = "test-tenant" };
+            var user = new ApplicationUser 
+            { 
+                UserName = "testuser",
+                Email = "testuser@example.com",
+                RefreshToken = "valid-token", 
+                RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(1), 
+                TenantId = "test-tenant" 
+            };
             var users = new List<ApplicationUser> { user }.AsQueryable();
 
             var userManagerMock = new Mock<UserManager<ApplicationUser>>(Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);

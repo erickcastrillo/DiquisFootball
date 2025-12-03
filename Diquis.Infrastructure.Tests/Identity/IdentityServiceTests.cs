@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Microsoft.EntityFrameworkCore;
 using Diquis.Infrastructure.Identity;
+using Diquis.Infrastructure.Tests.Helpers;
 
 namespace Diquis.Infrastructure.Tests.Identity
 {
@@ -54,7 +55,7 @@ namespace Diquis.Infrastructure.Tests.Identity
             
             var userManagerMock = new Mock<UserManager<ApplicationUser>>(Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
             
-            var usersQueryable = users.AsQueryable();
+            var usersQueryable = users.AsAsyncQueryable();
             var mockUserSet = new Mock<DbSet<ApplicationUser>>();
             mockUserSet.As<IQueryable<ApplicationUser>>().Setup(m => m.Provider).Returns(usersQueryable.Provider);
             mockUserSet.As<IQueryable<ApplicationUser>>().Setup(m => m.Expression).Returns(usersQueryable.Expression);
@@ -83,7 +84,7 @@ namespace Diquis.Infrastructure.Tests.Identity
             var userId = Guid.NewGuid();
             var user = new ApplicationUser { Id = userId.ToString() };
             var userDto = new UserDto { Id = userId };
-             var users = new List<ApplicationUser> { user }.AsQueryable();
+            var users = new List<ApplicationUser> { user }.AsAsyncQueryable();
 
             var userManagerMock = new Mock<UserManager<ApplicationUser>>(Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
             var mockUserSet = new Mock<DbSet<ApplicationUser>>();
@@ -111,8 +112,8 @@ namespace Diquis.Infrastructure.Tests.Identity
         {
             // Arrange
             var userId = Guid.NewGuid();
-            var users = new List<ApplicationUser>().AsQueryable();
-             var userManagerMock = new Mock<UserManager<ApplicationUser>>(Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
+            var users = new List<ApplicationUser>().AsAsyncQueryable();
+            var userManagerMock = new Mock<UserManager<ApplicationUser>>(Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
             var mockUserSet = new Mock<DbSet<ApplicationUser>>();
             mockUserSet.As<IQueryable<ApplicationUser>>().Setup(m => m.Provider).Returns(users.Provider);
             mockUserSet.As<IQueryable<ApplicationUser>>().Setup(m => m.Expression).Returns(users.Expression);
@@ -183,6 +184,7 @@ namespace Diquis.Infrastructure.Tests.Identity
         {
             // Arrange
             var userId = Guid.NewGuid();
+            var currentUserId = Guid.NewGuid(); // Different from userId
             var request = new UpdateUserRequest { Email = "updated@test.com", RoleId = "admin" };
             var user = new ApplicationUser { Id = userId.ToString(), Email = "original@test.com" };
 
@@ -192,6 +194,7 @@ namespace Diquis.Infrastructure.Tests.Identity
             _userManagerMock.Setup(um => um.GetRolesAsync(user)).ReturnsAsync(new List<string> { "user" });
             _userManagerMock.Setup(um => um.RemoveFromRolesAsync(user, It.IsAny<string[]>())).ReturnsAsync(IdentityResult.Success);
             _userManagerMock.Setup(um => um.AddToRoleAsync(user, request.RoleId)).ReturnsAsync(IdentityResult.Success);
+            _currentTenantUserServiceMock.Setup(cts => cts.UserId).Returns(currentUserId.ToString());
             _mapperMock.Setup(m => m.Map(request, user)).Returns(user);
             _mapperMock.Setup(m => m.Map(user, It.IsAny<UserDto>())).Returns(new UserDto());
             
@@ -223,12 +226,15 @@ namespace Diquis.Infrastructure.Tests.Identity
         {
             // Arrange
             var userId = Guid.NewGuid();
+            var currentUserId = Guid.NewGuid(); // Different from userId
             var request = new UpdateUserRequest { Email = "existing@test.com" };
             var user = new ApplicationUser { Id = userId.ToString(), Email = "original@test.com" };
             var otherUser = new ApplicationUser { Id = Guid.NewGuid().ToString(), Email = "existing@test.com" };
 
             _userManagerMock.Setup(um => um.FindByIdAsync(userId.ToString())).ReturnsAsync(user);
             _userManagerMock.Setup(um => um.FindByEmailAsync(request.Email)).ReturnsAsync(otherUser);
+            _userManagerMock.Setup(um => um.GetRolesAsync(user)).ReturnsAsync(new List<string> { "user" });
+            _currentTenantUserServiceMock.Setup(cts => cts.UserId).Returns(currentUserId.ToString());
 
             // Act
             var result = await _identityService.UpdateUserAsync(request, userId);
@@ -282,10 +288,12 @@ namespace Diquis.Infrastructure.Tests.Identity
         {
             // Arrange
             var userId = Guid.NewGuid();
+            var currentUserId = Guid.NewGuid(); // Different from userId
             var user = new ApplicationUser { Id = userId.ToString() };
             _userManagerMock.Setup(um => um.FindByIdAsync(userId.ToString())).ReturnsAsync(user);
             _userManagerMock.Setup(um => um.GetRolesAsync(user)).ReturnsAsync(new List<string> { "user" });
             _userManagerMock.Setup(um => um.DeleteAsync(user)).ReturnsAsync(IdentityResult.Success);
+            _currentTenantUserServiceMock.Setup(cts => cts.UserId).Returns(currentUserId.ToString());
 
             // Act
             var result = await _identityService.DeleteUserAsync(userId);
@@ -352,7 +360,7 @@ namespace Diquis.Infrastructure.Tests.Identity
             var userId = Guid.NewGuid();
             var user = new ApplicationUser { Id = userId.ToString() };
             var userDto = new UserDto { Id = userId };
-             var users = new List<ApplicationUser> { user }.AsQueryable();
+            var users = new List<ApplicationUser> { user }.AsAsyncQueryable();
 
             var userManagerMock = new Mock<UserManager<ApplicationUser>>(Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
             var mockUserSet = new Mock<DbSet<ApplicationUser>>();
@@ -405,7 +413,7 @@ namespace Diquis.Infrastructure.Tests.Identity
             _userManagerMock.Setup(um => um.GeneratePasswordResetTokenAsync(user)).ReturnsAsync("token");
 
             // Act
-            var result = await _identityService.ForgotPasswordAsync(request, "origin", "route");
+            var result = await _identityService.ForgotPasswordAsync(request, "https://example.com", "api/reset-password");
 
             // Assert
             Assert.True(result.Succeeded);

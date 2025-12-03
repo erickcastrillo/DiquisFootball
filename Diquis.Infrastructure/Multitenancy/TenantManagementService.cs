@@ -161,7 +161,7 @@ namespace Diquis.Infrastructure.Multitenancy
                         }
                     }
 
-                    _ = await _userManager.AddToRoleAsync(user, "admin");
+                    _ = await _userManager.AddToRoleAsync(user, "academy_owner");
                     _ = await _baseDbContext.SaveChangesAsync();
                     return Response<Tenant>.Success(tenant);
                 }

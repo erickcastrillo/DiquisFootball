@@ -15,7 +15,7 @@ namespace Diquis.WebApi.Extensions
             var transientServices = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
                 .Where(transientServiceType.IsAssignableFrom)
-                .Where(t => t.IsClass && !t.IsAbstract)
+                .Where(t => t.IsClass && !t.IsAbstract && !t.IsNested) // Exclude nested classes
                 .Select(t => new
                 {
                     Service = t.GetInterfaces().FirstOrDefault(),
@@ -26,7 +26,7 @@ namespace Diquis.WebApi.Extensions
             var scopedServices = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
                 .Where(scopedServiceType.IsAssignableFrom)
-                .Where(t => t.IsClass && !t.IsAbstract)
+                .Where(t => t.IsClass && !t.IsAbstract && !t.IsNested) // Exclude nested classes
                 .Select(t => new
                 {
                     Service = t.GetInterfaces().FirstOrDefault(),
