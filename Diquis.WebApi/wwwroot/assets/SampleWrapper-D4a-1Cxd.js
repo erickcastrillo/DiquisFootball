@@ -1,1 +1,0 @@
-import{j as e}from"./index-B9lOP-LQ.js";const a=s=>e.jsx("div",{className:"card",children:e.jsxs("div",{className:"card-body",children:[e.jsx("h4",{className:"header-title",children:s.title}),!!s.subText&&e.jsx("p",{className:"text-muted font-14 mb-3",children:s.subText}),e.jsx("div",{children:s.children})]})});export{a as S};

@@ -1,1 +1,0 @@
-import{a as l,r as n,j as s}from"./index-B9lOP-LQ.js";const i=({title:t,children:a,action:e})=>{const{authStore:r}=l();return n.useEffect(()=>{r.setTitle(t)},[]),s.jsxs("div",{className:"d-flex flex-column",children:[!!e&&s.jsx("div",{className:"d-flex justify-content-end align-items-baseline mb-3",children:e}),a]})};export{i as P};

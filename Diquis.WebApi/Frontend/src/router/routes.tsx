@@ -163,7 +163,7 @@ export const renderRoutes = (routes: RouteType[] = []) =>
     );
   });
 
-const appName = 'Nano ASP.NET Boilerplate React UI';
+const appName = 'Diquis';
 
 const routes: RouteType[] = [
   {

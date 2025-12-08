@@ -3,8 +3,10 @@
     "Diquis.WebApi": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy",
         "OTEL_SERVICE_NAME": "diquis-development",
         "OTEL_EXPORTER_OTLP_PROTOCOL": "http/protobuf",
         "OTEL_EXPORTER_OTLP_ENDPOINT": "https://api.honeycomb.io",
