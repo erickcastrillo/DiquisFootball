@@ -7,11 +7,11 @@ using Diquis.Infrastructure.Multitenancy.DTOs;
 using Diquis.Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Npgsql;
 
 namespace Diquis.Infrastructure.Multitenancy
 {
@@ -100,10 +100,10 @@ namespace Diquis.Infrastructure.Multitenancy
             }
 
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
-            SqlConnectionStringBuilder builder = new(connectionString);
-            string mainDatabaseName = builder.InitialCatalog;
+            NpgsqlConnectionStringBuilder builder = new(connectionString);
+            string mainDatabaseName = builder.Database; // Use 'Database' instead of 'InitialCatalog'
             string tenantDbName = mainDatabaseName + "-" + organizationSlug;
-            builder.InitialCatalog = tenantDbName;
+            builder.Database = tenantDbName; // Use 'Database' instead of 'InitialCatalog'
             string modifiedConnectionString = builder.ConnectionString;
 
             Tenant tenant = new()

@@ -7,6 +7,7 @@ using Hangfire;
 using Hangfire.Console;
 using Hangfire.PostgreSql;
 
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.OpenApi;
 
 using OpenTelemetry.Trace;
@@ -76,6 +77,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseSpa(spa =>
+    {
+        spa.Options.SourcePath = "Frontend";
+        spa.Options.DevServerPort = 3000;
+        spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+        spa.UseReactDevelopmentServer(npmScript: "serve");
+    });
 }
 
 app.UseCors("defaultPolicy"); // CORS policy (default - allow any orgin)
