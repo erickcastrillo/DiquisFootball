@@ -1,19 +1,11 @@
-import { useStore } from 'stores/store';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 type PageLayoutProps = {
   children: React.ReactNode;
-  title: string;
   action?: JSX.Element;
 };
 
-const PageLayout = ({ title, children, action }: PageLayoutProps) => {
-  const { authStore } = useStore();
-
-  useEffect(() => {
-    authStore.setTitle(title);
-  }, []);
-
+const PageLayout = ({ children, action }: PageLayoutProps) => {
   return (
     <div className="d-flex flex-column">
       {!!action && (

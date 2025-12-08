@@ -1,4 +1,5 @@
 using Diquis.Domain.Entities.Multitenancy;
+using Diquis.Domain.Enums;
 
 namespace Diquis.Domain.Entities.Common
 {
@@ -14,7 +15,7 @@ namespace Diquis.Domain.Entities.Common
     /// <seealso cref="TenantBaseEntity"/>
     /// <seealso cref="IAuditableEntity"/>
     /// <seealso cref="IMustHaveTenant"/>
-    public abstract class AuditableEntity : TenantBaseEntity, IAuditableEntity, IMustHaveTenant
+    public abstract class AuditableEntity : TenantBaseEntity, IAuditableEntity, IMustHaveTenant, ILocalizable
     {
         /// <summary>
         /// Identifier of the user who created the entity.
@@ -54,5 +55,10 @@ namespace Diquis.Domain.Entities.Common
         /// This value should be updated whenever a persistent change is made to the entity.
         /// </remarks>
         public DateTime? LastModifiedOn { get; set; }
+        
+        /// <summary>
+        /// The locale of the entity.
+        /// </summary>
+        public Locale Locale { get; set; }
     }
 }

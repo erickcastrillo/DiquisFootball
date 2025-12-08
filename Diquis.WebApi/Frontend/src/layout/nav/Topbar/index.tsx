@@ -10,6 +10,7 @@ import logoSmall from 'assets/images/logo-sm.png';
 import logo from 'assets/images/logo.png';
 import { useStore } from 'stores/store';
 import ThemeToggle from './ThemeToggle';
+import LanguageSwitcher from 'components/LanguageSwitcher'; // Import LanguageSwitcher
 
 type TopbarProps = {
   hideLogo?: boolean;
@@ -110,6 +111,9 @@ const Topbar = ({
         )}
 
         <ul className="topbar-menu d-flex align-items-center gap-3">
+          <li className="d-none d-sm-inline-block">
+            <LanguageSwitcher /> {/* Add LanguageSwitcher component */}
+          </li>
           <li className="d-none d-sm-inline-block">
             <ThemeToggle />
           </li>

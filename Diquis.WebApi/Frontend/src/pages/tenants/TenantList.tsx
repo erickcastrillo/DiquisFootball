@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { observer } from 'mobx-react-lite';
 import { getCoreRowModel } from '@tanstack/react-table';
 import { Button, Card } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'stores/store';
 import TenantColumnShape from './TenantColumnShape';
@@ -12,12 +13,17 @@ import { useModal } from 'hooks';
 
 // tenants list table, accessable to root admin only
 const TenantList = () => {
-  const { tenantsStore } = useStore();
+  const { tenantsStore, authStore } = useStore();
   const { loadTenants, tenantsSorted, loadingInitial } = tenantsStore;
   const { show, onShow, onHide } = useModal();
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    authStore.setTitle(t('tenants.title'));
+  }, [t, authStore, i18n.language]);
 
   const data = useMemo(() => tenantsSorted, [tenantsSorted]);
-  const columns = useMemo(() => TenantColumnShape, [TenantColumnShape]);
+  const columns = useMemo(() => TenantColumnShape({ t }), [t]);
 
   useEffect(() => {
     loadTenants();
@@ -25,10 +31,9 @@ const TenantList = () => {
 
   return (
     <PageLayout
-      title="Tenants"
       action={
         <Button variant="primary" onClick={onShow}>
-          Add Tenant
+          {t('tenants.addTenant')}
         </Button>
       }
     >
@@ -40,12 +45,12 @@ const TenantList = () => {
             columns={columns}
             getCoreRowModel={getCoreRowModel()}
             isLoading={loadingInitial}
-            filterFieldPlaceholder="Search tenants..."
+            filterFieldPlaceholder={t('tenants.searchPlaceholder')}
           />
         </Card.Body>
       </Card>
       <div className="mb-2">
-        <small>Client-side pagination with sorting & filtering</small>
+        <small>{t('tenants.paginationDescription')}</small>
       </div>
     </PageLayout>
   );

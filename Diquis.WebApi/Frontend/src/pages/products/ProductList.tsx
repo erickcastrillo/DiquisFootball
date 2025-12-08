@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Card, Button, Tooltip, TooltipProps, OverlayTrigger } from "react-bootstrap";
 import { PaginationState, SortingState, getCoreRowModel } from "@tanstack/react-table";
+import { useTranslation } from "react-i18next";
 
 import { useStore } from "stores/store";
 import { Roles } from "lib/types";
@@ -13,8 +14,13 @@ import TableFilters from "components/tables/ServerTable/TableFilters";
 import { useModal } from "hooks";
 
 const ProductList = () => {
-  const { productsStore, accountStore, layoutStore } = useStore();
+  const { productsStore, accountStore, layoutStore, authStore } = useStore();
   const { loadProducts, products, productMetaData, loadingInitial, exportProducts, loadingExport } = productsStore;
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    authStore.setTitle(t('products.title'));
+  }, [t, authStore, i18n.language]);
 
   const { show, onShow, onHide } = useModal();
   const [searchQuery, setSearchQuery] = useState("");
@@ -26,8 +32,8 @@ const ProductList = () => {
   });
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const data = useMemo(() => products, [products]);
-  const columns = useMemo(() => getProductColumnShape({ pagination, filteredQuery, sorting }), [getProductColumnShape, pagination, filteredQuery, sorting]);
+  const data = useMemo(() => products || [], [products]);
+  const columns = useMemo(() => getProductColumnShape({ pagination, filteredQuery, sorting, t }), [pagination, filteredQuery, sorting, t]);
 
   const handleFilter = useCallback(() => {
     setSearchQuery("");
@@ -49,7 +55,7 @@ const ProductList = () => {
 
   const renderTooltip = (props: TooltipProps) => (
     <Tooltip id="button-tooltip" className="font-14" {...props}>
-      Basic user cannot use this feature
+      {t('products.basicUserTooltip')}
     </Tooltip>
   );
 
@@ -70,27 +76,24 @@ const ProductList = () => {
         filename: "products-export.xlsx",
       });
 
-      // Optional: Show success message
       console.log("Export completed successfully");
     } catch (error) {
       console.error("Export failed:", error);
-      // Optional: Show error toast/notification
     }
   }, [exportProducts, filteredQuery, sorting]);
 
   return (
     <PageLayout
-      title="Products"
       action={
         accountStore.currentUser?.roleId !== Roles.basic ? (
           <Button variant="primary" onClick={onShow}>
-            New Product
+            {t('products.newProduct')}
           </Button>
         ) : (
           <OverlayTrigger placement="bottom-start" delay={{ show: 250, hide: 400 }} overlay={renderTooltip}>
             <span>
               <Button disabled variant="primary">
-                New Product
+                {t('products.newProduct')}
               </Button>
             </span>
           </OverlayTrigger>
@@ -99,8 +102,7 @@ const ProductList = () => {
     >
       <Card className="pt-2">
         <Card.Body>
-          {/* Page Header */}
-          <TableFilters searchInputPlaceholder="Search products..." handleClearFilters={handleClearFilters} searchQuery={searchQuery} setSearchQuery={setSearchQuery} filteredQuery={filteredQuery} setFilteredQuery={setFilteredQuery} handleFilter={handleFilter} />
+          <TableFilters searchInputPlaceholder={t('products.searchPlaceholder')} handleClearFilters={handleClearFilters} searchQuery={searchQuery} setSearchQuery={setSearchQuery} filteredQuery={filteredQuery} setFilteredQuery={setFilteredQuery} handleFilter={handleFilter} />
 
           {show && (
             <ProductModal
@@ -120,9 +122,9 @@ const ProductList = () => {
         </Card.Body>
       </Card>
       <div className="d-flex justify-content-between align-items-center mt-2 mb-4 w-full">
-        <small>Server-side pagination with sorting & filtering</small>
+        <small>{t('products.paginationDescription')}</small>
         <Button variant="success" onClick={handleExport} disabled={loadingExport}>
-          {loadingExport ? "Exporting..." : "Export"}
+          {loadingExport ? t('products.exporting') : t('products.export')}
         </Button>
       </div>
     </PageLayout>

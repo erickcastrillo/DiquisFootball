@@ -1,4 +1,5 @@
 ﻿using Diquis.Application.Common.Marker;
+using Diquis.Domain.Enums;
 using FluentValidation;
 
 namespace Diquis.Application.Services.ProductService.DTOs
@@ -16,6 +17,10 @@ namespace Diquis.Application.Services.ProductService.DTOs
         /// Gets or sets the description of the product.
         /// </summary>
         public string Description { get; set; }
+        /// <summary>
+        /// Gets or sets the locale of the product.
+        /// </summary>
+        public Locale Locale { get; set; }
     }
 
     /// <summary>
@@ -30,6 +35,7 @@ namespace Diquis.Application.Services.ProductService.DTOs
         {
             _ = RuleFor(x => x.Name).NotEmpty();
             _ = RuleFor(x => x.Description).NotEmpty();
+            _ = RuleFor(x => x.Locale).IsInEnum();
         }
     }
 }

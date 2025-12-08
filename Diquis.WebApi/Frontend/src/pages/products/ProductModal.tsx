@@ -6,9 +6,10 @@ import { Button, Col, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { PaginationState, SortingState } from '@tanstack/react-table';
+import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'stores/store';
-import type { AddProductRequest, Product } from 'lib/types';
+import { AddProductRequest, Product, Locale } from 'lib/types';
 import { FormInput } from 'components';
 import { LoadingButton, Modal } from 'components/ui';
 
@@ -33,22 +34,24 @@ const ProductModal = ({
 }: ProductModalProps) => {
   const { productsStore } = useStore();
   const { createProduct, loading, updateProduct, loadProducts } = productsStore;
+  const { t, i18n } = useTranslation();
 
   const [newProductFormValues] = useState<Product>({
     id: isEdit ? data?.id || '' : '',
     name: isEdit ? data?.name || '' : '',
     description: isEdit ? data?.description || '' : '',
-    createdOn: isEdit ? data?.createdOn || '' : ''
+    createdOn: isEdit ? data?.createdOn || '' : '',
+    locale: isEdit ? data?.locale || (i18n.language as Locale) : (i18n.language as Locale)
   });
 
   const validationSchema = Yup.object({
-    name: Yup.string().required('Product name is required'),
-    description: Yup.string().required('Description is required')
+    name: Yup.string().required(t('products.modal.validation.nameRequired')),
+    description: Yup.string().required(t('products.modal.validation.descriptionRequired')),
   });
 
-  const defaultValues: AddProductRequest = {
+  const defaultValues: Omit<AddProductRequest, 'locale'> = {
     name: newProductFormValues.name,
-    description: newProductFormValues.description
+    description: newProductFormValues.description,
   };
 
   const {
@@ -66,12 +69,16 @@ const ProductModal = ({
     onHide();
   };
 
-  const onSubmit = async (addProduct: AddProductRequest) => {
+  const onSubmit = async (formValues: Omit<AddProductRequest, 'locale'>) => {
+    const addProduct: AddProductRequest = {
+      ...formValues,
+      locale: (i18n.language.charAt(0).toUpperCase() + i18n.language.slice(1)) as Locale,
+    };
     if (!isEdit) {
       try {
         await createProduct(addProduct);
         handleClose();
-        toast.success('Product Added Successfully!');
+        toast.success(t('products.modal.createSuccess'));
         await loadProducts({
           pageNumber: paginationState.pageIndex,
           pageSize: paginationState.pageSize,
@@ -79,7 +86,7 @@ const ProductModal = ({
           sorting
         });
       } catch (error) {
-        const message = (error as Error)?.message || 'Create product failed';
+        const message = (error as Error)?.message || t('products.modal.createFailed');
         toast.error(message);
       }
     } else {
@@ -87,7 +94,7 @@ const ProductModal = ({
       try {
         await updateProduct(addProduct, data.id);
         handleClose();
-        toast.info('Product Updated Successfully!');
+        toast.info(t('products.modal.updateSuccess'));
         await loadProducts({
           pageNumber: paginationState.pageIndex,
           pageSize: paginationState.pageSize,
@@ -95,7 +102,7 @@ const ProductModal = ({
           sorting
         });
       } catch (error) {
-        const message = (error as Error)?.message || 'Update product failed';
+        const message = (error as Error)?.message || t('products.modal.updateFailed');
         toast.error(message);
       }
     }
@@ -105,7 +112,7 @@ const ProductModal = ({
     try {
       if (!data?.id) return;
       await productsStore.deleteProduct(data.id);
-      toast.error('Product Deleted Successfully!');
+      toast.error(t('products.modal.deleteSuccess'));
       await productsStore.loadProducts({
         pageNumber: 1,
         pageSize: paginationState.pageSize,
@@ -113,7 +120,7 @@ const ProductModal = ({
         sorting
       });
     } catch (error) {
-      const message = (error as Error)?.message || 'Update product failed';
+      const message = (error as Error)?.message || t('products.modal.updateFailed');
       toast.error(message);
     }
   };
@@ -122,15 +129,15 @@ const ProductModal = ({
     <Modal
       show={show}
       onHide={handleClose}
-      headerTitle={isEdit ? 'Edit Product' : 'Add Product'}
+      headerTitle={isEdit ? t('products.modal.editTitle') : t('products.modal.addTitle')}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Row className="mt-1">
-          <Col className="mt-2" xs={12} sm={8}>
+          <Col className="mt-2" xs={12}>
             <FormInput
               type="text"
-              label="Name"
-              placeholder="Enter Product Name"
+              label={t('products.modal.nameLabel')}
+              placeholder={t('products.modal.namePlaceholder')}
               register={register}
               name="name"
             />
@@ -139,8 +146,8 @@ const ProductModal = ({
             <FormInput
               type="textarea"
               rows="2"
-              label="Description"
-              placeholder="Enter Product Description"
+              label={t('products.modal.descriptionLabel')}
+              placeholder={t('products.modal.descriptionPlaceholder')}
               register={register}
               name="description"
             />
@@ -150,7 +157,7 @@ const ProductModal = ({
         <div className="d-flex w-100 my-3 gap-2">
           {isEdit && (
             <Button variant="danger" onClick={handleDelete}>
-              Delete
+              {t('products.modal.delete')}
             </Button>
           )}
           <Button
@@ -159,7 +166,7 @@ const ProductModal = ({
             onClick={() => handleClose()}
             className="ms-auto"
           >
-            Cancel
+            {t('products.modal.cancel')}
           </Button>
           <LoadingButton
             type="submit"
@@ -167,7 +174,7 @@ const ProductModal = ({
             disabled={!isDirty || !isValid || isSubmitting}
             loading={isSubmitting || loading}
           >
-            Save
+            {t('products.modal.save')}
           </LoadingButton>
         </div>
       </form>

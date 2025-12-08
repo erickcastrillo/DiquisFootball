@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 export type PageSize = {
   text: string;
@@ -28,6 +29,8 @@ const Pagination = ({
   setPageSize,
   sizePerPageList
 }: PaginationProps) => {
+  const { t } = useTranslation(); // Initialize useTranslation hook
+
   /**
    * pagination count , index
    */
@@ -112,19 +115,11 @@ const Pagination = ({
     }
 
     if (totalCount == 0) {
-      return 'No results';
+      return t('pagination.noResults');
     }
 
-    return (
-      'Showing ' +
-      firstDisplay +
-      ' to ' +
-      lastDisplay +
-      ' of ' +
-      totalCount +
-      ' entries'
-    );
-  }, [queryPageSize, queryPageIndex, totalCount]);
+    return t('pagination.showingEntries', { firstDisplay, lastDisplay, totalCount });
+  }, [queryPageSize, queryPageIndex, totalCount, t]);
 
   return (
     <div className="d-lg-flex align-items-center justify-content-between pb-1 table-footer">

@@ -5,26 +5,29 @@ import {
   SortingState,
   TableOptions
 } from '@tanstack/react-table';
+import { TFunction } from 'i18next';
 
 import { useStore } from 'stores/store';
 import { Roles, type Product } from 'lib/types';
 import ProductModal from './ProductModal';
-import GeneratePdfButton from './GeneratePdfButton'; // Add this import
+import GeneratePdfButton from './GeneratePdfButton';
 import { useModal } from 'hooks';
 
 type GetProductColumnShapeOptions = {
   pagination: PaginationState;
   filteredQuery: string;
   sorting: SortingState;
+  t: TFunction;
 };
 
 const getProductColumnShape = ({
   pagination,
   filteredQuery,
-  sorting
+  sorting,
+  t,
 }: GetProductColumnShapeOptions): TableOptions<Product>['columns'] => [
   {
-    header: 'Name',
+    header: t('products.columns.name'),
     enableSorting: true,
     accessorKey: 'name',
     cell: ({ row }) => {
@@ -32,39 +35,38 @@ const getProductColumnShape = ({
     }
   },
   {
-    header: 'Description',
+    header: t('products.columns.description'),
     enableSorting: true,
     accessorKey: 'description'
   },
   {
-    header: 'Guid',
+    header: t('products.columns.guid'),
     enableSorting: true,
     accessorKey: 'id'
   },
   {
-    header: 'Actions', // Changed header to 'Actions' since we now have multiple actions
-    accessorKey: 'actions', // Changed accessorKey
+    header: t('products.columns.actions'),
+    accessorKey: 'actions',
     cell: (row) => {
       const { accountStore } = useStore();
       const { show, onShow, onHide } = useModal();
 
       const renderTooltip = (props: TooltipProps) => (
         <Tooltip id="button-tooltip" className="font-14" {...props}>
-          Basic user cannot use this feature
+          {t('products.basicUserTooltip')}
         </Tooltip>
       );
 
       return (
         <React.Fragment>
-          <div className="d-flex gap-2 justify-content-end"> {/* Container for multiple buttons */}
-            {/* Edit Button */}
+          <div className="d-flex gap-2 justify-content-end">
             <GeneratePdfButton product={row.row.original} />
             {accountStore.currentUser?.roleId !== Roles.basic ? (
               <button
                 className="btn btn-soft-primary rounded-pill"
                 onClick={onShow}
               >
-                Edit
+                {t('products.columns.edit')}
               </button>
             ) : (
               <OverlayTrigger
@@ -76,14 +78,11 @@ const getProductColumnShape = ({
                   className="btn btn-soft-primary rounded-pill"
                   aria-readonly="true"
                 >
-                  Edit
+                  {t('products.columns.edit')}
                 </button>
               </OverlayTrigger>
             )}
-        
-            
           </div>
-          
           {show && (
             <ProductModal
               isEdit

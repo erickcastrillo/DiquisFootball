@@ -37,6 +37,9 @@ namespace Diquis.WebApi.Extensions
                 AuthorizationPolicy policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 opt.Filters.Add(new AuthorizeFilter(policy)); // makes so that all the controllers require authorization by default
 
+            }).AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
             });
 
             // Modern FluentValidation registration

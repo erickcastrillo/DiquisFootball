@@ -2,6 +2,7 @@ using Diquis.Application.Common.Wrapper;
 using Diquis.Application.Services.ProductService;
 using Diquis.Application.Services.ProductService.DTOs;
 using Diquis.Application.Services.ProductService.Filters;
+using Diquis.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +30,7 @@ namespace Diquis.WebApi.Controllers
         /// Gets the full list of products, optionally filtered by a keyword.
         /// </summary>
         /// <param name="keyword">The search keyword (optional).</param>
+        /// <param name="acceptLanguage">The Accept-Language header to determine the locale (optional).</param>
         /// <returns>A list of products.</returns>
         /// <remarks>
         /// Retrieves all products. Optionally, filter by keyword in the product name.<br/>
@@ -43,9 +45,10 @@ namespace Diquis.WebApi.Controllers
         /// <response code="500">If an internal server error occurs.</response>
         [Authorize(Roles = "root, admin, editor, basic")]
         [HttpGet]
-        public async Task<IActionResult> GetProductsAsync(string keyword = "")
+        public async Task<IActionResult> GetProductsAsync(string keyword = "", [FromHeader(Name = "Accept-Language")] string? acceptLanguage = "es-ES")
         {
-            Response<IEnumerable<ProductDTO>> products = await _productService.GetProductsAsync(keyword);
+            Locale locale = ParseLocale(acceptLanguage);
+            Response<IEnumerable<ProductDTO>> products = await _productService.GetProductsAsync(keyword, locale);
             return Ok(products);
         }
 
@@ -53,6 +56,7 @@ namespace Diquis.WebApi.Controllers
         /// Gets a paginated and filtered list of products for Tanstack Table v8.
         /// </summary>
         /// <param name="filter">The product table filter.</param>
+        /// <param name="acceptLanguage">The Accept-Language header to determine the locale (optional).</param>
         /// <returns>A paginated response of products.</returns>
         /// <remarks>
         /// Retrieves a paginated list of products based on the provided filter.<br/>
@@ -73,9 +77,10 @@ namespace Diquis.WebApi.Controllers
         /// <response code="500">If an internal server error occurs.</response>
         [Authorize(Roles = "root, admin, editor, basic")]
         [HttpPost("products-paginated")]
-        public async Task<IActionResult> GetProductsPaginatedAsync(ProductTableFilter filter)
+        public async Task<IActionResult> GetProductsPaginatedAsync(ProductTableFilter filter, [FromHeader(Name = "Accept-Language")] string? acceptLanguage = "es-ES")
         {
-            PaginatedResponse<ProductDTO> products = await _productService.GetProductsPaginatedAsync(filter);
+            Locale locale = ParseLocale(acceptLanguage);
+            PaginatedResponse<ProductDTO> products = await _productService.GetProductsPaginatedAsync(filter, locale);
             return Ok(products);
         }
 
@@ -261,6 +266,22 @@ namespace Diquis.WebApi.Controllers
             return !result.Succeeded || result.Data == null
                 ? BadRequest(result.Messages)
                 : File(result.Data, "application/pdf", "ProductInvoice.pdf");
+        }
+
+        private Locale ParseLocale(string? acceptLanguage)
+        {
+            if (string.IsNullOrEmpty(acceptLanguage))
+            {
+                return Locale.Es; // Default to Spanish if header is missing
+            }
+
+            if (acceptLanguage.StartsWith("es", StringComparison.OrdinalIgnoreCase))
+            {
+                return Locale.Es;
+            }
+            // Add more cases as needed for other languages
+            // For now, default to English if not Spanish
+            return Locale.En;
         }
     }
 }

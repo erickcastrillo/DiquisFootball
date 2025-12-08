@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import clsx from 'clsx';
 import { Resolver, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'stores/store';
 import type { User, EditModalProps } from 'lib/types';
@@ -17,6 +18,7 @@ type EditUserModalProps = EditModalProps<User>;
 const EditUserModal = ({ show, onHide, data }: EditUserModalProps) => {
   const { usersStore } = useStore();
   const { updateAppUser, loading, loadingDelete, deleteAppUser } = usersStore;
+  const { t } = useTranslation();
 
   const defaultValues = useMemo<User>(
     () => ({
@@ -34,9 +36,9 @@ const EditUserModal = ({ show, onHide, data }: EditUserModalProps) => {
   );
 
   const validationSchema = Yup.object({
-    firstName: Yup.string().required('The first name is required'),
-    lastName: Yup.string().required('The last name is required'),
-    email: Yup.string().required().email(),
+    firstName: Yup.string().required(t('users.editModal.validation.firstNameRequired')),
+    lastName: Yup.string().required(t('users.editModal.validation.lastNameRequired')),
+    email: Yup.string().required(t('users.editModal.validation.emailRequired')).email(t('users.editModal.validation.emailInvalid')),
     phoneNumner: Yup.string(),
     roleId: Yup.string().oneOf(['admin', 'editor', 'basic']),
     isActive: Yup.boolean()
@@ -55,10 +57,10 @@ const EditUserModal = ({ show, onHide, data }: EditUserModalProps) => {
   const handleDelete = async (id: string) => {
     try {
       await deleteAppUser(id);
-      toast.error('User Deleted Successfully!');
+      toast.error(t('users.editModal.deleteSuccess'));
       onHide();
     } catch (error) {
-      const message = (error as Error)?.message;
+      const message = (error as Error)?.message || t('users.editModal.deleteFailed');
       toast.error(message);
     }
   };
@@ -66,11 +68,11 @@ const EditUserModal = ({ show, onHide, data }: EditUserModalProps) => {
   const onSubmit = async (user: User) => {
     try {
       await updateAppUser(user);
-      toast.info('User Edited Successfully!');
+      toast.info(t('users.editModal.editSuccess'));
       onHide();
       reset();
     } catch (error) {
-      const message = (error as Error)?.message;
+      const message = (error as Error)?.message || t('users.editModal.editFailed');
       toast.error(message);
     }
   };
@@ -79,14 +81,14 @@ const EditUserModal = ({ show, onHide, data }: EditUserModalProps) => {
   const isRootUser = data.roleId === 'root';
 
   return (
-    <Modal show={show} onHide={onHide} headerTitle="Edit User">
+    <Modal show={show} onHide={onHide} headerTitle={t('users.editModal.editTitle')}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Row className="mt-1">
           {!isRootUser && (
             <Col className="mt-2" xs={12}>
               <FormInput
                 type="checkbox"
-                label="Is Active"
+                label={t('users.editModal.isActiveLabel')}
                 register={register}
                 name="isActive"
               />
@@ -95,8 +97,8 @@ const EditUserModal = ({ show, onHide, data }: EditUserModalProps) => {
           <Col className="mt-2" xs={12} sm={6}>
             <FormInput
               type="text"
-              label="First Name"
-              placeholder="First Name"
+              label={t('users.editModal.firstNameLabel')}
+              placeholder={t('users.editModal.firstNamePlaceholder')}
               register={register}
               name="firstName"
             />
@@ -105,8 +107,8 @@ const EditUserModal = ({ show, onHide, data }: EditUserModalProps) => {
           <Col className="mt-2" xs={12} sm={6}>
             <FormInput
               type="text"
-              label="Last Name"
-              placeholder="Last Name"
+              label={t('users.editModal.lastNameLabel')}
+              placeholder={t('users.editModal.lastNamePlaceholder')}
               register={register}
               name="lastName"
             />
@@ -115,8 +117,8 @@ const EditUserModal = ({ show, onHide, data }: EditUserModalProps) => {
           <Col className="mt-2" xs={12} sm={6}>
             <FormInput
               type="text"
-              label="Email"
-              placeholder="user@email.com"
+              label={t('users.editModal.emailLabel')}
+              placeholder={t('users.editModal.emailPlaceholder')}
               register={register}
               name="email"
             />
@@ -125,8 +127,8 @@ const EditUserModal = ({ show, onHide, data }: EditUserModalProps) => {
           <Col className="mt-2" xs={12} sm={6}>
             <FormInput
               type="text"
-              label="Phone Number"
-              placeholder="Phone Number"
+              label={t('users.editModal.phoneNumberLabel')}
+              placeholder={t('users.editModal.phoneNumberPlaceholder')}
               register={register}
               name="phoneNumber"
             />
@@ -134,7 +136,7 @@ const EditUserModal = ({ show, onHide, data }: EditUserModalProps) => {
 
           {!isRootUser && (
             <Col className="mt-2" xs={12}>
-              <h6 className="fs-6 mb-1">Role</h6>
+              <h6 className="fs-6 mb-1">{t('users.editModal.roleLabel')}</h6>
               <Stack direction="horizontal" gap={1}>
                 {['admin', 'editor', 'basic'].map((item) => (
                   <FormInput
@@ -165,13 +167,13 @@ const EditUserModal = ({ show, onHide, data }: EditUserModalProps) => {
               loading={loadingDelete}
               onClick={() => handleDelete(data.id)}
             >
-              Delete
+              {t('users.editModal.delete')}
             </LoadingButton>
           )}
 
           <div className="d-flex gap-2">
             <Button variant="light" onClick={onHide}>
-              Cancel
+              {t('users.editModal.cancel')}
             </Button>
             <LoadingButton
               type="submit"
@@ -179,7 +181,7 @@ const EditUserModal = ({ show, onHide, data }: EditUserModalProps) => {
               disabled={!isDirty || !isValid || isSubmitting}
               loading={isSubmitting || loading}
             >
-              Save
+              {t('users.editModal.save')}
             </LoadingButton>
           </div>
         </div>

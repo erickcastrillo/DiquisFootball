@@ -1,6 +1,7 @@
 import { Badge } from 'react-bootstrap';
 import clsx from 'clsx';
 import { TableOptions } from '@tanstack/react-table';
+import { TFunction } from 'i18next';
 
 import EditUserModal from './EditUserModal';
 import { useStore } from 'stores/store';
@@ -9,9 +10,9 @@ import { getInitials } from 'utils';
 import type { User } from 'lib/types';
 import { useModal } from 'hooks';
 
-const UserColumnShape: TableOptions<User>['columns'] = [
+const UserColumnShape = ({ t }: { t: TFunction }): TableOptions<User>['columns'] => [
   {
-    header: 'Name',
+    header: t('users.columns.name'),
     enableSorting: true,
     accessorFn: (row) => row.firstName + ' ' + row.lastName,
     cell: ({ row }) => {
@@ -26,7 +27,7 @@ const UserColumnShape: TableOptions<User>['columns'] = [
     }
   },
   {
-    header: 'Role',
+    header: t('users.columns.role'),
     enableSorting: true,
     accessorKey: 'roleId',
     enableGlobalFilter: false,
@@ -53,12 +54,12 @@ const UserColumnShape: TableOptions<User>['columns'] = [
     }
   },
   {
-    header: 'Email',
+    header: t('users.columns.email'),
     enableSorting: true,
     accessorKey: 'email'
   },
   {
-    header: 'Active',
+    header: t('users.columns.active'),
     enableSorting: true,
     accessorKey: 'isActive',
     enableGlobalFilter: false,
@@ -71,7 +72,7 @@ const UserColumnShape: TableOptions<User>['columns'] = [
           'text-capitalize'
         )}
       >
-        {getValue()?.toString() == 'true' ? 'Yes' : 'No'}
+        {getValue()?.toString() == 'true' ? t('common.yes') : t('common.no')}
       </strong>
     )
   },
@@ -92,10 +93,10 @@ const UserColumnShape: TableOptions<User>['columns'] = [
               className="btn btn-soft-primary rounded-pill"
               onClick={onShow}
             >
-              Edit
+              {t('users.columns.edit')}
             </button>
           ) : (
-            'N/A(You)'
+            t('users.columns.naYou')
           )}
 
           {show && (

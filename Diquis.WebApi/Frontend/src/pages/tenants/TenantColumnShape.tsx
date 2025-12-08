@@ -1,14 +1,14 @@
 import clsx from 'clsx';
 import { useModal } from 'hooks';
 import { TableOptions } from '@tanstack/react-table';
+import { TFunction } from 'i18next';
 
 import EditTenantModal from './EditTenantModal';
 import type { Tenant } from 'lib/types';
 
-// columns for the tenants table
-const TenantColumnShape: TableOptions<Tenant>['columns'] = [
+const TenantColumnShape = ({ t }: { t: TFunction }): TableOptions<Tenant>['columns'] => [
   {
-    header: 'Id',
+    header: t('tenants.columns.id'),
     accessorKey: 'id',
     enableSorting: true,
     cell: ({ row }) => {
@@ -21,12 +21,12 @@ const TenantColumnShape: TableOptions<Tenant>['columns'] = [
     }
   },
   {
-    header: 'Name',
+    header: t('tenants.columns.name'),
     enableSorting: true,
     accessorKey: 'name'
   },
   {
-    header: 'Active',
+    header: t('tenants.columns.active'),
     enableSorting: true,
     accessorKey: 'isActive',
     enableGlobalFilter: false,
@@ -39,7 +39,7 @@ const TenantColumnShape: TableOptions<Tenant>['columns'] = [
           'text-capitalize'
         )}
       >
-        {getValue()?.toString() == 'true' ? 'Yes' : 'No'}
+        {getValue()?.toString() == 'true' ? t('common.yes') : t('common.no')}
       </strong>
     )
   },
@@ -48,7 +48,6 @@ const TenantColumnShape: TableOptions<Tenant>['columns'] = [
     accessorKey: 'edit',
     cell: ({ row }) => {
       const { id } = row.original;
-
       const { show, onShow, onHide } = useModal();
 
       return (
@@ -58,10 +57,10 @@ const TenantColumnShape: TableOptions<Tenant>['columns'] = [
               className="btn btn-soft-primary rounded-pill"
               onClick={onShow}
             >
-              Edit
+              {t('tenants.columns.edit')}
             </button>
           ) : (
-            'N/A(You)'
+            t('tenants.columns.naYou')
           )}
           {show && (
             <EditTenantModal show={show} onHide={onHide} data={row.original} />

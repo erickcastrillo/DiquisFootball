@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { Button, Col, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useTranslation } from "react-i18next";
 
 import { useStore } from "stores/store";
 import type { CreateTenantRequest, ModalProps } from "lib/types";
@@ -16,6 +17,7 @@ type RegisterTenantModalProps = ModalProps;
 const RegisterTenantModal = ({ show, onHide }: RegisterTenantModalProps) => {
   const { tenantsStore } = useStore();
   const { createTenant, loading } = tenantsStore;
+  const { t } = useTranslation();
 
   const defaultValues = useMemo<CreateTenantRequest>(
     () => ({
@@ -29,11 +31,10 @@ const RegisterTenantModal = ({ show, onHide }: RegisterTenantModalProps) => {
   );
 
   const validationSchema = Yup.object({
-    id: Yup.string().required("The key is required"),
-    name: Yup.string().required("Tenant name is required"),
-    adminEmail: Yup.string().required("The admin email is required").email(),
-    password: Yup.string().required("The password is required")
-
+    id: Yup.string().required(t('tenants.registerModal.validation.keyRequired')),
+    name: Yup.string().required(t('tenants.registerModal.validation.nameRequired')),
+    adminEmail: Yup.string().required(t('tenants.registerModal.validation.adminEmailRequired')).email(t('tenants.registerModal.validation.adminEmailInvalid')),
+    password: Yup.string().required(t('tenants.registerModal.validation.passwordRequired'))
   });
 
   const {
@@ -56,44 +57,44 @@ const RegisterTenantModal = ({ show, onHide }: RegisterTenantModalProps) => {
       await createTenant(createTenantRequest);
       reset();
       onHide();
-      toast.success("Tenant created successfully");
+      toast.success(t('tenants.registerModal.createSuccess'));
     } catch (error) {
-      const message = (error as Error)?.message;
+      const message = (error as Error)?.message || t('tenants.registerModal.createFailed');
       toast.error(message);
     }
   };
 
   return (
-    <Modal show={show} onHide={handleClose} headerTitle="Add Tenant">
+    <Modal show={show} onHide={handleClose} headerTitle={t('tenants.registerModal.addTitle')}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Row className="mt-2">
           <Col className="mt-2" xs={6}>
-            <FormInput type="text" placeholder="Tenant Id" label="Tenant Id" register={register} name="id" />
+            <FormInput type="text" placeholder={t('tenants.registerModal.tenantIdPlaceholder')} label={t('tenants.registerModal.tenantIdLabel')} register={register} name="id" />
           </Col>
           <Col className="mt-2" xs={6}>
-            <FormInput type="text" placeholder="Name" label="Name" register={register} name="name" />
-          </Col>
-
-          <Col className="mt-2" xs={6}>
-            <FormInput type="text" placeholder="admin@email.com" label="Admin Email" register={register} name="adminEmail" />
+            <FormInput type="text" placeholder={t('tenants.registerModal.namePlaceholder')} label={t('tenants.registerModal.nameLabel')} register={register} name="name" />
           </Col>
 
           <Col className="mt-2" xs={6}>
-            <FormInput type="text" placeholder="Password" label="Password" register={register} name="password" />
+            <FormInput type="text" placeholder={t('tenants.registerModal.adminEmailPlaceholder')} label={t('tenants.registerModal.adminEmailLabel')} register={register} name="adminEmail" />
+          </Col>
+
+          <Col className="mt-2" xs={6}>
+            <FormInput type="text" placeholder={t('tenants.registerModal.passwordPlaceholder')} label={t('tenants.registerModal.passwordLabel')} register={register} name="password" />
           </Col>
         </Row>
         <Row>
           <Col xs={6}>
-            <FormInput type="checkbox" label="Isolated Database" register={register} name="hasIsolatedDatabase" />
+            <FormInput type="checkbox" label={t('tenants.registerModal.isolatedDatabaseLabel')} register={register} name="hasIsolatedDatabase" />
           </Col>
         </Row>
 
         <div className="d-flex justify-content-end mt-4 gap-2">
           <Button variant="light" onClick={onHide}>
-            Cancel
+            {t('tenants.registerModal.cancel')}
           </Button>
           <LoadingButton type="submit" variant="primary" disabled={!isDirty || !isValid || isSubmitting} loading={isSubmitting || loading}>
-            Save
+            {t('tenants.registerModal.save')}
           </LoadingButton>
         </div>
       </form>

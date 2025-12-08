@@ -1,4 +1,5 @@
 ﻿using Diquis.Application.Common.Marker;
+using Diquis.Domain.Enums;
 
 namespace Diquis.Application.Services.ProductService.DTOs
 {
@@ -23,7 +24,11 @@ namespace Diquis.Application.Services.ProductService.DTOs
         /// Gets or sets the date and time when the product was created.
         /// </summary>
         public DateTime CreatedOn { get; set; }
-
+        
+        /// <summary>
+        /// Gets or sets the locale of the product.
+        /// </summary>
+        public Locale Locale { get; set; }
     }
 }
 

@@ -10,6 +10,7 @@ import {
   getFilteredRowModel,
   useReactTable
 } from '@tanstack/react-table';
+import { useTranslation } from 'react-i18next';
 
 import Pagination from 'components/Pagination';
 import { SIZE_PER_PAGE_LIST } from 'constants';
@@ -41,6 +42,7 @@ function ServerTable<T>(props: ServerTableProps<T>) {
     isLoading,
     ...tableOptions
   } = props;
+  const { t } = useTranslation();
 
   const onPaginationChange: OnChangeFn<PaginationState> = (updaterOrValue) => {
     const newState =
@@ -109,25 +111,33 @@ function ServerTable<T>(props: ServerTableProps<T>) {
 
           {!isLoading && (
             <tbody>
-              {tableProps.getRowModel().rows.map((row) => {
-                return (
-                  <tr
-                    key={row.id}
-                    onClick={
-                      rowClick ? () => rowClick?.(row.original) : undefined
-                    }
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
+              {tableProps.getRowModel().rows.length === 0 ? (
+                <tr>
+                  <td colSpan={tableProps.getAllColumns().length} className="text-center">
+                    {t('tables.noResults')}
+                  </td>
+                </tr>
+              ) : (
+                tableProps.getRowModel().rows.map((row) => {
+                  return (
+                    <tr
+                      key={row.id}
+                      onClick={
+                        rowClick ? () => rowClick?.(row.original) : undefined
+                      }
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <td key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           )}
         </table>

@@ -5,6 +5,7 @@ import createAuthRefreshInterceptor from "axios-auth-refresh";
 import { store } from "stores/store";
 import type { User, RegisterUserRequest, ChangePasswordRequest, UpdateProfileRequest, UpdatePreferencesRequest, ChangeProfileImageRequest, CurrentUser, SearchParams, PaginatedResult, Result, CreateTenantRequest, Tenant, AddProductRequest, Product, TokenData, UserLogin, ForgotPasswordRequest, ResetPasswordRequest } from "lib/types";
 import sleep from "utils/sleep";
+import i18n from '../i18n'; // Import i18n
 
 // Base URL
 // -- development: https://localhost:7250/api
@@ -17,6 +18,7 @@ axios.interceptors.request.use((config) => {
   config.headers = {
     ...config.headers, // Preserve existing headers
     Tenant: store.authStore.tenant ?? "",
+    'Accept-Language': i18n.language, // Add Accept-Language header
   };
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;

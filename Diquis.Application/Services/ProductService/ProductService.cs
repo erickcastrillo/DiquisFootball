@@ -8,6 +8,7 @@ using Diquis.Application.Services.ProductService.Filters;
 using Diquis.Application.Services.ProductService.Specifications;
 using Diquis.Application.Utility;
 using Diquis.Domain.Entities.Catalog;
+using Diquis.Domain.Enums; // Add this using statement
 
 namespace Diquis.Application.Services.ProductService
 {
@@ -38,17 +39,18 @@ namespace Diquis.Application.Services.ProductService
             _repository = repository; // inject repository 
             _mapper = mapper; // inject mapper
             _excelExportService = excelExportService;
-            _pdfExportService = pdfExportService;
+            _pdfExportService = _pdfExportService;
         }
         /// <summary>
         /// Retrieves a list of products, optionally filtered by a keyword.
         /// </summary>
         /// <param name="keyword">The keyword to filter products by name. Optional.</param>
+        /// <param name="locale">The locale to filter by.</param>
         /// <returns>A <see cref="Response{T}"/> containing an enumerable of <see cref="ProductDTO"/> objects.</returns>
         // get full List
-        public async Task<Response<IEnumerable<ProductDTO>>> GetProductsAsync(string keyword = "")
+        public async Task<Response<IEnumerable<ProductDTO>>> GetProductsAsync(string keyword = "", Locale locale = Locale.Es)
         {
-            ProductSearchList specification = new(keyword); // ardalis specification
+            ProductSearchList specification = new(keyword, locale); // Pass locale to specification
             IEnumerable<ProductDTO> list = await _repository.GetListAsync<Product, ProductDTO, Guid>(specification); // full list, entity mapped to dto
             return Response<IEnumerable<ProductDTO>>.Success(list);
         }
@@ -56,9 +58,10 @@ namespace Diquis.Application.Services.ProductService
         /// Retrieves a paginated list of products based on the provided filter, suitable for Tanstack Table.
         /// </summary>
         /// <param name="filter">The filter criteria for pagination and searching.</param>
+        /// <param name="locale">The locale to filter by.</param>
         /// <returns>A <see cref="PaginatedResponse{T}"/> containing <see cref="ProductDTO"/> items.</returns>
         // get Tanstack Table paginated list (as seen in the React and Vue project tables)
-        public async Task<PaginatedResponse<ProductDTO>> GetProductsPaginatedAsync(ProductTableFilter filter)
+        public async Task<PaginatedResponse<ProductDTO>> GetProductsPaginatedAsync(ProductTableFilter filter, Locale locale = Locale.Es)
         {
             if (!string.IsNullOrEmpty(filter.Keyword)) // set to first page if any search filters are applied
             {
@@ -66,7 +69,7 @@ namespace Diquis.Application.Services.ProductService
             }
 
             string dynamicOrder = (filter.Sorting != null) ? NanoHelpers.GenerateOrderByString(filter) : ""; // possible dynamic ordering from datatable
-            ProductSearchTable specification = new(filter?.Keyword, dynamicOrder); // ardalis specification
+            ProductSearchTable specification = new(filter?.Keyword, dynamicOrder, locale); // Pass locale to specification
             PaginatedResponse<ProductDTO> pagedResponse = await _repository.GetPaginatedResultsAsync<Product, ProductDTO, Guid>(filter.PageNumber, filter.PageSize, specification); // paginated response, entity mapped to dto
             return pagedResponse;
         }

@@ -1,0 +1,164 @@
+{
+  "welcome": "Welcome to Diquis!",
+  "products": {
+    "title": "Products",
+    "newProduct": "New Product",
+    "basicUserTooltip": "Basic user cannot use this feature",
+    "searchPlaceholder": "Search products...",
+    "paginationDescription": "Server-side pagination with sorting & filtering",
+    "exporting": "Exporting...",
+    "export": "Export",
+    "columns": {
+      "name": "Name",
+      "description": "Description",
+      "guid": "Guid",
+      "actions": "Actions",
+      "edit": "Edit"
+    },
+    "modal": {
+      "editTitle": "Edit Product",
+      "addTitle": "Add Product",
+      "nameLabel": "Name",
+      "namePlaceholder": "Enter Product Name",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Enter Product Description",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "save": "Save",
+      "createSuccess": "Product Added Successfully!",
+      "createFailed": "Create product failed",
+      "updateSuccess": "Product Updated Successfully!",
+      "updateFailed": "Update product failed",
+      "deleteSuccess": "Product Deleted Successfully!",
+      "validation": {
+        "nameRequired": "Product name is required",
+        "descriptionRequired": "Description is required"
+      }
+    }
+  },
+  "tables": {
+    "noResults": "No results"
+  },
+  "pagination": {
+    "noResults": "No results",
+    "showingEntries": "Showing {{firstDisplay}} to {{lastDisplay}} of {{totalCount}} entries"
+  },
+  "users": {
+    "title": "Users",
+    "newUser": "New User",
+    "searchPlaceholder": "Search users...",
+    "paginationDescription": "Client-side pagination with sorting & filtering",
+    "columns": {
+      "name": "Name",
+      "role": "Role",
+      "email": "Email",
+      "active": "Active",
+      "edit": "Edit",
+      "naYou": "N/A(You)"
+    },
+    "registerModal": {
+      "addTitle": "Add User",
+      "firstNameLabel": "First Name",
+      "firstNamePlaceholder": "First Name",
+      "lastNameLabel": "Last Name",
+      "lastNamePlaceholder": "Last Name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "user@email.com",
+      "phoneNumberLabel": "Phone Number",
+      "phoneNumberPlaceholder": "Phone Number",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Password",
+      "roleLabel": "Role",
+      "cancel": "Cancel",
+      "save": "Save",
+      "createSuccess": "User Added Successfully!",
+      "createFailed": "Create user failed",
+      "validation": {
+        "firstNameRequired": "The first name is required",
+        "lastNameRequired": "The last name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Email is invalid",
+        "passwordRequired": "Password is required"
+      }
+    },
+    "editModal": {
+      "editTitle": "Edit User",
+      "isActiveLabel": "Is Active",
+      "firstNameLabel": "First Name",
+      "firstNamePlaceholder": "First Name",
+      "lastNameLabel": "Last Name",
+      "lastNamePlaceholder": "Last Name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "user@email.com",
+      "phoneNumberLabel": "Phone Number",
+      "phoneNumberPlaceholder": "Phone Number",
+      "roleLabel": "Role",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "save": "Save",
+      "deleteSuccess": "User Deleted Successfully!",
+      "deleteFailed": "Delete user failed",
+      "editSuccess": "User Edited Successfully!",
+      "editFailed": "Edit user failed",
+      "validation": {
+        "firstNameRequired": "The first name is required",
+        "lastNameRequired": "The last name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Email is invalid"
+      }
+    }
+  },
+  "tenants": {
+    "title": "Tenants",
+    "addTenant": "Add Tenant",
+    "searchPlaceholder": "Search tenants...",
+    "paginationDescription": "Client-side pagination with sorting & filtering",
+    "columns": {
+      "id": "Id",
+      "name": "Name",
+      "active": "Active",
+      "edit": "Edit",
+      "naYou": "N/A(You)"
+    },
+    "registerModal": {
+      "addTitle": "Add Tenant",
+      "tenantIdLabel": "Tenant Id",
+      "tenantIdPlaceholder": "Tenant Id",
+      "nameLabel": "Name",
+      "namePlaceholder": "Name",
+      "adminEmailLabel": "Admin Email",
+      "adminEmailPlaceholder": "admin@email.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Password",
+      "isolatedDatabaseLabel": "Isolated Database",
+      "cancel": "Cancel",
+      "save": "Save",
+      "createSuccess": "Tenant created successfully",
+      "createFailed": "Create tenant failed",
+      "validation": {
+        "keyRequired": "The key is required",
+        "nameRequired": "Tenant name is required",
+        "adminEmailRequired": "The admin email is required",
+        "adminEmailInvalid": "The admin email is invalid",
+        "passwordRequired": "The password is required"
+      }
+    },
+    "editModal": {
+      "editTitle": "Edit Tenant",
+      "nameLabel": "Name",
+      "namePlaceholder": "Name",
+      "isActiveLabel": "Is Active",
+      "cancel": "Cancel",
+      "save": "Save",
+      "editSuccess": "Tenant Edited Successfully",
+      "editFailed": "Edit tenant failed",
+      "validation": {
+        "nameRequired": "Tenant name is required"
+      }
+    }
+  },
+  "common": {
+    "yes": "Yes",
+    "no": "No"
+  }
+}

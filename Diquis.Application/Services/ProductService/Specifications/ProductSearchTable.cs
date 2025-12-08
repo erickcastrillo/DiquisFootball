@@ -1,6 +1,7 @@
 using Ardalis.Specification;
 using Diquis.Application.Common.Specification;
 using Diquis.Domain.Entities.Catalog;
+using Diquis.Domain.Enums;
 
 namespace Diquis.Application.Services.ProductService.Specifications
 {
@@ -14,7 +15,8 @@ namespace Diquis.Application.Services.ProductService.Specifications
         /// </summary>
         /// <param name="name">Optional product name filter.</param>
         /// <param name="dynamicOrder">Optional dynamic order string.</param>
-        public ProductSearchTable(string? name = "", string? dynamicOrder = "")
+        /// <param name="locale">The locale to filter products by.</param>
+        public ProductSearchTable(string? name = "", string? dynamicOrder = "", Locale locale = Locale.Es)
         {
             // filters
             if (!string.IsNullOrWhiteSpace(name))
@@ -22,6 +24,7 @@ namespace Diquis.Application.Services.ProductService.Specifications
                 _ = Query.Where(x => x.Name.Contains(name));
             }
 
+            _ = Query.Where(x => x.Locale == locale); // Filter by locale
 
             // sort order
             if (string.IsNullOrEmpty(dynamicOrder))

@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Col, Row, Stack } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'stores/store';
 import type { RegisterUserRequest, ModalProps } from 'lib/types';
@@ -16,6 +17,7 @@ type RegisterUserModalProps = ModalProps;
 const RegisterUserModal = ({ show, onHide }: RegisterUserModalProps) => {
   const { usersStore } = useStore();
   const { createAppUser, loading } = usersStore;
+  const { t } = useTranslation();
 
   const defaultValues = useMemo<RegisterUserRequest>(
     () => ({
@@ -31,10 +33,10 @@ const RegisterUserModal = ({ show, onHide }: RegisterUserModalProps) => {
   );
 
   const validationSchema = Yup.object({
-    firstName: Yup.string().required('The first name is required'),
-    lastName: Yup.string().required('The last name is required'),
-    email: Yup.string().required().email(),
-    password: Yup.string().required(),
+    firstName: Yup.string().required(t('users.registerModal.validation.firstNameRequired')),
+    lastName: Yup.string().required(t('users.registerModal.validation.lastNameRequired')),
+    email: Yup.string().required(t('users.registerModal.validation.emailRequired')).email(t('users.registerModal.validation.emailInvalid')),
+    password: Yup.string().required(t('users.registerModal.validation.passwordRequired')),
     phoneNumber: Yup.string(),
     roleId: Yup.string().oneOf(['admin', 'editor', 'basic'])
   });
@@ -57,16 +59,16 @@ const RegisterUserModal = ({ show, onHide }: RegisterUserModalProps) => {
   const onSubmit = async (registerUser: RegisterUserRequest) => {
     try {
       await createAppUser(registerUser);
-      toast.success('User Added Successfully!');
+      toast.success(t('users.registerModal.createSuccess'));
       handleClose();
     } catch (error) {
-      const message = (error as Error)?.message;
+      const message = (error as Error)?.message || t('users.registerModal.createFailed');
       toast.error(message);
     }
   };
 
   return (
-    <Modal show={show} onHide={handleClose} headerTitle="Add User">
+    <Modal show={show} onHide={handleClose} headerTitle={t('users.registerModal.addTitle')}>
       <form
         onSubmit={handleSubmit(
           (user: Omit<RegisterUserRequest, 'id' | 'roleId' | 'phoneNumber'>) =>
@@ -77,8 +79,8 @@ const RegisterUserModal = ({ show, onHide }: RegisterUserModalProps) => {
           <Col className="mt-2" xs={12} sm={6}>
             <FormInput
               type="text"
-              label="First Name"
-              placeholder="First Name"
+              label={t('users.registerModal.firstNameLabel')}
+              placeholder={t('users.registerModal.firstNamePlaceholder')}
               register={register}
               name="firstName"
             />
@@ -87,8 +89,8 @@ const RegisterUserModal = ({ show, onHide }: RegisterUserModalProps) => {
           <Col className="mt-2" xs={12} sm={6}>
             <FormInput
               type="text"
-              label="Last Name"
-              placeholder="Last Name"
+              label={t('users.registerModal.lastNameLabel')}
+              placeholder={t('users.registerModal.lastNamePlaceholder')}
               register={register}
               name="lastName"
             />
@@ -97,8 +99,8 @@ const RegisterUserModal = ({ show, onHide }: RegisterUserModalProps) => {
           <Col className="mt-2" xs={12} sm={6}>
             <FormInput
               type="text"
-              label="Email"
-              placeholder="user@email.com"
+              label={t('users.registerModal.emailLabel')}
+              placeholder={t('users.registerModal.emailPlaceholder')}
               register={register}
               name="email"
             />
@@ -107,8 +109,8 @@ const RegisterUserModal = ({ show, onHide }: RegisterUserModalProps) => {
           <Col className="mt-2" xs={12} sm={6}>
             <FormInput
               type="text"
-              label="Phone Number"
-              placeholder="Phone Number"
+              label={t('users.registerModal.phoneNumberLabel')}
+              placeholder={t('users.registerModal.phoneNumberPlaceholder')}
               register={register}
               name="phoneNumber"
             />
@@ -117,15 +119,15 @@ const RegisterUserModal = ({ show, onHide }: RegisterUserModalProps) => {
           <Col className="mt-2" xs={12} sm={6}>
             <FormInput
               type="text"
-              label="Password"
-              placeholder="Password"
+              label={t('users.registerModal.passwordLabel')}
+              placeholder={t('users.registerModal.passwordPlaceholder')}
               register={register}
               name="password"
             />
           </Col>
 
           <Col className="mt-2" xs={12}>
-            <h6 className="fs-6 mb-1">Role</h6>
+            <h6 className="fs-6 mb-1">{t('users.registerModal.roleLabel')}</h6>
             <Stack direction="horizontal" gap={1}>
               {['admin', 'editor', 'basic'].map((item) => (
                 <FormInput
@@ -144,7 +146,7 @@ const RegisterUserModal = ({ show, onHide }: RegisterUserModalProps) => {
 
         <div className="d-flex justify-content-end mt-4 gap-2">
           <Button variant="light" onClick={() => handleClose()}>
-            Cancel
+            {t('users.registerModal.cancel')}
           </Button>
           <LoadingButton
             type="submit"
@@ -152,7 +154,7 @@ const RegisterUserModal = ({ show, onHide }: RegisterUserModalProps) => {
             disabled={!isDirty || !isValid || isSubmitting}
             loading={isSubmitting || loading}
           >
-            Save
+            {t('users.registerModal.save')}
           </LoadingButton>
         </div>
       </form>

@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Col, Modal, Row } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import { useStore } from 'stores/store';
 import type { Tenant, EditModalProps } from 'lib/types';
@@ -16,6 +17,7 @@ type EditTenantModalProps = EditModalProps<Tenant>;
 const EditTenantModal = ({ show, onHide, data }: EditTenantModalProps) => {
   const { tenantsStore } = useStore();
   const { updateTenant, loading } = tenantsStore;
+  const { t } = useTranslation();
 
   const defaultValues = useMemo<Tenant>(
     () => ({
@@ -28,7 +30,7 @@ const EditTenantModal = ({ show, onHide, data }: EditTenantModalProps) => {
   );
 
   const validationSchema = Yup.object({
-    name: Yup.string().required('Tenant name is required'),
+    name: Yup.string().required(t('tenants.editModal.validation.nameRequired')),
     id: Yup.string().default(data.id as string),
     isActive: Yup.boolean().default(data.isActive as boolean),
     createdOn: Yup.string().default(data.createdOn as string)
@@ -54,9 +56,9 @@ const EditTenantModal = ({ show, onHide, data }: EditTenantModalProps) => {
       await updateTenant(tenant);
       onHide();
       reset();
-      toast.info('Tenant Edited Successfully');
+      toast.info(t('tenants.editModal.editSuccess'));
     } catch (error) {
-      const message = (error as Error)?.message;
+      const message = (error as Error)?.message || t('tenants.editModal.editFailed');
       toast.error(message);
     }
   };
@@ -64,7 +66,7 @@ const EditTenantModal = ({ show, onHide, data }: EditTenantModalProps) => {
   return (
     <Modal show={show} onHide={handleClose} size="lg" centered>
       <Modal.Header closeButton>
-        <h2 className="mb-2 fs-3">Edit Tenant</h2>
+        <h2 className="mb-2 fs-3">{t('tenants.editModal.editTitle')}</h2>
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -72,8 +74,8 @@ const EditTenantModal = ({ show, onHide, data }: EditTenantModalProps) => {
             <Col className="mt-2" xs={7}>
               <FormInput
                 type="text"
-                placeholder="Name"
-                label="Name"
+                placeholder={t('tenants.editModal.namePlaceholder')}
+                label={t('tenants.editModal.nameLabel')}
                 register={register}
                 name="name"
               />
@@ -82,7 +84,7 @@ const EditTenantModal = ({ show, onHide, data }: EditTenantModalProps) => {
             <Col className="mt-2" xs={7}>
               <FormInput
                 type="checkbox"
-                label="Is Active"
+                label={t('tenants.editModal.isActiveLabel')}
                 register={register}
                 name="isActive"
               />
@@ -91,7 +93,7 @@ const EditTenantModal = ({ show, onHide, data }: EditTenantModalProps) => {
 
           <div className="d-flex justify-content-end mt-3 gap-2">
             <Button variant="light" onClick={onHide}>
-              Cancel
+              {t('tenants.editModal.cancel')}
             </Button>
             <LoadingButton
               type="submit"
@@ -99,7 +101,7 @@ const EditTenantModal = ({ show, onHide, data }: EditTenantModalProps) => {
               disabled={!isDirty || !isValid || isSubmitting}
               loading={isSubmitting || loading}
             >
-              Save
+              {t('tenants.editModal.save')}
             </LoadingButton>
           </div>
         </form>

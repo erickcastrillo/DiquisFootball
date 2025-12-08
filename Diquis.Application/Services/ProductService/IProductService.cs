@@ -2,6 +2,7 @@ using Diquis.Application.Common.Marker;
 using Diquis.Application.Common.Wrapper;
 using Diquis.Application.Services.ProductService.DTOs;
 using Diquis.Application.Services.ProductService.Filters;
+using Diquis.Domain.Enums;
 
 namespace Diquis.Application.Services.ProductService
 {
@@ -14,15 +15,17 @@ namespace Diquis.Application.Services.ProductService
         /// Gets a list of products matching the specified keyword.
         /// </summary>
         /// <param name="keyword">The search keyword.</param>
+        /// <param name="locale">The locale to filter by.</param>
         /// <returns>A response containing a list of product DTOs.</returns>
-        Task<Response<IEnumerable<ProductDTO>>> GetProductsAsync(string keyword = "");
+        Task<Response<IEnumerable<ProductDTO>>> GetProductsAsync(string keyword = "", Locale locale = Locale.Es);
 
         /// <summary>
         /// Gets a paginated list of products based on the provided filter.
         /// </summary>
         /// <param name="filter">The product table filter.</param>
+        /// <param name="locale">The locale to filter by.</param>
         /// <returns>A paginated response containing product DTOs.</returns>
-        Task<PaginatedResponse<ProductDTO>> GetProductsPaginatedAsync(ProductTableFilter filter);
+        Task<PaginatedResponse<ProductDTO>> GetProductsPaginatedAsync(ProductTableFilter filter, Locale locale = Locale.Es);
 
         /// <summary>
         /// Gets a product by its identifier.
