@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using Diquis.Domain.Entities.Common;
 using Diquis.Infrastructure.Auth.JWT;
 using Diquis.Infrastructure.Images;
@@ -73,9 +73,9 @@ namespace Diquis.WebApi.Extensions
             #endregion
 
             #region [-- REGISTERING DB CONTEXT SERVICE --]
-            _ = services.AddDbContext<TenantDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-            _ = services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-            _ = services.AddDbContext<BaseDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            _ = services.AddDbContext<TenantDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            _ = services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+            _ = services.AddDbContext<BaseDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
             _ = services.AddAndMigrateTenantDatabases<TenantDbContext, BaseDbContext, ApplicationDbContext>(configuration);
             #endregion
 

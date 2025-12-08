@@ -96,7 +96,7 @@ namespace Diquis.Infrastructure.Persistence.Contexts
             string tenantConnectionString = CurrentTenantConnectionString;
             if (!string.IsNullOrEmpty(tenantConnectionString))
             {
-                _ = optionsBuilder.UseSqlServer(tenantConnectionString);
+                _ = optionsBuilder.UseNpgsql(tenantConnectionString);
             }
         }
 

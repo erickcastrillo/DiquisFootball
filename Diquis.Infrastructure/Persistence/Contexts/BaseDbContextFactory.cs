@@ -27,7 +27,7 @@ namespace Diquis.Infrastructure.Persistence.Contexts
             string connectionString = configuration.GetConnectionString("DefaultConnection");
 
             DbContextOptionsBuilder<BaseDbContext> optionsBuilder = new();
-            _ = optionsBuilder.UseSqlServer(connectionString);
+            _ = optionsBuilder.UseNpgsql(connectionString);
             return new BaseDbContext(optionsBuilder.Options);
         }
     }

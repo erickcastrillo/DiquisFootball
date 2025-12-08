@@ -5,6 +5,7 @@ using Diquis.WebApi.Middleware;
 
 using Hangfire;
 using Hangfire.Console;
+using Hangfire.PostgreSql;
 
 using Microsoft.OpenApi;
 
@@ -18,10 +19,14 @@ builder.Services.ConfigureApplicationServices(builder.Configuration); // Registe
 
 // Add Hangfire Services
 builder.Services.AddHangfire(config => config
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180) // Good practice to be explicit
     .UseSimpleAssemblyNameTypeSerializer()
     .UseRecommendedSerializerSettings()
-    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"))
-    .UseConsole()); // Add Hangfire.Console
+    .UsePostgreSqlStorage(options =>
+    {
+        options.UseNpgsqlConnection(builder.Configuration.GetConnectionString("DefaultConnection"));
+    })
+    .UseConsole()); // Hangfire.Console works regardless of storage
 
 builder.Services.AddHangfireServer();
 builder.Services.AddScoped<IBackgroundJobService, HangfireJobService>();

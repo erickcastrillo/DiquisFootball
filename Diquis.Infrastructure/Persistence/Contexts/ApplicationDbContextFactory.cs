@@ -31,7 +31,7 @@ namespace Diquis.Infrastructure.Persistence.Contexts
             string connectionString = configuration.GetConnectionString("DefaultConnection");
 
             DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
-            _ = optionsBuilder.UseSqlServer(connectionString);
+            _ = optionsBuilder.UseNpgsql(connectionString);
 
             // Create a mock/design-time implementation of ICurrentTenantUserService
             var designTimeTenantService = new DesignTimeCurrentTenantUserService(connectionString);
