@@ -7,6 +7,7 @@ using Diquis.BackgroundJobs.Data;
 using Diquis.BackgroundJobs.Areas.Identity.Data;
 using Diquis.Infrastructure.BackgroundJobs.Telemetry;
 using Diquis.Infrastructure.BackgroundJobs;
+using Diquis.Application.Common.BackgroundJobs;
 
 namespace Diquis.BackgroundJobs.Extensions;
 

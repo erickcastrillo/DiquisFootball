@@ -1,4 +1,5 @@
 using Diquis.Application.Common;
+using Diquis.Application.Common.BackgroundJobs;
 using Diquis.Infrastructure.BackgroundJobs;
 using Diquis.Infrastructure.BackgroundJobs.Telemetry;
 using Diquis.WebApi.Extensions;

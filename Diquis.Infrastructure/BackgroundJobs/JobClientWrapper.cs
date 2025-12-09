@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Hangfire;
+using Diquis.Application.Common.BackgroundJobs;
 
 namespace Diquis.Infrastructure.BackgroundJobs
 {

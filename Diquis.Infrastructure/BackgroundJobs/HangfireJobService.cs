@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Diquis.Application.Common;
+using Diquis.Application.Common.BackgroundJobs;
 
 namespace Diquis.Infrastructure.BackgroundJobs
 {
