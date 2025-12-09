@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
@@ -41,9 +41,14 @@ namespace Diquis.Application.Utility
         /// </summary>
         /// <param name="value">The enum value.</param>
         /// <returns>The description of the enum value or its name if no description is found.</returns>
-        public static string GetEnumDescription(this Enum value) // retrieve enum descriptions
+        public static string GetEnumDescription(this Enum value)
         {
-            FieldInfo fieldInfo = value.GetType().GetField(value.ToString());
+            FieldInfo? fieldInfo = value.GetType().GetField(value.ToString());
+            if (fieldInfo == null)
+            {
+                return value.ToString();
+            }
+
             DescriptionAttribute[] attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
 
             if (attributes.Length > 0)

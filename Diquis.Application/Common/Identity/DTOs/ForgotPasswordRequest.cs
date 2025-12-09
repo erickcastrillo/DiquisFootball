@@ -10,7 +10,7 @@ namespace Diquis.Application.Common.Identity.DTOs
         /// <summary>
         /// The email address of the user requesting password reset.
         /// </summary>
-        public string Email { get; set; }
+        public string Email { get; set; } = null!;
     }
 
     /// <summary>

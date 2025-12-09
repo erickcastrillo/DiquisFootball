@@ -11,7 +11,7 @@ namespace Diquis.Application.Common.Images
         /// <summary>
         /// The image file to upload.
         /// </summary>
-        public IFormFile ImageFile { get; set; }
+        public required IFormFile ImageFile { get; set; } = null!;
 
         /// <summary>
         /// Indicates whether to delete the current image.

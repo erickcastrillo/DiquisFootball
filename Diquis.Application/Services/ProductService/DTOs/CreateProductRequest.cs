@@ -1,4 +1,4 @@
-﻿using Diquis.Application.Common.Marker;
+using Diquis.Application.Common.Marker;
 using Diquis.Domain.Enums;
 using FluentValidation;
 
@@ -12,11 +12,11 @@ namespace Diquis.Application.Services.ProductService.DTOs
         /// <summary>
         /// Gets or sets the name of the product.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         /// <summary>
         /// Gets or sets the description of the product.
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
         /// <summary>
         /// Gets or sets the locale of the product.
         /// </summary>

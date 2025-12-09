@@ -10,15 +10,15 @@ namespace Diquis.Application.Common.Identity.DTOs
         /// <summary>
         /// The current password.
         /// </summary>
-        public string Password { get; set; }
+        public string Password { get; set; } = null!;
         /// <summary>
         /// The new password.
         /// </summary>
-        public string NewPassword { get; set; }
+        public string NewPassword { get; set; } = null!;
         /// <summary>
         /// The confirmation of the new password.
         /// </summary>
-        public string ConfirmNewPassword { get; set; }
+        public string ConfirmNewPassword { get; set; } = null!;
     }
 
     /// <summary>

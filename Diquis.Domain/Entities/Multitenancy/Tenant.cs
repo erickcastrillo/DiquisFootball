@@ -18,18 +18,18 @@ namespace Diquis.Domain.Entities.Multitenancy
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public new string Id { get; set; } // for simplicity, using magic-strings for tenant ids
+        public new required string Id { get; set; } // for simplicity, using magic-strings for tenant ids
 
         /// <summary>
         /// Gets or sets the name of the tenant.
         /// </summary>
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the connection string for the tenant's database.
         /// If null, the tenant uses the main shared database.
         /// </summary>
-        public string ConnectionString { get; set; } // any tenant with a null value for ConnectionString will use the main shared database
+        public string? ConnectionString { get; set; } // any tenant with a null value for ConnectionString will use the main shared database
 
         /// <summary>
         /// Gets or sets a value indicating whether the tenant is active.

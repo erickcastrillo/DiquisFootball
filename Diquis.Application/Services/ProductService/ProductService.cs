@@ -161,6 +161,11 @@ namespace Diquis.Application.Services.ProductService
             try
             {
                 Product? product = await _repository.RemoveByIdAsync<Product, Guid>(id);
+                if (product == null)
+                {
+                    return Response<Guid>.Fail("Product not found");
+                }
+                
                 _ = await _repository.SaveChangesAsync();
 
                 return Response<Guid>.Success(product.Id);

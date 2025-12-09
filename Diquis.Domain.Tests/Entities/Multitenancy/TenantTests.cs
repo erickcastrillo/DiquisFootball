@@ -1,5 +1,6 @@
 using System;
 using Diquis.Domain.Entities.Multitenancy;
+using Diquis.Domain.Enums;
 using Xunit;
 
 namespace Diquis.Domain.Tests.Entities.Multitenancy
@@ -9,12 +10,17 @@ namespace Diquis.Domain.Tests.Entities.Multitenancy
         [Fact]
         public void Constructor_InitializesPropertiesToDefaults()
         {
-            Tenant tenant = new();
-            Assert.Null(tenant.Id);
-            Assert.Null(tenant.Name);
+            Tenant tenant = new()
+            {
+                Id = "test-id",
+                Name = "Test Name"
+            };
+            Assert.Equal("test-id", tenant.Id);
+            Assert.Equal("Test Name", tenant.Name);
             Assert.Null(tenant.ConnectionString);
             Assert.False(tenant.IsActive);
             Assert.Equal(default(DateTime), tenant.CreatedOn);
+            Assert.Equal(ProvisioningStatus.Pending, tenant.Status);
         }
 
         [Fact]
@@ -40,7 +46,12 @@ namespace Diquis.Domain.Tests.Entities.Multitenancy
         [Fact]
         public void ConnectionString_NullMeansSharedDatabase()
         {
-            Tenant tenant = new() { ConnectionString = null };
+            Tenant tenant = new()
+            {
+                Id = "tenant-2",
+                Name = "Shared Tenant",
+                ConnectionString = null
+            };
             Assert.Null(tenant.ConnectionString);
         }
     }

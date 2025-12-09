@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Diquis.Application.Common.Filter
 {
@@ -38,7 +38,7 @@ namespace Diquis.Application.Common.Filter
         /// <summary>
         /// Gets or sets the identifier of the column to sort by.
         /// </summary>
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
         /// <summary>
         /// Gets or sets a value indicating whether the column should be sorted in descending order.
         /// </summary>

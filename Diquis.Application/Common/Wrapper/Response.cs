@@ -59,7 +59,7 @@ namespace Diquis.Application.Common.Wrapper
         /// <summary>
         /// The data returned in the response.
         /// </summary>
-        public T Data { get; set; }
+        public T Data { get; set; } = default!;
 
         /// <summary>
         /// Creates a successful response with no data.
@@ -105,6 +105,15 @@ namespace Diquis.Application.Common.Wrapper
         }
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

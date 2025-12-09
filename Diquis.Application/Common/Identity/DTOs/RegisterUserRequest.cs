@@ -1,4 +1,4 @@
-﻿using Diquis.Application.Common.Marker;
+using Diquis.Application.Common.Marker;
 using FluentValidation;
 
 namespace Diquis.Application.Common.Identity.DTOs
@@ -11,32 +11,32 @@ namespace Diquis.Application.Common.Identity.DTOs
         /// <summary>
         /// Gets or sets the first name of the user.
         /// </summary>
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the last name of the user.
         /// </summary>
-        public string LastName { get; set; }
+        public string LastName { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the email address of the user.
         /// </summary>
-        public string Email { get; set; }
+        public string Email { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the password for the user.
         /// </summary>
-        public string Password { get; set; }
+        public string Password { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the phone number of the user.
         /// </summary>
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the role ID for the user.
         /// </summary>
-        public string RoleId { get; set; }
+        public string RoleId { get; set; } = null!;
     }
 
     /// <summary>

@@ -33,7 +33,7 @@ namespace Diquis.Application.Common.Specification
                 return specificationBuilder;
 
             var fields = orderByFields.Split(',');
-            IOrderedSpecificationBuilder<T> orderedBuilder = null;
+            IOrderedSpecificationBuilder<T>? orderedBuilder = null;
 
             for (var index = 0; index < fields.Length; index++)
             {
@@ -43,7 +43,7 @@ namespace Diquis.Application.Common.Specification
                     field = field.Substring(1);
 
                 Type targetType = typeof(T);
-                PropertyInfo matchedProperty = FindNestedProperty(targetType, field.ToLower());
+                PropertyInfo? matchedProperty = FindNestedProperty(targetType, field.ToLower());
 
                 if (matchedProperty == null)
                     throw new ArgumentException($"Property '{field}' not found on type '{typeof(T).Name}'", nameof(orderByFields));
@@ -69,9 +69,12 @@ namespace Diquis.Application.Common.Specification
                 }
                 else
                 {
-                    orderedBuilder = isDescending
-                        ? orderedBuilder.ThenByDescending(keySelector)
-                        : orderedBuilder.ThenBy(keySelector);
+                    if (orderedBuilder != null)
+                    {
+                        orderedBuilder = isDescending
+                            ? orderedBuilder.ThenByDescending(keySelector)
+                            : orderedBuilder.ThenBy(keySelector);
+                    }
                 }
             }
 
@@ -85,12 +88,12 @@ namespace Diquis.Application.Common.Specification
         /// <param name="propertyName">The name of the property, potentially nested.</param>
         /// <returns>The <see cref="PropertyInfo"/> of the found property, or null if not found.</returns>
         // helper method for cases where the column property is nested, for example 'Supplier.Name'
-        public static PropertyInfo FindNestedProperty(Type type, string propertyName)
+        public static PropertyInfo? FindNestedProperty(Type type, string propertyName)
         {
             string[] propertyNames = propertyName.Split('.'); // Split the property name by dot to handle nesting
 
             Type currentType = type;
-            PropertyInfo property = null;
+            PropertyInfo? property = null;
 
             foreach (string name in propertyNames)
             {
