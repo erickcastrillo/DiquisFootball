@@ -8,8 +8,9 @@ import LoadingScreen from 'components/LoadingScreen';
 import ScrollToTop from 'utils/ScrollToTop';
 import { useStore } from 'stores/store';
 import { changeHtmlAttribute } from 'utils';
-import LanguageSwitcher from 'components/LanguageSwitcher'; // Import LanguageSwitcher
-import { useTranslation } from 'react-i18next'; // Import useTranslation
+import LanguageSwitcher from 'components/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
+import { useSignalR } from 'hooks/useSignalR'; // Import SignalR hook
 
 function App() {
   const { authStore, accountStore, layoutStore } = useStore();
@@ -17,7 +18,10 @@ function App() {
     !import.meta.env.NODE_ENV || import.meta.env.NODE_ENV === 'development';
 
   const { theme, topBarTheme } = layoutStore;
-  const { t } = useTranslation(); // Initialize useTranslation hook
+  const { t } = useTranslation();
+
+  // Initialize SignalR connection
+  useSignalR();
 
   // get the current user (otherwise reloading browser will clear mobx)
   React.useEffect(() => {

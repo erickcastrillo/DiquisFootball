@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import * as Yup from 'yup';
 import { observer } from 'mobx-react-lite';
 import { toast } from 'react-toastify';
@@ -14,37 +14,47 @@ import { LoadingButton } from 'components/ui';
 
 type EditTenantModalProps = EditModalProps<Tenant>;
 
+// Define validation schema - only validate editable fields
+const getValidationSchema = (t: any) => Yup.object().shape({
+  name: Yup.string().required(t('tenants.editModal.validation.nameRequired')),
+  isActive: Yup.boolean().required()
+});
+
 const EditTenantModal = ({ show, onHide, data }: EditTenantModalProps) => {
   const { tenantsStore } = useStore();
   const { updateTenant, loading } = tenantsStore;
   const { t } = useTranslation();
+
+  const validationSchema = useMemo(() => getValidationSchema(t), [t]);
 
   const defaultValues = useMemo<Tenant>(
     () => ({
       id: data.id,
       name: data.name,
       isActive: data.isActive,
-      createdOn: data.createdOn
+      createdOn: data.createdOn,
+      status: data.status,
+      provisioningError: data.provisioningError,
+      lastProvisioningAttempt: data.lastProvisioningAttempt
     }),
     [data]
   );
-
-  const validationSchema = Yup.object({
-    name: Yup.string().required(t('tenants.editModal.validation.nameRequired')),
-    id: Yup.string().default(data.id as string),
-    isActive: Yup.boolean().default(data.isActive as boolean),
-    createdOn: Yup.string().default(data.createdOn as string)
-  });
 
   const {
     reset,
     register,
     handleSubmit,
     formState: { isDirty, isValid, isSubmitting }
-  } = useForm({
-    defaultValues: defaultValues,
-    resolver: yupResolver(validationSchema)
+  } = useForm<Tenant>({
+    defaultValues,
+    resolver: yupResolver(validationSchema) as any
   });
+
+  useEffect(() => {
+    if (show) {
+      reset(defaultValues);
+    }
+  }, [show, defaultValues, reset]);
 
   const handleClose = () => {
     reset();

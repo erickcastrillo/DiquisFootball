@@ -154,8 +154,8 @@ const Tenants = {
   listOptions: () => requests.get<Result<Tenant[]>>("/tenants/tenant-options"), // options for demo login
 
   details: (id: string) => requests.get<Result<Tenant>>(`/tenants/${id}`),
-  create: (tenant: CreateTenantRequest) => requests.post<Result<Tenant>>(`/tenants`, tenant),
-  update: (tenant: Tenant) => requests.put<Result<Tenant>>(`/tenants/${tenant.id}`, tenant),
+  create: (tenant: CreateTenantRequest) => requests.post<Result<string>>(`/tenants`, tenant), // Returns tenant ID
+  update: (tenant: Tenant) => requests.put<Result<string>>(`/tenants/${tenant.id}`, tenant), // Returns tenant ID
 };
 
 const agent = {

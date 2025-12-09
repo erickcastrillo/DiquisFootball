@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Diquis.Application.Common.BackgroundJobs;
 using Diquis.Infrastructure.BackgroundJobs;
 using Moq;
 

@@ -1,1 +1,0 @@
-import{r as c,u as i,j as l,c as n}from"./index-DZyfIAu_.js";const m=c.forwardRef(({bsPrefix:a,size:s,vertical:o=!1,className:e,role:p="group",as:u="div",...f},x)=>{const r=i(a,"btn-group");let t=r;return o&&(t=`${r}-vertical`),l.jsx(u,{...f,ref:x,role:p,className:n(e,t,s&&`${r}-${s}`)})});m.displayName="ButtonGroup";export{m as B};

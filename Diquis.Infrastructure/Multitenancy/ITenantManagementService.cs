@@ -31,23 +31,27 @@ namespace Diquis.Infrastructure.Multitenancy
 
         /// <summary>
         /// Creates and saves a new tenant based on the provided request.
+        /// The tenant provisioning is executed as a background job.
         /// </summary>
         /// <param name="request">The request containing tenant creation details.</param>
+        /// <param name="initiatingUserId">The ID of the user initiating the tenant creation.</param>
         /// <returns>
         /// A <see cref="Task"/> representing the asynchronous operation.
-        /// The task result contains a <see cref="Response{T}"/> with the created <see cref="Tenant"/>.
+        /// The task result contains a <see cref="Response{T}"/> with the tenant ID and job ID.
         /// </returns>
-        Task<Response<Tenant>> SaveTenant(CreateTenantRequest request);
+        Task<Response<string>> SaveTenantAsync(CreateTenantRequest request, string initiatingUserId);
 
         /// <summary>
         /// Updates an existing tenant with the specified ID using the provided request data.
+        /// The tenant update is executed as a background job.
         /// </summary>
         /// <param name="request">The request containing updated tenant details.</param>
         /// <param name="id">The unique identifier of the tenant to update.</param>
+        /// <param name="initiatingUserId">The ID of the user initiating the tenant update.</param>
         /// <returns>
         /// A <see cref="Task"/> representing the asynchronous operation.
-        /// The task result contains a <see cref="Response{T}"/> with the updated <see cref="Tenant"/>.
+        /// The task result contains a <see cref="Response{T}"/> with the tenant ID and job ID.
         /// </returns>
-        Task<Response<Tenant>> UpdateTenant(UpdateTenantRequest request, string id);
+        Task<Response<string>> UpdateTenantAsync(UpdateTenantRequest request, string id, string initiatingUserId);
     }
 }
