@@ -12,8 +12,8 @@
 
 		<PackageReference Include="Ardalis.Specification" Version="9.3.1" />
 
-		<PackageReference Include="AutoMapper" Version="15.1.0" />
-		<PackageReference Include="FluentValidation" Version="12.1.0" />
+		<PackageReference Include="AutoMapper" Version="16.0.0" />
+		<PackageReference Include="FluentValidation" Version="12.1.1" />
 		<PackageReference Include="NPOI" Version="2.7.5" />
 	</ItemGroup>
 

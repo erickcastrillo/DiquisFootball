@@ -1,7 +1,9 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="Diquis.Application/Diquis.Application.csproj" />
+    <Project Path="Diquis.BackgroundJobs/Diquis.BackgroundJobs.csproj" />
     <Project Path="Diquis.Domain/Diquis.Domain.csproj" />
+    <Project Path="Diquis.Infrastructure.AI/Diquis.Infrastructure.AI.csproj" Id="b33f1c2d-487d-419c-b693-6234387c2e89" />
     <Project Path="Diquis.Infrastructure/Diquis.Infrastructure.csproj" />
     <Project Path="Diquis.WebApi/Diquis.WebApi.csproj" />
   </Folder>

@@ -1,0 +1,169 @@
+{
+  "welcome": "¡Bienvenido a Diquis!",
+  "products": {
+    "title": "Productos",
+    "newProduct": "Nuevo Producto",
+    "basicUserTooltip": "El usuario básico no puede usar esta función",
+    "searchPlaceholder": "Buscar productos...",
+    "paginationDescription": "Paginación del lado del servidor con clasificación y filtrado",
+    "exporting": "Exportando...",
+    "export": "Exportar",
+    "columns": {
+      "name": "Nombre",
+      "description": "Descripción",
+      "guid": "Guid",
+      "actions": "Acciones",
+      "edit": "Editar"
+    },
+    "modal": {
+      "editTitle": "Editar Producto",
+      "addTitle": "Agregar Producto",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Ingrese el nombre del producto",
+      "descriptionLabel": "Descripción",
+      "descriptionPlaceholder": "Ingrese la descripción del producto",
+      "delete": "Eliminar",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "createSuccess": "¡Producto agregado con éxito!",
+      "createFailed": "Error al crear el producto",
+      "updateSuccess": "¡Producto actualizado con éxito!",
+      "updateFailed": "Error al actualizar el producto",
+      "deleteSuccess": "¡Producto eliminado con éxito!",
+      "validation": {
+        "nameRequired": "El nombre del producto es obligatorio",
+        "descriptionRequired": "La descripción es obligatoria"
+      }
+    }
+  },
+  "tables": {
+    "noResults": "No hay resultados"
+  },
+  "pagination": {
+    "noResults": "No hay resultados",
+    "showingEntries": "Mostrando {{firstDisplay}} a {{lastDisplay}} de {{totalCount}} entradas"
+  },
+  "users": {
+    "title": "Usuarios",
+    "newUser": "Nuevo Usuario",
+    "searchPlaceholder": "Buscar usuarios...",
+    "paginationDescription": "Paginación del lado del cliente con clasificación y filtrado",
+    "columns": {
+      "name": "Nombre",
+      "role": "Rol",
+      "email": "Correo electrónico",
+      "active": "Activo",
+      "edit": "Editar",
+      "naYou": "N/A(Tú)"
+    },
+    "registerModal": {
+      "addTitle": "Agregar Usuario",
+      "firstNameLabel": "Nombre",
+      "firstNamePlaceholder": "Nombre",
+      "lastNameLabel": "Apellido",
+      "lastNamePlaceholder": "Apellido",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "usuario@correo.com",
+      "phoneNumberLabel": "Número de teléfono",
+      "phoneNumberPlaceholder": "Número de teléfono",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Contraseña",
+      "roleLabel": "Rol",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "createSuccess": "¡Usuario agregado con éxito!",
+      "createFailed": "Error al crear el usuario",
+      "validation": {
+        "firstNameRequired": "El nombre es obligatorio",
+        "lastNameRequired": "El apellido es obligatorio",
+        "emailRequired": "El correo electrónico es obligatorio",
+        "emailInvalid": "El correo electrónico no es válido",
+        "passwordRequired": "La contraseña es obligatoria"
+      }
+    },
+    "editModal": {
+      "editTitle": "Editar Usuario",
+      "isActiveLabel": "Está activo",
+      "firstNameLabel": "Nombre",
+      "firstNamePlaceholder": "Nombre",
+      "lastNameLabel": "Apellido",
+      "lastNamePlaceholder": "Apellido",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "usuario@correo.com",
+      "phoneNumberLabel": "Número de teléfono",
+      "phoneNumberPlaceholder": "Número de teléfono",
+      "roleLabel": "Rol",
+      "delete": "Eliminar",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "deleteSuccess": "¡Usuario eliminado con éxito!",
+      "deleteFailed": "Error al eliminar el usuario",
+      "editSuccess": "¡Usuario editado con éxito!",
+      "editFailed": "Error al editar el usuario",
+      "validation": {
+        "firstNameRequired": "El nombre es obligatorio",
+        "lastNameRequired": "El apellido es obligatorio",
+        "emailRequired": "El correo electrónico es obligatorio",
+        "emailInvalid": "El correo electrónico no es válido"
+      }
+    }
+  },
+  "tenants": {
+    "title": "Inquilinos",
+    "addTenant": "Agregar Inquilino",
+    "searchPlaceholder": "Buscar inquilinos...",
+    "paginationDescription": "Paginación del lado del cliente con clasificación y filtrado",
+    "columns": {
+      "id": "Id",
+      "name": "Nombre",
+      "active": "Activo",
+      "edit": "Editar",
+      "naYou": "N/A(Tú)"
+    },
+    "registerModal": {
+      "addTitle": "Agregar Inquilino",
+      "tenantIdLabel": "Id del Inquilino",
+      "tenantIdPlaceholder": "Id del Inquilino",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Nombre",
+      "adminEmailLabel": "Correo electrónico del administrador",
+      "adminEmailPlaceholder": "admin@correo.com",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Contraseña",
+      "isolatedDatabaseLabel": "Base de datos aislada",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "createSuccess": "Inquilino creado con éxito",
+      "createFailed": "Error al crear el inquilino",
+      "validation": {
+        "keyRequired": "La clave es obligatoria",
+        "nameRequired": "El nombre del inquilino es obligatorio",
+        "adminEmailRequired": "El correo electrónico del administrador es obligatorio",
+        "adminEmailInvalid": "El correo electrónico del administrador no es válido",
+        "passwordRequired": "La contraseña es obligatoria"
+      }
+    },
+    "editModal": {
+      "editTitle": "Editar Inquilino",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Nombre",
+      "isActiveLabel": "Está activo",
+      "cancel": "Cancelar",
+      "save": "Guardar",
+      "editSuccess": "Inquilino editado con éxito",
+      "editFailed": "Error al editar el inquilino",
+      "validation": {
+        "nameRequired": "El nombre del inquilino es obligatorio"
+      }
+    }
+  },
+  "sidebar": {
+    "app-products": "Productos",
+    "app-user-management": "Usuarios",
+    "app-tenants": "Inquilinos"
+  },
+  "common": {
+    "yes": "Sí",
+    "no": "No"
+  }
+}
