@@ -6,6 +6,7 @@ import React, {
   useState
 } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { findAllParent, findMenuItem } from 'utils';
 import MenuItem from './MenuItem';
@@ -21,6 +22,7 @@ type AppMenuProps = {
 const AppMenu = ({ menuItems }: AppMenuProps) => {
   let location = useLocation();
   const { accountStore } = useStore();
+  const { t } = useTranslation();
 
   const menuRef = useRef<HTMLUListElement>(null);
 
@@ -89,15 +91,16 @@ const AppMenu = ({ menuItems }: AppMenuProps) => {
   return (
     <ul className="side-nav" ref={menuRef} id="main-side-menu">
       {availableMenuOptions.map((item, index) => {
+        const translatedLabel = t(`sidebar.${item.key}`, item.label);
         return (
           <React.Fragment key={index.toString()}>
             {item.isTitle ? (
-              <li className="side-nav-title">{item.label}</li>
+              <li className="side-nav-title">{translatedLabel}</li>
             ) : (
               <>
                 {item.children ? (
                   <MenuItemWithChildren
-                    item={item}
+                    item={{ ...item, label: translatedLabel }}
                     toggleMenu={toggleMenu}
                     subMenuClassNames="side-nav-second-level"
                     activeMenuItems={activeMenuItems}
@@ -105,7 +108,7 @@ const AppMenu = ({ menuItems }: AppMenuProps) => {
                   />
                 ) : (
                   <MenuItem
-                    item={item}
+                    item={{ ...item, label: translatedLabel }}
                     linkClassName="side-nav-link"
                     className={`side-nav-item ${
                       activeMenuItems.includes(item.key)
