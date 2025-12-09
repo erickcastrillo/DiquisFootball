@@ -116,6 +116,7 @@
     "columns": {
       "id": "Id",
       "name": "Nombre",
+      "status": "Estado",
       "active": "Activo",
       "edit": "Editar",
       "naYou": "N/A(Tú)"
@@ -133,7 +134,7 @@
       "isolatedDatabaseLabel": "Base de datos aislada",
       "cancel": "Cancelar",
       "save": "Guardar",
-      "createSuccess": "Inquilino creado con éxito",
+      "createSuccess": "Creación de inquilino iniciada. El aprovisionamiento se realizará en segundo plano.",
       "createFailed": "Error al crear el inquilino",
       "validation": {
         "keyRequired": "La clave es obligatoria",
@@ -150,7 +151,7 @@
       "isActiveLabel": "Está activo",
       "cancel": "Cancelar",
       "save": "Guardar",
-      "editSuccess": "Inquilino editado con éxito",
+      "editSuccess": "Actualización de inquilino iniciada. Los cambios se aplicarán en segundo plano.",
       "editFailed": "Error al editar el inquilino",
       "validation": {
         "nameRequired": "El nombre del inquilino es obligatorio"

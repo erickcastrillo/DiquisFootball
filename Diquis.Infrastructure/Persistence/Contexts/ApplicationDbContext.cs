@@ -58,9 +58,7 @@ namespace Diquis.Infrastructure.Persistence.Contexts
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            this.TenantAndAuditFields(CurrentUserId, CurrentTenantId);
-            int result = await base.SaveChangesAsync(cancellationToken);
-            return result;
+            return await this.SaveChangesWithTransactionAsync(CurrentUserId, CurrentTenantId, cancellationToken);
         }
     }
 }

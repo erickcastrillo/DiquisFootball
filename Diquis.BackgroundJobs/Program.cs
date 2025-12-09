@@ -1,5 +1,6 @@
 using Diquis.BackgroundJobs.Extensions;
 using Diquis.BackgroundJobs.Middleware;
+using Diquis.Infrastructure.Hubs;
 using Hangfire;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -45,6 +46,9 @@ app.UseAuthorization();
 // Add Hangfire authentication middleware AFTER authentication/authorization
 // This handles authentication checks and redirects for "/" and "/hangfire" paths
 app.UseHangfireAuthentication();
+
+// Map SignalR Hub - CRITICAL: Must use the same hub as WebApi
+app.MapHub<NotificationHub>("/hubs/notifications");
 
 // Map root path to a simple HTML page with link to Hangfire
 app.MapGet("/", (HttpContext context, IAntiforgery antiforgery) =>

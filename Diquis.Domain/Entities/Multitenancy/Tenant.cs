@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Diquis.Domain.Entities.Common;
+using Diquis.Domain.Enums;
 
 namespace Diquis.Domain.Entities.Multitenancy
 {
@@ -39,5 +40,20 @@ namespace Diquis.Domain.Entities.Multitenancy
         /// Gets or sets the date and time when the tenant was created.
         /// </summary>
         public DateTime CreatedOn { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current provisioning status of the tenant.
+        /// </summary>
+        public ProvisioningStatus Status { get; set; } = ProvisioningStatus.Pending;
+
+        /// <summary>
+        /// Gets or sets the error message if provisioning failed.
+        /// </summary>
+        public string? ProvisioningError { get; set; }
+
+        /// <summary>
+        /// Gets or sets the timestamp of the last provisioning attempt.
+        /// </summary>
+        public DateTime? LastProvisioningAttempt { get; set; }
     }
 }

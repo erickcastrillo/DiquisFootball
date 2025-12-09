@@ -1,8 +1,11 @@
 using AutoMapper;
+using Diquis.Application.Common;
 using Diquis.Application.Common.Wrapper;
 using Diquis.Application.Utility;
 using Diquis.Domain.Entities.Common;
 using Diquis.Domain.Entities.Multitenancy;
+using Diquis.Domain.Enums;
+using Diquis.Infrastructure.BackgroundJobs;
 using Diquis.Infrastructure.Multitenancy.DTOs;
 using Diquis.Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Hosting;
@@ -26,6 +29,7 @@ namespace Diquis.Infrastructure.Multitenancy
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _environment;
+        private readonly IBackgroundJobService _backgroundJobService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TenantManagementService"/> class.
@@ -36,13 +40,15 @@ namespace Diquis.Infrastructure.Multitenancy
         /// <param name="userManager">The user manager for identity operations.</param>
         /// <param name="mapper">The AutoMapper instance.</param>
         /// <param name="environment">The web hosting environment.</param>
+        /// <param name="backgroundJobService">The background job service for enqueueing jobs.</param>
         public TenantManagementService(
             BaseDbContext baseDbContext,
             IConfiguration configuration,
             IServiceProvider serviceProvider,
             UserManager<ApplicationUser> userManager,
             IMapper mapper,
-            IWebHostEnvironment environment)
+            IWebHostEnvironment environment,
+            IBackgroundJobService backgroundJobService)
         {
             _baseDbContext = baseDbContext;
             _configuration = configuration;
@@ -50,6 +56,7 @@ namespace Diquis.Infrastructure.Multitenancy
             _userManager = userManager;
             _mapper = mapper;
             _environment = environment;
+            _backgroundJobService = backgroundJobService;
         }
 
         /// <summary>
@@ -83,27 +90,28 @@ namespace Diquis.Infrastructure.Multitenancy
         }
 
         /// <summary>
-        /// Creates and saves a new tenant, including the default admin user and optional isolated database.
+        /// Creates a new tenant and enqueues a background job for provisioning.
         /// </summary>
         /// <param name="request">The tenant creation request.</param>
+        /// <param name="initiatingUserId">The ID of the user initiating the tenant creation.</param>
         /// <returns>
-        /// A <see cref="Response{T}"/> containing the created <see cref="Tenant"/> or error messages.
+        /// A <see cref="Response{T}"/> containing the tenant ID and job ID.
         /// </returns>
-        public async Task<Response<Tenant>> SaveTenant(CreateTenantRequest request)
+        public async Task<Response<string>> SaveTenantAsync(CreateTenantRequest request, string initiatingUserId)
         {
             string organizationSlug = NanoHelpers.ToUrlSlug(request.Id);
             bool tenantExists = await _baseDbContext.Tenants.AnyAsync(x => x.Id == organizationSlug);
 
             if (tenantExists)
             {
-                return Response<Tenant>.Fail("Tenant already exists");
+                return Response<string>.Fail("Tenant already exists");
             }
 
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
             NpgsqlConnectionStringBuilder builder = new(connectionString);
-            string mainDatabaseName = builder.Database; // Use 'Database' instead of 'InitialCatalog'
+            string mainDatabaseName = builder.Database;
             string tenantDbName = mainDatabaseName + "-" + organizationSlug;
-            builder.Database = tenantDbName; // Use 'Database' instead of 'InitialCatalog'
+            builder.Database = tenantDbName;
             string modifiedConnectionString = builder.ConnectionString;
 
             Tenant tenant = new()
@@ -112,108 +120,67 @@ namespace Diquis.Infrastructure.Multitenancy
                 Name = request.Name,
                 ConnectionString = request.HasIsolatedDatabase ? modifiedConnectionString : null,
                 CreatedOn = DateTime.UtcNow,
-                IsActive = true
+                IsActive = true,
+                Status = ProvisioningStatus.Pending
             };
 
             try
             {
-                _ = await _baseDbContext.Tenants.AddAsync(tenant);
+                await _baseDbContext.Tenants.AddAsync(tenant);
+                await _baseDbContext.SaveChangesAsync();
 
-                ApplicationUser user = new()
-                {
-                    UserName = request.AdminEmail + "." + tenant.Id,
-                    FirstName = "Default",
-                    LastName = "Admin",
-                    Email = request.AdminEmail,
-                    EmailConfirmed = true,
-                    TenantId = tenant.Id
-                };
+                // Enqueue background job for tenant provisioning
+                var jobId = _backgroundJobService.Enqueue(() =>
+                    new ProvisionTenantJob(default!, default!, default!, default!, default!, default!, default!)
+                        .ExecuteAsync(tenant.Id, request, initiatingUserId));
 
-                IdentityResult result = await _userManager.CreateAsync(user, request.Password);
-                if (result.Succeeded)
-                {
-                    if (request.HasIsolatedDatabase)
-                    {
-                        try
-                        {
-                            using IServiceScope scopeTenant = _serviceProvider.CreateScope();
-                            ApplicationDbContext dbContext = scopeTenant.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                            dbContext.Database.SetConnectionString(modifiedConnectionString);
-                            if (_environment.IsDevelopment())
-                            {
-                                if (dbContext.Database.GetPendingMigrations().Any())
-                                {
-                                    Console.ForegroundColor = ConsoleColor.Blue;
-                                    Console.WriteLine($"Applying ApplicationDB Migrations for New '{tenant.Id}' tenant.");
-                                    Console.ResetColor();
-                                    dbContext.Database.Migrate();
-                                }
-                            }
-                            else
-                            {
-                                // -- add host specific code here for production environment
-                                // -- Azure, AWS, etc. https://diquis.com/deploy-multi-tenant-azure-elastic-database-pool
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new Exception(ex.Message);
-                        }
-                    }
-
-                    _ = await _userManager.AddToRoleAsync(user, "academy_owner");
-                    _ = await _baseDbContext.SaveChangesAsync();
-                    return Response<Tenant>.Success(tenant);
-                }
-                else
-                {
-                    List<string> messages = new();
-                    foreach (IdentityError error in result.Errors)
-                    {
-                        messages.Add(error.Description);
-                    }
-                    return Response<Tenant>.Fail(messages);
-                }
+                var response = Response<string>.Success(tenant.Id);
+                response.Messages.Add("Tenant creation initiated. The tenant will be provisioned in the background.");
+                return response;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return Response<string>.Fail(ex.Message);
             }
         }
 
         /// <summary>
-        /// Updates an existing tenant's information.
+        /// Updates an existing tenant by enqueueing a background job.
         /// </summary>
         /// <param name="request">The update request containing new tenant data.</param>
         /// <param name="id">The identifier of the tenant to update.</param>
+        /// <param name="initiatingUserId">The ID of the user initiating the tenant update.</param>
         /// <returns>
-        /// A <see cref="Response{T}"/> containing the updated <see cref="Tenant"/> or error messages.
+        /// A <see cref="Response{T}"/> containing the tenant ID and job ID.
         /// </returns>
-        public async Task<Response<Tenant>> UpdateTenant(UpdateTenantRequest request, string id)
+        public async Task<Response<string>> UpdateTenantAsync(UpdateTenantRequest request, string id, string initiatingUserId)
         {
             Tenant tenant = await _baseDbContext.Tenants.SingleOrDefaultAsync(x => x.Id == id);
 
             if (tenant == null)
             {
-                return Response<Tenant>.Fail("Not Found");
+                return Response<string>.Fail("Not Found");
             }
 
             if (tenant.Id == "root")
             {
-                return Response<Tenant>.Fail("Cannot edit root tenant");
+                return Response<string>.Fail("Cannot edit root tenant");
             }
-
-            tenant.IsActive = request.IsActive;
-            tenant.Name = request.Name;
 
             try
             {
-                _ = await _baseDbContext.SaveChangesAsync();
-                return Response<Tenant>.Success(tenant);
+                // Enqueue background job for tenant update
+                var jobId = _backgroundJobService.Enqueue(() =>
+                    new UpdateTenantJob(default!, default!, default!)
+                        .ExecuteAsync(id, request, initiatingUserId));
+
+                var response = Response<string>.Success(id);
+                response.Messages.Add("Tenant update initiated. The tenant will be updated in the background.");
+                return response;
             }
             catch (Exception ex)
             {
-                return Response<Tenant>.Fail(ex.Message);
+                return Response<string>.Fail(ex.Message);
             }
         }
     }

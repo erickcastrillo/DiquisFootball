@@ -116,6 +116,7 @@
     "columns": {
       "id": "Id",
       "name": "Name",
+      "status": "Status",
       "active": "Active",
       "edit": "Edit",
       "naYou": "N/A(You)"
@@ -133,7 +134,7 @@
       "isolatedDatabaseLabel": "Isolated Database",
       "cancel": "Cancel",
       "save": "Save",
-      "createSuccess": "Tenant created successfully",
+      "createSuccess": "Tenant creation initiated. Provisioning will happen in the background.",
       "createFailed": "Create tenant failed",
       "validation": {
         "keyRequired": "The key is required",
@@ -150,7 +151,7 @@
       "isActiveLabel": "Is Active",
       "cancel": "Cancel",
       "save": "Save",
-      "editSuccess": "Tenant Edited Successfully",
+      "editSuccess": "Tenant update initiated. Changes will be applied in the background.",
       "editFailed": "Edit tenant failed",
       "validation": {
         "nameRequired": "Tenant name is required"

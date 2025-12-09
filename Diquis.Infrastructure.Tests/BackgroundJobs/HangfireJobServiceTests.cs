@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
+using Diquis.Application.Common.BackgroundJobs;
 using Diquis.Infrastructure.BackgroundJobs;
 using Moq;
-
 using Xunit;
 
 namespace Diquis.Infrastructure.Tests.BackgroundJobs
@@ -18,7 +18,7 @@ namespace Diquis.Infrastructure.Tests.BackgroundJobs
         public void Enqueue_CallsJobClient()
         {
             // Arrange
-            Mock<IJobClientWrapper> jobClientWrapperMock = new Mock<IJobClientWrapper>();
+            Mock<IJobClientWrapper> jobClientWrapperMock = new();
             Expression<Action> expr = () => Console.WriteLine("test");
             _ = jobClientWrapperMock.Setup(j => j.Enqueue(expr)).Returns("jobid");
             HangfireJobService service = new(jobClientWrapperMock.Object);

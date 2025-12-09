@@ -1,7 +1,10 @@
 using Diquis.Application.Common;
 using Diquis.Application.Common.BackgroundJobs;
+using Diquis.Application.Common.Notifications;
 using Diquis.Infrastructure.BackgroundJobs;
 using Diquis.Infrastructure.BackgroundJobs.Telemetry;
+using Diquis.Infrastructure.Hubs;
+using Diquis.Infrastructure.Notifications;
 using Diquis.WebApi.Extensions;
 using Diquis.WebApi.Middleware;
 
@@ -9,6 +12,7 @@ using Hangfire;
 using Hangfire.Console;
 using Hangfire.PostgreSql;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.OpenApi;
 
@@ -19,6 +23,19 @@ using System.Reflection;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureApplicationServices(builder.Configuration); // Register Services / CORS / Configure Identity Requirements / JWT Settings / Register DB Contexts / Image Handling, Mailer, Fluent Validation, Automapper
+
+// Get Redis connection string
+string redisConnectionString = builder.Configuration.GetConnectionString("RedisConnection") ?? "localhost:6379";
+
+// Add SignalR with Redis backplane for cross-process messaging
+builder.Services.AddSignalR()
+    .AddStackExchangeRedis(redisConnectionString, options =>
+    {
+        options.Configuration.ChannelPrefix = "Diquis";
+    });
+
+// Register notification service
+builder.Services.AddScoped<INotificationService, SignalRNotificationService>();
 
 // Add Hangfire Services
 builder.Services.AddHangfire(config => config
@@ -34,8 +51,10 @@ builder.Services.AddHangfire(config => config
 builder.Services.AddScoped<IBackgroundJobService, HangfireJobService>();
 builder.Services.AddScoped<IJobClientWrapper, JobClientWrapper>();
 
-// Register test job
+// Register background jobs
 builder.Services.AddScoped<TestJob>();
+builder.Services.AddScoped<ProvisionTenantJob>();
+builder.Services.AddScoped<UpdateTenantJob>();
 
 // Setup OpenTelemetry Tracing
 builder.Services.AddOpenTelemetry().WithTracing(tracingBuilder =>
@@ -98,6 +117,9 @@ app.UseStaticFiles();
 app.UseMiddleware<TenantResolver>();
 app.MapControllers();
 
+// Map SignalR Hub
+app.MapHub<NotificationHub>("/hubs/notifications");
+
 // Test endpoints for Hangfire job scheduling
 app.MapGet("/api/test/enqueue-job", (IBackgroundJobService jobService, string message = "Hello from Hangfire!") =>
 {
@@ -132,6 +154,43 @@ app.MapGet("/api/test/enqueue-failing-job", (IBackgroundJobService jobService) =
 .WithSummary("Enqueue a test job that fails")
 .WithDescription("Enqueues a test job that will fail to verify error handling and OpenTelemetry error tracking.");
 
+app.MapGet("/api/test/signalr-notification", async (INotificationService notificationService) =>
+{
+    var testData = new
+    {
+        userId = "test-user",
+        tenantId = "test-tenant-123",
+        tenantName = "Test Tenant"
+    };
+    
+    app.Logger.LogInformation("========== TEST ENDPOINT: Sending SignalR notification ==========");
+    app.Logger.LogInformation("Test data: {@TestData}", testData);
+    
+    await notificationService.NotifyTenantCreatedAsync(testData.userId, testData.tenantId, testData.tenantName);
+    
+    app.Logger.LogInformation("Test notification sent successfully");
+    
+    return Results.Ok(new
+    {
+        success = true,
+        message = "Test SignalR notification sent! Check your browser console for 'TenantCreated' event.",
+        testData,
+        instructions = "Open browser console on the tenants page and look for: '🎉 ========== TENANT CREATED EVENT RECEIVED =========='",
+        troubleshooting = new
+        {
+            step1 = "Ensure SignalR is connected (look for '✅ SIGNALR CONNECTED SUCCESSFULLY')",
+            step2 = "Check this endpoint was called successfully (you should see this response)",
+            step3 = "Check browser console for the event",
+            step4 = "If no event, check Redis: docker exec -it <redis-container> redis-cli MONITOR",
+            step5 = "Verify both apps use same Redis connection string"
+        }
+    });
+})
+.WithName("TestSignalRNotification")
+.WithTags("SignalR Testing")
+.WithSummary("Test SignalR notification")
+.WithDescription("Sends a test tenant creation notification via SignalR to verify real-time messaging is working.");
+
 app.MapGet("/api/test/job-status", () =>
 {
     return Results.Ok(new
@@ -140,8 +199,9 @@ app.MapGet("/api/test/job-status", () =>
         dashboardUrl = "https://localhost:7298/hangfire",
         endpoints = new[]
         {
-            new { method = "POST", path = "/api/test/enqueue-job", description = "Enqueue a successful test job" },
-            new { method = "POST", path = "/api/test/enqueue-failing-job", description = "Enqueue a failing test job" }
+            new { method = "GET", path = "/api/test/enqueue-job", description = "Enqueue a successful test job" },
+            new { method = "GET", path = "/api/test/enqueue-failing-job", description = "Enqueue a failing test job" },
+            new { method = "GET", path = "/api/test/signalr-notification", description = "Test SignalR real-time notification" }
         }
     });
 })

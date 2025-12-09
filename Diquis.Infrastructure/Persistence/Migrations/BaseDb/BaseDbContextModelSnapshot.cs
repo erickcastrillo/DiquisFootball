@@ -139,8 +139,17 @@ namespace Diquis.Infrastructure.Persistence.Migrations.BaseDb
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
+                    b.Property<DateTime?>("LastProvisioningAttempt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<string>("ProvisioningError")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

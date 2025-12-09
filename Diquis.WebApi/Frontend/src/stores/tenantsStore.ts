@@ -33,7 +33,7 @@ export default class TenantsStore {
     return Array.from(this.tenants.values()).sort((a, b) => new Date(b.createdOn).valueOf() - new Date(a.createdOn).valueOf());
   }
 
-  // load tenants for admin vuew
+  // load tenants for admin view
   loadTenants = async () => {
     this.setLoadingInitial(true);
     try {
@@ -67,17 +67,19 @@ export default class TenantsStore {
     }
   };
 
-  // create new tenant
+  // create new tenant (now returns tenant ID, provisioning happens in background)
   createTenant = async (createTenantRequest: CreateTenantRequest) => {
     this.setLoading(true);
 
     try {
       const response = await agent.Tenants.create(createTenantRequest);
       if (!response.succeeded) throw new Error(response.messages[0]);
-      const newTenant = response.data;
-      runInAction(() => {
-        this.tenants.push(newTenant); // add to registry list (local memory) - prevents having to reload the table
-      });
+      
+      // Response now contains tenant ID (string), not full Tenant object
+      // The tenant will be added to the list when we receive SignalR notification
+      // or when we manually refresh the list
+      await this.loadTenants(); // Refresh to get the tenant with Pending status
+      
       this.setLoading(false);
     } catch (error) {
       console.error(error);
@@ -86,16 +88,17 @@ export default class TenantsStore {
     }
   };
 
-  // update tenant
+  // update tenant (now happens in background)
   updateTenant = async (tenant: Tenant) => {
     this.setLoading(true);
     try {
       const response = await agent.Tenants.update(tenant);
       if (!response.succeeded) throw new Error(response.messages[0]);
-      runInAction(() => {
-        const tenantIndex = this.tenants.findIndex((x) => x.id == tenant.id);
-        this.tenants[tenantIndex] = tenant;
-      });
+      
+      // Response now contains tenant ID (string), not full Tenant object
+      // The tenant will be updated when we receive SignalR notification
+      await this.loadTenants(); // Refresh to get the tenant with Updating status
+      
       this.setLoading(false);
     } catch (error) {
       console.error(error);

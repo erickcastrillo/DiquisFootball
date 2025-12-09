@@ -62,16 +62,36 @@ namespace Diquis.Infrastructure.Persistence.Extensions
                 {
                     string connectionString = string.IsNullOrEmpty(tenant.ConnectionString) ? defaultConnectionString : tenant.ConnectionString;
 
-                    // apply migrations to all DBs from ApplicationDBContext (all application tables) 
-                    using IServiceScope scopeApplication = services.BuildServiceProvider().CreateScope();
-                    TA dbContext = scopeApplication.ServiceProvider.GetRequiredService<TA>();
-                    dbContext.Database.SetConnectionString(connectionString);
-                    if (dbContext.Database.GetPendingMigrations().Any())
+                    try
                     {
-                        Console.ForegroundColor = ConsoleColor.Blue;
-                        Console.WriteLine($"Applying ApplicationDb Migrations for '{tenant.Id}' tenant.");
+                        // apply migrations to all DBs from ApplicationDBContext (all application tables) 
+                        using IServiceScope scopeApplication = services.BuildServiceProvider().CreateScope();
+                        TA dbContext = scopeApplication.ServiceProvider.GetRequiredService<TA>();
+                        dbContext.Database.SetConnectionString(connectionString);
+                        
+                        // Only migrate if database exists (skip databases that will be created by background jobs)
+                        if (dbContext.Database.CanConnect())
+                        {
+                            if (dbContext.Database.GetPendingMigrations().Any())
+                            {
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                Console.WriteLine($"Applying ApplicationDb Migrations for '{tenant.Id}' tenant.");
+                                Console.ResetColor();
+                                dbContext.Database.Migrate();
+                            }
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine($"Skipping migrations for '{tenant.Id}' - database does not exist yet (will be created by provisioning job).");
+                            Console.ResetColor();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine($"Could not migrate '{tenant.Id}': {ex.Message}. Database may not exist yet.");
                         Console.ResetColor();
-                        dbContext.Database.Migrate();
                     }
                 }
             }

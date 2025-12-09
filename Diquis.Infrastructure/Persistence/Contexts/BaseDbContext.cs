@@ -97,15 +97,14 @@ namespace Diquis.Infrastructure.Persistence.Contexts
 
         /// <summary>
         /// Saves all changes made in this context to the database asynchronously.
-        /// Handles audit fields and soft delete logic before saving.
+        /// Handles audit fields and soft delete logic before saving within a transaction.
+        /// The transaction is automatically rolled back if any error occurs.
         /// </summary>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
         /// <returns>The number of state entries written to the database.</returns>
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            this.TenantAndAuditFields(CurrentUserId, CurrentTenantId);
-            int result = await base.SaveChangesAsync(cancellationToken);
-            return result;
+            return await this.SaveChangesWithTransactionAsync(CurrentUserId, CurrentTenantId, cancellationToken);
         }
     }
 }

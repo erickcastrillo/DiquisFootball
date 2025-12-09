@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Diquis.Application.Common;
 using Diquis.Application.Common.ExcelExport;
 using Diquis.Application.Common.PdfExport;
@@ -39,7 +39,7 @@ namespace Diquis.Application.Services.ProductService
             _repository = repository; // inject repository 
             _mapper = mapper; // inject mapper
             _excelExportService = excelExportService;
-            _pdfExportService = _pdfExportService;
+            _pdfExportService = pdfExportService;
         }
         /// <summary>
         /// Retrieves a list of products, optionally filtered by a keyword.

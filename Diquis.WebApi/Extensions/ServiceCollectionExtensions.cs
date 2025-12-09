@@ -26,7 +26,11 @@ namespace Diquis.WebApi.Extensions
             #region [-- CORS --]
             _ = services.AddCors(p => p.AddPolicy("defaultPolicy", builder =>
             {
-                _ = builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader().WithExposedHeaders("Content-Disposition"); ;
+                _ = builder.WithOrigins("http://localhost:3000", "https://localhost:3000")
+                          .AllowAnyMethod()
+                          .AllowAnyHeader()
+                          .AllowCredentials()
+                          .WithExposedHeaders("Content-Disposition");
             }));
             #endregion
 
@@ -123,6 +127,19 @@ namespace Diquis.WebApi.Extensions
                    };
                    o.Events = new JwtBearerEvents()
                    {
+                       OnMessageReceived = context =>
+                       {
+                           // Allow SignalR to read the token from query string
+                           var accessToken = context.Request.Query["access_token"];
+                           var path = context.HttpContext.Request.Path;
+                           
+                           if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
+                           {
+                               context.Token = accessToken;
+                           }
+                           
+                           return Task.CompletedTask;
+                       },
                        OnChallenge = context =>
                        {
                            context.HandleResponse();

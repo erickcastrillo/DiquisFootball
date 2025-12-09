@@ -1,0 +1,1 @@
+import{j as e}from"./index-BuddXFJa.js";const i=({children:l,action:s,title:a})=>e.jsxs("div",{className:"d-flex flex-column",children:[!!a&&e.jsx("h4",{className:"page-title mb-3",children:a}),!!s&&e.jsx("div",{className:"d-flex justify-content-end align-items-baseline mb-3",children:s}),l]});export{i as P};
