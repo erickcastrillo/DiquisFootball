@@ -1,3 +1,4 @@
+using Diquis.Application.BackgroundJobs.AI;
 using Diquis.Application.Common;
 using Diquis.Application.Common.BackgroundJobs;
 using Diquis.Application.Common.Notifications;
@@ -7,6 +8,7 @@ using Diquis.Infrastructure.Hubs;
 using Diquis.Infrastructure.Notifications;
 using Diquis.WebApi.Extensions;
 using Diquis.WebApi.Middleware;
+using Diquis.AI.Extensions;
 
 using Hangfire;
 using Hangfire.Console;
@@ -23,6 +25,9 @@ using System.Reflection;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureApplicationServices(builder.Configuration); // Register Services / CORS / Configure Identity Requirements / JWT Settings / Register DB Contexts / Image Handling, Mailer, Fluent Validation, Automapper
+
+// Add AI Services (Ollama integration)
+builder.Services.AddAIServices(builder.Configuration);
 
 // Get Redis connection string
 string redisConnectionString = builder.Configuration.GetConnectionString("RedisConnection") ?? "localhost:6379";
@@ -201,7 +206,8 @@ app.MapGet("/api/test/job-status", () =>
         {
             new { method = "GET", path = "/api/test/enqueue-job", description = "Enqueue a successful test job" },
             new { method = "GET", path = "/api/test/enqueue-failing-job", description = "Enqueue a failing test job" },
-            new { method = "GET", path = "/api/test/signalr-notification", description = "Test SignalR real-time notification" }
+            new { method = "GET", path = "/api/test/signalr-notification", description = "Test SignalR real-time notification" },
+            new { method = "GET", path = "/api/test/ollama", description = "Test Ollama AI integration" }
         }
     });
 })
@@ -210,6 +216,36 @@ app.MapGet("/api/test/job-status", () =>
 .WithSummary("Get Hangfire status and test endpoints")
 .WithDescription("Returns information about available test endpoints and Hangfire dashboard URL.");
 
-app.MapFallbackToController("Index", "Fallback"); // directs all traffic to index.html
+app.MapGet("/api/test/ollama", (IBackgroundJobService jobService, string? prompt = null, string? model = null) =>
+{
+    var jobId = jobService.Enqueue(() => 
+        new TestOllamaJob(default!, default!)
+            .ExecuteAsync(prompt, model));
+    
+    return Results.Ok(new
+    {
+        success = true,
+        jobId,
+        message = "Ollama test job enqueued successfully",
+        prompt = prompt ?? "Explain Clean Architecture in 3 concise paragraphs.",
+        model = model ?? "llama2",
+        checkDashboard = "Visit https://localhost:7298/hangfire to monitor the job",
+        checkLogs = "Check console output for the AI response",
+        instructions = new
+        {
+            step1 = "Ensure Ollama is running: ollama serve",
+            step2 = "Ensure the model is pulled: ollama pull llama2",
+            step3 = "Monitor the job in Hangfire dashboard",
+            step4 = "Check console logs for the AI-generated response"
+        }
+    });
+})
+.WithName("TestOllamaIntegration")
+.WithTags("AI Testing")
+.WithSummary("Test Ollama AI integration")
+.WithDescription("Enqueues a test job that sends a prompt to Ollama and logs the response. " +
+                 "Optional parameters: ?prompt=your_prompt&model=model_name");
+
+app.MapFallbackToController("Index", "Fallback");
 
 app.Run();

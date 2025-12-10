@@ -11,8 +11,12 @@ using Diquis.Infrastructure.BackgroundJobs;
 using Diquis.Infrastructure.Persistence.Contexts;
 using Diquis.Application.Common.Notifications;
 using Diquis.Application.Common;
+using Diquis.Application.Common.BackgroundJobs;
 using Diquis.Domain.Entities.Common;
 using Diquis.Infrastructure.Services;
+using Diquis.AI.Extensions;
+using Diquis.Infrastructure.Mapper;
+using Diquis.Infrastructure.Auth.JWT;
 
 namespace Diquis.BackgroundJobs.Extensions;
 
@@ -47,6 +51,29 @@ public static class ServiceCollectionExtensions
         _ = services.AddIdentityCore<ApplicationUser>()
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<BaseDbContext>();
+
+        // Add AutoMapper (required by RepositoryAsync)
+        _ = services.AddAutoMapper(config =>
+        {
+            config.AddProfile<MappingProfiles>();
+        });
+
+        // Add dynamic service registration (registers IRepositoryAsync and other IScopedService/ITransientService implementations)
+        _ = services.AddServices();
+
+        // Remove TokenService registration - not needed in BackgroundJobs (requires SignInManager<ApplicationUser>)
+        ServiceDescriptor tokenServiceDescriptor = services.FirstOrDefault(d => d.ServiceType == typeof(ITokenService));
+        if (tokenServiceDescriptor != null)
+        {
+            services.Remove(tokenServiceDescriptor);
+        }
+
+        // Add AI Services (Ollama integration)
+        _ = services.AddAIServices(configuration);
+
+        // Register Hangfire background job service (required by TenantManagementService and ProcessBatchDataForAIJob)
+        _ = services.AddScoped<IBackgroundJobService, HangfireJobService>();
+        _ = services.AddScoped<IJobClientWrapper, JobClientWrapper>();
 
         // Add Hangfire services with deferred storage configuration (uses Hangfire database)
         _ = services.AddHangfire((serviceProvider, config) => config

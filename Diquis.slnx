@@ -1,14 +1,16 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="Diquis.AI/Diquis.AI.csproj" Id="997049ea-5e10-47bb-aaf1-0a1e7d10883d" />
     <Project Path="Diquis.Application/Diquis.Application.csproj" />
     <Project Path="Diquis.BackgroundJobs/Diquis.BackgroundJobs.csproj" />
     <Project Path="Diquis.Domain/Diquis.Domain.csproj" />
-    <Project Path="Diquis.Infrastructure.AI/Diquis.Infrastructure.AI.csproj" Id="b33f1c2d-487d-419c-b693-6234387c2e89" />
     <Project Path="Diquis.Infrastructure/Diquis.Infrastructure.csproj" />
     <Project Path="Diquis.WebApi/Diquis.WebApi.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="Diquis.AI.Tests/Diquis.AI.Tests.csproj" Id="403c6aa8-cecd-4583-a34e-f9fc7b026545" />
     <Project Path="Diquis.Application.Tests/Diquis.Application.Tests.csproj" Id="adf1db17-e916-4427-8ede-7651b5783959" />
+    <Project Path="Diquis.BackgroundJobs.Tests/Diquis.BackgroundJobs.Tests.csproj" Id="7123c8dc-0833-4b9d-a18d-201cc54124b7" />
     <Project Path="Diquis.Domain.Tests/Diquis.Domain.Tests.csproj" Id="a3a88398-eb15-4de5-aba3-059217065a9b" />
     <Project Path="Diquis.Infrastructure.Tests/Diquis.Infrastructure.Tests.csproj" Id="f2ead310-da31-4d5d-81f8-587a4611b4ac" />
     <Project Path="Diquis.WebApi.Tests/Diquis.WebApi.Tests.csproj" Id="421556fb-dea3-4fe4-92ed-4b18228575f2" />

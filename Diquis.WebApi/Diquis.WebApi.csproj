@@ -67,6 +67,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Diquis.Application\Diquis.Application.csproj" />
 		<ProjectReference Include="..\Diquis.Infrastructure\Diquis.Infrastructure.csproj" />
+		<ProjectReference Include="..\Diquis.AI\Diquis.AI.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
