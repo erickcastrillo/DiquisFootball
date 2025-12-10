@@ -26,7 +26,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureApplicationServices(builder.Configuration); // Register Services / CORS / Configure Identity Requirements / JWT Settings / Register DB Contexts / Image Handling, Mailer, Fluent Validation, Automapper
 
-// Add AI Services (Ollama integration)
+// Add AI Services (Ollama integration) - AI configuration is loaded automatically from Diquis.AI assembly
 builder.Services.AddAIServices(builder.Configuration);
 
 // Get Redis connection string
@@ -219,7 +219,7 @@ app.MapGet("/api/test/job-status", () =>
 app.MapGet("/api/test/ollama", (IBackgroundJobService jobService, string? prompt = null, string? model = null) =>
 {
     var jobId = jobService.Enqueue(() => 
-        new TestOllamaJob(default!, default!)
+        new TestOllamaJob(default!, default!, default!)
             .ExecuteAsync(prompt, model));
     
     return Results.Ok(new

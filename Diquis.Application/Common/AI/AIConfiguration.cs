@@ -1,4 +1,4 @@
-namespace Diquis.AI.Configuration
+namespace Diquis.Application.Common.AI
 {
     /// <summary>
     /// Configuration options for AI services.
@@ -44,6 +44,11 @@ namespace Diquis.AI.Configuration
         /// Gets or sets fallback provider configuration (optional).
         /// </summary>
         public FallbackProviderConfiguration? Fallback { get; set; }
+
+        /// <summary>
+        /// Gets or sets the prompt templates for various AI operations.
+        /// </summary>
+        public Dictionary<string, PromptTemplate> Prompts { get; set; } = new();
     }
 
     /// <summary>
@@ -75,5 +80,38 @@ namespace Diquis.AI.Configuration
         /// Gets or sets the default model for the fallback provider.
         /// </summary>
         public string? DefaultModel { get; set; }
+    }
+
+    /// <summary>
+    /// Represents a prompt template with system and user prompt sections.
+    /// </summary>
+    public class PromptTemplate
+    {
+        /// <summary>
+        /// Gets or sets the system prompt that defines the AI's role and behavior.
+        /// </summary>
+        public string SystemPrompt { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the user prompt template with placeholders (e.g., {{variable}}).
+        /// </summary>
+        public string UserPrompt { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the temperature setting for this specific prompt (0.0 to 1.0).
+        /// If null, uses the global temperature setting.
+        /// </summary>
+        public double? Temperature { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maximum tokens for this prompt.
+        /// If null, uses the model's default.
+        /// </summary>
+        public int? MaxTokens { get; set; }
+
+        /// <summary>
+        /// Gets or sets a description of what this prompt is used for.
+        /// </summary>
+        public string? Description { get; set; }
     }
 }

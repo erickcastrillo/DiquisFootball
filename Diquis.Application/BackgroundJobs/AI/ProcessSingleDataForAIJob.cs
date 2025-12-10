@@ -11,6 +11,7 @@ namespace Diquis.Application.BackgroundJobs.AI
     public class ProcessSingleDataForAIJob
     {
         private readonly IAIGenerationService _aiService;
+        private readonly IPromptService _promptService;
         private readonly IRepositoryAsync _repository;
         private readonly ILogger<ProcessSingleDataForAIJob> _logger;
 
@@ -19,27 +20,38 @@ namespace Diquis.Application.BackgroundJobs.AI
         /// </summary>
         public ProcessSingleDataForAIJob(
             IAIGenerationService aiService,
+            IPromptService promptService,
             IRepositoryAsync repository,
             ILogger<ProcessSingleDataForAIJob> logger)
         {
             _aiService = aiService;
+            _promptService = promptService;
             _repository = repository;
             _logger = logger;
         }
 
         /// <summary>
-        /// Executes the AI processing for a single data item.
+        /// Executes the AI processing for a single data item using a configured prompt template.
         /// </summary>
         /// <param name="dataId">The ID of the data item to process.</param>
         /// <param name="modelName">The AI model to use.</param>
-        /// <param name="systemPrompt">The system prompt for the model.</param>
+        /// <param name="promptKey">The key of the prompt template to use from configuration.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public async Task ExecuteAsync(Guid dataId, string modelName, string systemPrompt)
+        public async Task ExecuteAsync(Guid dataId, string modelName, string promptKey)
         {
             try
             {
-                _logger.LogInformation("Starting AI processing for data item {DataId} using model {ModelName}", 
-                    dataId, modelName);
+                _logger.LogInformation("Starting AI processing for data item {DataId} using model {ModelName} and prompt '{PromptKey}'", 
+                    dataId, modelName, promptKey);
+
+                // Validate prompt exists
+                if (!_promptService.HasPrompt(promptKey))
+                {
+                    _logger.LogError("Prompt template '{PromptKey}' not found in configuration.", promptKey);
+                    return;
+                }
+
+                var promptTemplate = _promptService.GetPrompt(promptKey);
 
                 // TODO: Replace this with your actual entity type
                 // Example: var dataItem = await _repository.GetByIdAsync<YourEntity, Guid>(dataId);
@@ -53,21 +65,35 @@ namespace Diquis.Application.BackgroundJobs.AI
                 //     return;
                 // }
 
-                // Step 2: Prepare the AI request
+                // Step 2: Prepare variables for prompt rendering
+                // Extract actual data from your entity and map to prompt variables
+                var promptVariables = new Dictionary<string, string>
+                {
+                    { "dataContent", $"Data ID: {dataId}" }, // Replace with actual data
+                    { "requirements", "Standard analysis requirements" } // Replace with actual requirements
+                    // Add more variables based on your prompt template
+                };
+
+                // Render the prompt with actual data
+                var (systemPrompt, userPrompt) = _promptService.RenderPrompt(promptKey, promptVariables);
+
+                // Step 3: Prepare the AI request
                 var aiRequest = new AIGenerationRequest
                 {
                     ModelName = modelName,
-                    Prompt = $"Process this data: {dataId}", // Replace with actual data
+                    Prompt = userPrompt,
                     SystemPrompt = systemPrompt,
-                    Temperature = 0.7,
+                    Temperature = promptTemplate!.Temperature ?? 0.7,
+                    MaxTokens = promptTemplate.MaxTokens,
                     Metadata = new Dictionary<string, string>
                     {
                         { "DataId", dataId.ToString() },
+                        { "PromptKey", promptKey },
                         { "ProcessedAt", DateTime.UtcNow.ToString("O") }
                     }
                 };
 
-                // Step 3: Call AI service
+                // Step 4: Call AI service
                 var response = await _aiService.GenerateAsync(aiRequest);
 
                 if (!response.Success)
@@ -86,7 +112,7 @@ namespace Diquis.Application.BackgroundJobs.AI
                 _logger.LogInformation("AI processing completed for data item {DataId} in {Duration}ms", 
                     dataId, response.DurationMs);
 
-                // Step 4: Update the data item with results
+                // Step 5: Update the data item with results
                 // dataItem.ProcessedResult = response.GeneratedText;
                 // dataItem.ProcessingStatus = "Completed";
                 // dataItem.ProcessedAt = DateTime.UtcNow;

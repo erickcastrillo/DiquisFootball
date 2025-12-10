@@ -13,6 +13,7 @@ namespace Diquis.Application.BackgroundJobs.AI
         private readonly IRepositoryAsync _repository;
         private readonly IBackgroundJobService _backgroundJobService;
         private readonly IAIGenerationService _aiService;
+        private readonly IPromptService _promptService;
         private readonly ILogger<ProcessBatchDataForAIJob> _logger;
 
         /// <summary>
@@ -22,28 +23,39 @@ namespace Diquis.Application.BackgroundJobs.AI
             IRepositoryAsync repository,
             IBackgroundJobService backgroundJobService,
             IAIGenerationService aiService,
+            IPromptService promptService,
             ILogger<ProcessBatchDataForAIJob> logger)
         {
             _repository = repository;
             _backgroundJobService = backgroundJobService;
             _aiService = aiService;
+            _promptService = promptService;
             _logger = logger;
         }
 
         /// <summary>
-        /// Executes the batch processing job.
-        /// Queries the database for pending items and enqueues child jobs.
+        /// Executes the batch processing job using a configured prompt template.
         /// </summary>
         /// <param name="modelName">The AI model to use for processing.</param>
-        /// <param name="systemPrompt">The system prompt for the model.</param>
+        /// <param name="promptKey">The key of the prompt template to use from configuration.</param>
         /// <param name="batchSize">Maximum number of items to process in this batch.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public async Task ExecuteAsync(string modelName, string systemPrompt, int batchSize = 100)
+        public async Task ExecuteAsync(string modelName, string promptKey, int batchSize = 100)
         {
             try
             {
-                _logger.LogInformation("Starting batch AI processing job. Model: {ModelName}, Batch Size: {BatchSize}", 
-                    modelName, batchSize);
+                _logger.LogInformation("Starting batch AI processing job. Model: {ModelName}, Prompt: {PromptKey}, Batch Size: {BatchSize}", 
+                    modelName, promptKey, batchSize);
+
+                // Validate prompt exists
+                if (!_promptService.HasPrompt(promptKey))
+                {
+                    _logger.LogError("Prompt template '{PromptKey}' not found in configuration. Aborting batch job.", promptKey);
+                    return;
+                }
+
+                var promptTemplate = _promptService.GetPrompt(promptKey);
+                var systemPrompt = promptTemplate!.SystemPrompt;
 
                 // Step 1: Ensure the model exists or create it
                 var modelExists = await _aiService.ModelExistsAsync(modelName);
@@ -58,7 +70,7 @@ namespace Diquis.Application.BackgroundJobs.AI
                         modelName,
                         baseModel,
                         systemPrompt,
-                        temperature: 0.7);
+                        temperature: promptTemplate.Temperature ?? 0.7);
 
                     if (!created)
                     {
@@ -94,8 +106,8 @@ namespace Diquis.Application.BackgroundJobs.AI
                     {
 #pragma warning disable CS4014 // Intentional fire-and-forget background job
                         _backgroundJobService.Enqueue(() =>
-                            new ProcessSingleDataForAIJob(default!, default!, default!)
-                                .ExecuteAsync(dataId, modelName, systemPrompt));
+                            new ProcessSingleDataForAIJob(default!, default!, default!, default!)
+                                .ExecuteAsync(dataId, modelName, promptKey));
 #pragma warning restore CS4014
 
                         enqueuedCount++;

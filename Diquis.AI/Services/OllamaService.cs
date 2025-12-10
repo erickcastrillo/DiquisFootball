@@ -1,5 +1,4 @@
 using Diquis.Application.Common.AI;
-using Diquis.AI.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OllamaSharp;
